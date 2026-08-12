@@ -88,6 +88,158 @@ function lene_register_cpt_plads() {
 add_action( 'init', 'lene_register_cpt_plads' );
 
 /**
+ * Meta box til plads-CPT'en — det eneste kunden skal udfylde: en dato og
+ * to tal. Status, mærkat og prikker beregnes af temaet ud fra dem.
+ */
+function lene_plads_meta_box() {
+	add_meta_box(
+		'lene_plads_detaljer',
+		'Plads-detaljer',
+		'lene_render_plads_meta_box',
+		'plads',
+		'normal',
+		'high'
+	);
+}
+add_action( 'add_meta_boxes_plads', 'lene_plads_meta_box' );
+
+function lene_render_plads_meta_box( WP_Post $post ) {
+	wp_nonce_field( 'lene_plads_gem', 'lene_plads_nonce' );
+
+	$dato             = get_post_meta( $post->ID, 'dato', true );
+	$antal            = get_post_meta( $post->ID, 'antal', true );
+	$antal            = '' === $antal ? 1 : (int) $antal;
+	$antal_ledige     = get_post_meta( $post->ID, 'antal_ledige', true );
+	$antal_ledige     = '' === $antal_ledige ? 0 : (int) $antal_ledige;
+	$status_naar_fuld = get_post_meta( $post->ID, 'status_naar_fuld', true ) ?: 'reserveret';
+	$note             = get_post_meta( $post->ID, 'note', true );
+	?>
+	<style>
+		.lene-plads-felter { display: grid; gap: 16px; max-width: 480px; }
+		.lene-plads-felter label { display: block; font-weight: 600; margin-bottom: 4px; }
+		.lene-plads-felter input[type="date"],
+		.lene-plads-felter input[type="number"],
+		.lene-plads-felter input[type="text"],
+		.lene-plads-felter select { width: 100%; max-width: 260px; }
+		.lene-plads-felter .beskrivelse { color: #666; font-size: 13px; margin-top: 4px; }
+	</style>
+	<div class="lene-plads-felter">
+		<div>
+			<label for="lene_plads_dato">Startdato for pladsen</label>
+			<input type="date" id="lene_plads_dato" name="lene_plads_dato" value="<?php echo esc_attr( $dato ); ?>">
+		</div>
+		<div>
+			<label for="lene_plads_antal">Antal pladser på datoen i alt</label>
+			<input type="number" min="0" id="lene_plads_antal" name="lene_plads_antal" value="<?php echo esc_attr( $antal ); ?>">
+		</div>
+		<div>
+			<label for="lene_plads_antal_ledige">Heraf ledige</label>
+			<input type="number" min="0" id="lene_plads_antal_ledige" name="lene_plads_antal_ledige" value="<?php echo esc_attr( $antal_ledige ); ?>">
+			<p class="beskrivelse">Skriv fx 3 og 2, så vises "2 af 3 pladser ledige" automatisk. Status, farve og prikker beregnes af temaet — du skal ikke vælge dem selv.</p>
+		</div>
+		<div>
+			<label for="lene_plads_status_naar_fuld">Når 0 er ledige, vis som</label>
+			<select id="lene_plads_status_naar_fuld" name="lene_plads_status_naar_fuld">
+				<option value="reserveret" <?php selected( $status_naar_fuld, 'reserveret' ); ?>>Reserveret</option>
+				<option value="optaget" <?php selected( $status_naar_fuld, 'optaget' ); ?>>Optaget</option>
+			</select>
+		</div>
+		<div>
+			<label for="lene_plads_note">Note (valgfri)</label>
+			<input type="text" id="lene_plads_note" name="lene_plads_note" value="<?php echo esc_attr( $note ); ?>" placeholder="Fx: kun formiddage">
+		</div>
+	</div>
+	<?php
+}
+
+function lene_gem_plads_meta( int $post_id ) {
+	if ( ! isset( $_POST['lene_plads_nonce'] ) || ! wp_verify_nonce( $_POST['lene_plads_nonce'], 'lene_plads_gem' ) ) {
+		return;
+	}
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	$dato         = isset( $_POST['lene_plads_dato'] ) ? sanitize_text_field( wp_unslash( $_POST['lene_plads_dato'] ) ) : '';
+	$antal        = isset( $_POST['lene_plads_antal'] ) ? max( 0, (int) $_POST['lene_plads_antal'] ) : 0;
+	$antal_ledige = isset( $_POST['lene_plads_antal_ledige'] ) ? max( 0, (int) $_POST['lene_plads_antal_ledige'] ) : 0;
+	$antal_ledige = min( $antal, $antal_ledige );
+	$status       = ( isset( $_POST['lene_plads_status_naar_fuld'] ) && 'optaget' === $_POST['lene_plads_status_naar_fuld'] ) ? 'optaget' : 'reserveret';
+	$note         = isset( $_POST['lene_plads_note'] ) ? sanitize_text_field( wp_unslash( $_POST['lene_plads_note'] ) ) : '';
+
+	update_post_meta( $post_id, 'dato', $dato );
+	update_post_meta( $post_id, 'antal', $antal );
+	update_post_meta( $post_id, 'antal_ledige', $antal_ledige );
+	update_post_meta( $post_id, 'status_naar_fuld', $status );
+	update_post_meta( $post_id, 'note', $note );
+
+	// Titlen sættes automatisk ud fra datoen — kunden skal ikke selv holde den i sync.
+	if ( $dato ) {
+		$timestamp = strtotime( $dato );
+		if ( $timestamp ) {
+			remove_action( 'save_post_plads', 'lene_gem_plads_meta' );
+			wp_update_post(
+				array(
+					'ID'         => $post_id,
+					'post_title' => lene_dansk_dato( $timestamp ),
+				)
+			);
+			add_action( 'save_post_plads', 'lene_gem_plads_meta' );
+		}
+	}
+}
+add_action( 'save_post_plads', 'lene_gem_plads_meta' );
+
+/**
+ * Kolonner i pladslisten i wp-admin, så man kan se status uden at åbne hver post.
+ */
+function lene_plads_admin_columns( array $columns ): array {
+	unset( $columns['date'] );
+	$columns['dato']   = 'Dato';
+	$columns['antal']  = 'Pladser';
+	$columns['status'] = 'Status';
+	return $columns;
+}
+add_filter( 'manage_plads_posts_columns', 'lene_plads_admin_columns' );
+
+function lene_plads_admin_column_content( string $column, int $post_id ): void {
+	if ( 'dato' === $column ) {
+		$dato = get_post_meta( $post_id, 'dato', true );
+		echo esc_html( $dato ? lene_dansk_dato( strtotime( $dato ) ) : '—' );
+		return;
+	}
+	if ( 'antal' === $column || 'status' === $column ) {
+		$beregnet = lene_plads_beregn( $post_id );
+		echo esc_html( 'antal' === $column ? $beregnet['tekst'] : $beregnet['status_label'] );
+	}
+}
+add_action( 'manage_plads_posts_custom_column', 'lene_plads_admin_column_content', 10, 2 );
+
+function lene_plads_sortable_columns( array $columns ): array {
+	$columns['dato'] = 'dato';
+	return $columns;
+}
+add_filter( 'manage_edit-plads_sortable_columns', 'lene_plads_sortable_columns' );
+
+function lene_plads_admin_orderby( WP_Query $query ): void {
+	if ( ! is_admin() || ! $query->is_main_query() || 'plads' !== $query->get( 'post_type' ) ) {
+		return;
+	}
+	if ( 'dato' === $query->get( 'orderby' ) ) {
+		$query->set( 'meta_key', 'dato' );
+		$query->set( 'orderby', 'meta_value' );
+	} elseif ( '' === $query->get( 'orderby' ) ) {
+		$query->set( 'meta_key', 'dato' );
+		$query->set( 'orderby', 'meta_value' );
+		$query->set( 'order', 'ASC' );
+	}
+}
+add_action( 'pre_get_posts', 'lene_plads_admin_orderby' );
+
+/**
  * Beregner status + tekster for én plads-post ud fra dens meta.
  * status: 'ledig' | 'delvis' | 'reserveret' | 'optaget'
  */
