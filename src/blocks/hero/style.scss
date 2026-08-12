@@ -1,0 +1,153 @@
+/* ============================================================
+   HERO — lene/hero
+   Porteret fra design/lene-mockup.html.
+   ============================================================ */
+
+.lene-hero.hero {
+	position: relative;
+	overflow: hidden;
+	background: var(--sky);
+	padding: clamp(48px, 7vw, 78px) 0 clamp(70px, 8vw, 88px);
+}
+.lene-hero.hero::after {
+	content: "";
+	position: absolute;
+	inset: auto -10% -60% 40%;
+	height: 70%;
+	background: radial-gradient(closest-side, rgba(247, 194, 75, 0.35), transparent 70%);
+	pointer-events: none;
+}
+.lene-hero .hero__grid {
+	position: relative;
+	display: grid;
+	grid-template-columns: 1.05fr 0.95fr;
+	gap: 60px;
+	align-items: center;
+}
+.lene-hero h1 {
+	font-size: clamp(38px, 5vw, 62px);
+}
+.lene-hero .lede {
+	margin-top: 22px;
+}
+.lene-hero .hero__cta {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+	margin-top: 32px;
+}
+.lene-hero .hero__facts {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px 22px;
+	margin-top: 34px;
+	padding-top: 22px;
+	border-top: 1px solid var(--line);
+}
+.lene-hero .hero__facts li {
+	font-size: 14px;
+	color: var(--pine-soft);
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+.lene-hero .hero__facts li::before {
+	content: "";
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--sun-deep);
+}
+
+.lene-hero .hero__media {
+	position: relative;
+}
+.lene-hero .frame {
+	border-radius: var(--r-lg);
+	overflow: hidden;
+	background: var(--sky-deep);
+	box-shadow: var(--shadow);
+	aspect-ratio: 4 / 3.4;
+}
+.lene-hero .frame img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.lene-hero .next-card {
+	position: absolute;
+	left: -26px;
+	bottom: -26px;
+	width: 250px;
+	background: var(--paper);
+	border-radius: var(--r-md);
+	padding: 18px 20px;
+	box-shadow: var(--shadow);
+	border: 1px solid var(--line);
+}
+.lene-hero .next-card small {
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
+	color: var(--stone);
+}
+.lene-hero .next-card strong {
+	display: block;
+	font-family: var(--display);
+	font-size: 25px;
+	font-weight: 600;
+	margin-top: 6px;
+	font-variation-settings: "SOFT" 60, "WONK" 1, "opsz" 60;
+}
+.lene-hero .next-card span {
+	font-size: 13.5px;
+	color: var(--stone);
+}
+
+@media (max-width: 1180px) {
+	.lene-hero .hero__grid {
+		gap: 44px;
+	}
+}
+
+@media (max-width: 1024px) {
+	.lene-hero .hero__grid {
+		grid-template-columns: 1fr;
+		gap: clamp(38px, 6vw, 52px);
+	}
+	.lene-hero .hero__media {
+		max-width: 620px;
+	}
+	.lene-hero .next-card {
+		left: auto;
+		right: 18px;
+		bottom: -24px;
+		width: min(240px, 60vw);
+	}
+}
+
+@media (max-width: 680px) {
+	.lene-hero .hero__facts {
+		gap: 8px 18px;
+	}
+	.lene-hero .hero__facts li {
+		font-size: 13.5px;
+	}
+	.lene-hero .next-card {
+		position: static;
+		width: 100%;
+		margin-top: 16px;
+		box-shadow: var(--shadow-soft);
+	}
+}
+
+@media (max-width: 420px) {
+	.lene-hero .hero__cta {
+		flex-direction: column;
+		align-items: stretch;
+	}
+	.lene-hero .hero__cta .btn {
+		justify-content: center;
+	}
+}

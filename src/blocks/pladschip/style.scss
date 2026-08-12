@@ -1,0 +1,33 @@
+.lene-pladschip.status-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	flex-shrink: 0;
+	white-space: nowrap;
+	max-width: 100%;
+	background: var(--sun);
+	color: var(--pine);
+	font-weight: 700;
+	font-size: 14px;
+	padding: 9px 16px;
+	border-radius: 999px;
+	text-decoration: none;
+}
+.lene-pladschip .dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: var(--pine);
+	flex-shrink: 0;
+}
+
+@media (max-width: 420px) {
+	.lene-pladschip.status-chip {
+		font-size: 12.5px;
+		padding: 7px 11px;
+		gap: 6px;
+	}
+	.lene-pladschip .word {
+		display: none;
+	}
+}

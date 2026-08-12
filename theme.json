@@ -1,0 +1,177 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"title": "Lene",
+	"settings": {
+		"appearanceTools": false,
+		"useRootPaddingAwareAlignments": true,
+		"layout": {
+			"contentSize": "1140px",
+			"wideSize": "1320px"
+		},
+		"color": {
+			"custom": false,
+			"customGradient": false,
+			"customDuotone": false,
+			"defaultPalette": false,
+			"defaultGradients": false,
+			"defaultDuotone": false,
+			"background": true,
+			"text": true,
+			"link": true,
+			"palette": [
+				{ "slug": "pine", "name": "Skovgrøn", "color": "#1B3326" },
+				{ "slug": "pine-soft", "name": "Skovgrøn lys", "color": "#2E4A38" },
+				{ "slug": "stone", "name": "Sten", "color": "#6B7C6F" },
+				{ "slug": "sky", "name": "Dis", "color": "#E9EFE8" },
+				{ "slug": "sky-deep", "name": "Dis mørk", "color": "#D8E3D7" },
+				{ "slug": "paper", "name": "Hvid", "color": "#FFFFFF" },
+				{ "slug": "sun", "name": "Solgul", "color": "#F7C24B" },
+				{ "slug": "sun-deep", "name": "Solgul mørk", "color": "#D99A0B" },
+				{ "slug": "berry", "name": "Bær", "color": "#B4576B" }
+			]
+		},
+		"typography": {
+			"customFontSize": false,
+			"fluid": false,
+			"lineHeight": true,
+			"dropCap": false,
+			"fontFamilies": [
+				{
+					"slug": "display",
+					"name": "Fraunces",
+					"fontFamily": "\"Fraunces\", Georgia, serif",
+					"fontFace": [
+						{
+							"fontFamily": "Fraunces",
+							"fontStyle": "normal",
+							"fontWeight": "400 700",
+							"fontStretch": "normal",
+							"src": [ "file:./assets/fonts/fraunces-variable.woff2" ]
+						},
+						{
+							"fontFamily": "Fraunces",
+							"fontStyle": "italic",
+							"fontWeight": "400 700",
+							"fontStretch": "normal",
+							"src": [ "file:./assets/fonts/fraunces-italic-variable.woff2" ]
+						}
+					]
+				},
+				{
+					"slug": "body",
+					"name": "Karla",
+					"fontFamily": "\"Karla\", system-ui, -apple-system, sans-serif",
+					"fontFace": [
+						{
+							"fontFamily": "Karla",
+							"fontStyle": "normal",
+							"fontWeight": "400 800",
+							"src": [ "file:./assets/fonts/karla-variable.woff2" ]
+						}
+					]
+				}
+			],
+			"fontSizes": [
+				{ "slug": "small", "name": "Lille", "size": "14px" },
+				{ "slug": "medium", "name": "Normal", "size": "17px" },
+				{ "slug": "large", "name": "Lede", "size": "19px" },
+				{ "slug": "x-large", "name": "Overskrift", "size": "28px" },
+				{ "slug": "xx-large", "name": "Stor overskrift", "size": "44px" },
+				{ "slug": "xxx-large", "name": "Hero", "size": "62px" }
+			]
+		},
+		"spacing": {
+			"customSpacingSize": false,
+			"units": [ "px", "%", "vw", "em", "rem" ],
+			"padding": true,
+			"margin": false,
+			"blockGap": true,
+			"spacingScale": {
+				"steps": 0
+			},
+			"spacingSizes": [
+				{ "slug": "10", "name": "Lille", "size": "12px" },
+				{ "slug": "20", "name": "Normal", "size": "22px" },
+				{ "slug": "30", "name": "Mellem", "size": "44px" },
+				{ "slug": "40", "name": "Stor", "size": "70px" },
+				{ "slug": "50", "name": "Sektion", "size": "90px" }
+			]
+		},
+		"custom": {
+			"radius": {
+				"lg": "28px",
+				"md": "18px",
+				"sm": "12px"
+			},
+			"shadow": {
+				"soft": "0 8px 22px -18px rgba(27,51,38,.5)",
+				"lifted": "0 16px 38px -24px rgba(27,51,38,.6)"
+			},
+			"line": "rgba(27,51,38,.16)",
+			"line-strong": "rgba(27,51,38,.42)"
+		},
+		"blocks": {
+			"core/paragraph": {
+				"typography": {
+					"customFontSize": true
+				}
+			}
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "var(--wp--preset--color--paper)",
+			"text": "var(--wp--preset--color--pine)"
+		},
+		"typography": {
+			"fontFamily": "var(--wp--preset--font-family--body)",
+			"fontSize": "var(--wp--preset--font-size--medium)",
+			"lineHeight": "1.65"
+		},
+		"elements": {
+			"link": {
+				"color": {
+					"text": "var(--wp--preset--color--pine)"
+				},
+				":hover": {
+					"color": {
+						"text": "var(--wp--preset--color--sun-deep)"
+					}
+				}
+			},
+			"heading": {
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--display)",
+					"fontWeight": "600",
+					"lineHeight": "1.08",
+					"letterSpacing": "-0.015em"
+				},
+				"color": {
+					"text": "var(--wp--preset--color--pine)"
+				}
+			},
+			"h1": {
+				"typography": { "fontSize": "var(--wp--preset--font-size--xxx-large)" }
+			},
+			"h2": {
+				"typography": { "fontSize": "var(--wp--preset--font-size--xx-large)" }
+			},
+			"h3": {
+				"typography": { "fontSize": "var(--wp--preset--font-size--x-large)" }
+			}
+		},
+		"blocks": {
+			"core/site-title": {
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--display)",
+					"fontWeight": "600"
+				}
+			}
+		}
+	},
+	"templateParts": [
+		{ "name": "header", "title": "Sidehoved", "area": "header" },
+		{ "name": "footer", "title": "Sidefod", "area": "footer" }
+	]
+}

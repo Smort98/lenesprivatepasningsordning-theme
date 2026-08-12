@@ -1,0 +1,460 @@
+/* ============================================================
+   PLADSTAVLEN — lene/pladstavle
+   Porteret fra design/lene-mockup.html. Se der for kontekst før ændringer.
+   ============================================================ */
+
+.lene-pladstavle .rail {
+	padding-top: 6px;
+}
+
+/* lodret variant — bruges på undersiden og automatisk under 900px */
+.lene-pladstavle .rail--lodret .rail__items {
+	grid-template-columns: 1fr;
+	gap: 16px;
+	border-top: none;
+	border-left: 2px solid var(--line-strong);
+	padding-left: 26px;
+	margin-left: 6px;
+}
+.lene-pladstavle .rail--lodret .plads {
+	flex-direction: row;
+	align-items: center;
+	text-align: left;
+}
+.lene-pladstavle .rail--lodret .plads::before {
+	margin: 0 0 0 -32px;
+}
+.lene-pladstavle .rail--lodret .plads__string {
+	width: 20px;
+	height: 2px;
+	flex-shrink: 0;
+}
+.lene-pladstavle .rail--lodret .plads__tag {
+	width: 100%;
+	padding: 18px 22px;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 6px 18px;
+}
+.lene-pladstavle .rail--lodret .plads:nth-child(odd) .plads__tag,
+.lene-pladstavle .rail--lodret .plads:nth-child(even) .plads__tag {
+	transform: none;
+}
+.lene-pladstavle .rail--lodret .plads__tag:hover {
+	transform: translateY(-2px);
+}
+.lene-pladstavle .rail--lodret .plads__hole {
+	display: none;
+}
+.lene-pladstavle .rail--lodret .plads__date {
+	font-size: 26px;
+	grid-column: 1;
+	grid-row: 1;
+}
+.lene-pladstavle .rail--lodret .plads__date span {
+	margin: 0 0 0 10px;
+	font-size: 14px;
+	padding: 4px 11px;
+}
+.lene-pladstavle .rail--lodret .plads__count {
+	grid-column: 1;
+	grid-row: 2;
+	margin-top: 5px;
+}
+.lene-pladstavle .rail--lodret .plads__dots {
+	grid-column: 1;
+	grid-row: 3;
+	margin-top: 9px;
+}
+.lene-pladstavle .rail--lodret .plads__status {
+	grid-column: 2;
+	grid-row: 1 / -1;
+	margin-top: 0;
+	align-self: center;
+}
+
+.lene-pladstavle .rail__items {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: 18px;
+	border-top: 2px solid var(--line-strong);
+}
+.lene-pladstavle .plads {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+.lene-pladstavle .plads::before {
+	content: "";
+	width: 11px;
+	height: 11px;
+	border-radius: 50%;
+	background: var(--pine);
+	margin-top: -6.5px;
+	flex-shrink: 0;
+}
+.lene-pladstavle .plads__string {
+	width: 2px;
+	height: 32px;
+	background: var(--line-strong);
+}
+.lene-pladstavle .plads__tag {
+	width: 100%;
+	padding: 20px 16px 18px;
+	border-radius: var(--r-md);
+	border: 2px solid;
+	background: var(--paper);
+	transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.lene-pladstavle .plads:nth-child(odd) .plads__tag {
+	transform: rotate(-1.2deg);
+}
+.lene-pladstavle .plads:nth-child(even) .plads__tag {
+	transform: rotate(1deg);
+}
+.lene-pladstavle .plads__tag:hover {
+	transform: rotate(0) translateY(-4px);
+	box-shadow: var(--shadow);
+}
+.lene-pladstavle .plads__hole {
+	display: block;
+	width: 11px;
+	height: 11px;
+	border-radius: 50%;
+	border: 2px solid var(--line-strong);
+	margin: 0 auto 14px;
+	background: transparent;
+}
+.lene-pladstavle .plads__date {
+	font-family: var(--display);
+	font-size: 27px;
+	font-weight: 600;
+	line-height: 1.05;
+	font-variation-settings: "SOFT" 60, "WONK" 1, "opsz" 80;
+}
+.lene-pladstavle .plads__date span {
+	display: inline-block;
+	margin-top: 7px;
+	font-family: var(--body);
+	font-size: 14px;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	padding: 4px 11px;
+	border-radius: 999px;
+	background: var(--sky);
+	color: var(--pine-soft);
+}
+.lene-pladstavle .plads__count {
+	font-size: 15px;
+	color: var(--pine-soft);
+	margin-top: 12px;
+	font-weight: 500;
+}
+.lene-pladstavle .plads__count b {
+	font-family: var(--display);
+	font-size: 24px;
+	font-weight: 600;
+	margin-right: 3px;
+	font-variation-settings: "SOFT" 60, "WONK" 1, "opsz" 50;
+}
+.lene-pladstavle .plads__count.is-zero b {
+	font-size: 19px;
+	color: var(--stone);
+}
+.lene-pladstavle .plads__dots {
+	display: flex;
+	gap: 6px;
+	margin-top: 11px;
+}
+.lene-pladstavle .plads__dots li {
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	border: 2px solid var(--line-strong);
+	background: transparent;
+}
+.lene-pladstavle .plads__dots li.free {
+	background: var(--sun);
+	border-color: var(--sun-deep);
+}
+.lene-pladstavle .plads__dots li.taken {
+	border-style: dashed;
+}
+.lene-pladstavle .plads__status {
+	display: inline-block;
+	margin-top: 16px;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	padding: 7px 15px;
+	border-radius: 999px;
+	border: 1.5px solid transparent;
+}
+
+/* LEDIG — fyldt, varmt og med en blød glød omkring skiltet */
+.lene-pladstavle .plads.is-ledig .plads__tag {
+	border-color: var(--sun-deep);
+	background: var(--sun);
+	box-shadow: 0 0 0 6px rgba(247, 194, 75, 0.3), 0 16px 32px -20px rgba(217, 154, 11, 0.95);
+}
+.lene-pladstavle .plads.is-ledig .plads__tag:hover {
+	box-shadow: 0 0 0 8px rgba(247, 194, 75, 0.4), 0 22px 38px -20px rgba(217, 154, 11, 1);
+}
+.lene-pladstavle .plads.is-ledig .plads__hole {
+	border-color: rgba(27, 51, 38, 0.45);
+}
+.lene-pladstavle .plads.is-ledig .plads__date span {
+	background: rgba(27, 51, 38, 0.12);
+	color: var(--pine);
+}
+.lene-pladstavle .plads.is-ledig .plads__count {
+	color: var(--pine);
+}
+.lene-pladstavle .plads.is-ledig .plads__status {
+	background: var(--pine);
+	color: var(--sun);
+	border-color: var(--pine);
+	box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.55), 0 8px 18px -8px rgba(27, 51, 38, 0.75);
+}
+.lene-pladstavle .plads.is-ledig .plads__dots li.free {
+	background: var(--pine);
+	border-color: var(--pine);
+}
+.lene-pladstavle .plads.is-ledig .plads__dots li.taken {
+	border-color: rgba(27, 51, 38, 0.45);
+}
+
+/* DELVIST LEDIG — lys bund, fast gul kant, dæmpet glød */
+.lene-pladstavle .plads.is-delvis .plads__tag {
+	border-color: var(--sun-deep);
+	background: #fffaee;
+	box-shadow: 0 0 0 4px rgba(247, 194, 75, 0.2), 0 12px 26px -20px rgba(217, 154, 11, 0.8);
+}
+.lene-pladstavle .plads.is-delvis .plads__tag:hover {
+	box-shadow: 0 0 0 6px rgba(247, 194, 75, 0.3), 0 18px 32px -20px rgba(217, 154, 11, 0.95);
+}
+.lene-pladstavle .plads.is-delvis .plads__status {
+	background: var(--sun);
+	color: var(--pine);
+	border-color: var(--sun-deep);
+	box-shadow: 0 4px 12px -6px rgba(217, 154, 11, 0.9);
+}
+
+/* RESERVERET — stiplet, uden fyld og uden glød */
+.lene-pladstavle .plads.is-reserveret .plads__tag {
+	border-style: dashed;
+	border-color: var(--line-strong);
+	background: transparent;
+}
+.lene-pladstavle .plads.is-reserveret .plads__date {
+	color: var(--pine-soft);
+}
+.lene-pladstavle .plads.is-reserveret .plads__count {
+	color: var(--stone);
+}
+.lene-pladstavle .plads.is-reserveret .plads__count b {
+	color: var(--stone);
+	opacity: 0.8;
+}
+.lene-pladstavle .plads.is-reserveret .plads__status {
+	background: transparent;
+	color: var(--stone);
+	border-color: var(--line-strong);
+	border-style: dashed;
+}
+
+/* OPTAGET */
+.lene-pladstavle .plads.is-optaget .plads__tag {
+	border-color: transparent;
+	background: var(--sky-deep);
+	opacity: 0.7;
+}
+.lene-pladstavle .plads.is-optaget .plads__status {
+	background: var(--berry);
+	color: #fff;
+	border-color: var(--berry);
+}
+
+.lene-pladstavle .rail__legend {
+	display: flex;
+	gap: 22px;
+	flex-wrap: wrap;
+	margin-top: 38px;
+	font-size: 14px;
+	color: var(--stone);
+}
+.lene-pladstavle .rail__legend li {
+	display: flex;
+	align-items: center;
+	gap: 9px;
+}
+.lene-pladstavle .swatch {
+	width: 16px;
+	height: 16px;
+	border-radius: 5px;
+	border: 2px solid;
+}
+.lene-pladstavle .swatch--ledig {
+	background: var(--sun);
+	border-color: var(--sun-deep);
+	box-shadow: 0 0 0 3px rgba(247, 194, 75, 0.35);
+}
+.lene-pladstavle .swatch--delvis {
+	background: #fffaee;
+	border-color: var(--sun-deep);
+}
+.lene-pladstavle .swatch--res {
+	background: transparent;
+	border-color: var(--line-strong);
+	border-style: dashed;
+}
+.lene-pladstavle .swatch--opt {
+	background: var(--sky-deep);
+	border-color: transparent;
+}
+
+.lene-pladstavle .rail__foot {
+	margin-top: clamp(30px, 4vw, 44px);
+	padding: clamp(22px, 3vw, 26px) clamp(22px, 3vw, 30px);
+	border-radius: var(--r-md);
+	background: var(--paper);
+	border: 1px solid var(--line);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	flex-wrap: wrap;
+}
+.lene-pladstavle .rail__foot p {
+	max-width: 52ch;
+	color: var(--pine-soft);
+}
+
+@media (max-width: 1180px) {
+	.lene-pladstavle .rail__items {
+		gap: 12px;
+	}
+	.lene-pladstavle .plads__tag {
+		padding: 18px 12px 16px;
+	}
+	.lene-pladstavle .plads__date {
+		font-size: 23px;
+	}
+}
+
+/* pladstavlen vipper om og bliver lodret */
+@media (max-width: 900px) {
+	.lene-pladstavle .rail__items {
+		grid-template-columns: 1fr;
+		gap: 16px;
+		border-top: none;
+		border-left: 2px solid var(--line-strong);
+		padding-left: 26px;
+		margin-left: 6px;
+	}
+	.lene-pladstavle .plads {
+		flex-direction: row;
+		align-items: center;
+		text-align: left;
+	}
+	.lene-pladstavle .plads::before {
+		margin: 0 0 0 -32px;
+	}
+	.lene-pladstavle .plads__string {
+		width: 20px;
+		height: 2px;
+		flex-shrink: 0;
+	}
+	.lene-pladstavle .plads__tag {
+		width: 100%;
+		padding: 18px 22px;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: center;
+		gap: 6px 18px;
+	}
+	.lene-pladstavle .plads:nth-child(odd) .plads__tag,
+	.lene-pladstavle .plads:nth-child(even) .plads__tag {
+		transform: none;
+	}
+	.lene-pladstavle .plads__tag:hover {
+		transform: translateY(-2px);
+	}
+	.lene-pladstavle .plads__hole {
+		display: none;
+	}
+	.lene-pladstavle .plads__date {
+		font-size: 26px;
+		grid-column: 1;
+		grid-row: 1;
+	}
+	.lene-pladstavle .plads__date span {
+		margin: 0 0 0 10px;
+		font-size: 14px;
+		padding: 4px 11px;
+	}
+	.lene-pladstavle .plads__count {
+		grid-column: 1;
+		grid-row: 2;
+		margin-top: 5px;
+	}
+	.lene-pladstavle .plads__dots {
+		grid-column: 1;
+		grid-row: 3;
+		margin-top: 9px;
+	}
+	.lene-pladstavle .plads__status {
+		grid-column: 2;
+		grid-row: 1 / -1;
+		margin-top: 0;
+		align-self: center;
+	}
+	.lene-pladstavle .rail__legend {
+		gap: 12px 22px;
+	}
+}
+
+@media (max-width: 680px) {
+	.lene-pladstavle .rail__foot {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 18px;
+	}
+	.lene-pladstavle .rail__foot .btn {
+		width: 100%;
+		justify-content: center;
+	}
+}
+
+@media (max-width: 420px) {
+	.lene-pladstavle .plads__tag {
+		padding: 14px 16px;
+	}
+	.lene-pladstavle .plads__date {
+		font-size: 21px;
+	}
+	.lene-pladstavle .plads__date span {
+		display: block;
+		margin: 6px 0 0;
+	}
+	.lene-pladstavle .plads__count b {
+		font-size: 20px;
+	}
+	.lene-pladstavle .plads__status {
+		font-size: 11px;
+		padding: 6px 11px;
+		letter-spacing: 0.08em;
+	}
+	.lene-pladstavle .rail__items {
+		padding-left: 22px;
+	}
+	.lene-pladstavle .plads::before {
+		margin-left: -28px;
+	}
+	.lene-pladstavle .plads__string {
+		width: 16px;
+	}
+}

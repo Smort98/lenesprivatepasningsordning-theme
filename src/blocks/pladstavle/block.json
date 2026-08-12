@@ -1,0 +1,48 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "lene/pladstavle",
+	"title": "Pladstavle",
+	"category": "lene-sektioner",
+	"icon": "list-view",
+	"description": "Signaturblokken: rækken af hængende skilte. Henter altid pladserne fra CPT „plads“ ét sted fra.",
+	"keywords": [ "plads", "ledig", "venteliste", "pladstavle" ],
+	"textdomain": "lene",
+	"attributes": {
+		"retning": {
+			"type": "string",
+			"enum": [ "vandret", "lodret" ],
+			"default": "vandret"
+		},
+		"overskrift": {
+			"type": "string",
+			"default": "Pladser og venteliste"
+		},
+		"visKunLedige": {
+			"type": "boolean",
+			"default": false
+		},
+		"visPrikker": {
+			"type": "boolean",
+			"default": true
+		},
+		"maksAntal": {
+			"type": "number",
+			"default": 0
+		},
+		"visOpdateret": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"color": false,
+		"spacing": false,
+		"typography": false
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

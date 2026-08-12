@@ -1,0 +1,1480 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Designmockup â Lenes Private Pasningsordning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..700,0..100,0..1;1,9..144,400..700,0..100,0..1&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGNTOKENS  â  bliver til theme.json
+   ============================================================ */
+:root{
+  --pine:#1B3326;
+  --pine-soft:#2E4A38;
+  --stone:#6B7C6F;
+  --sky:#E9EFE8;
+  --sky-deep:#D8E3D7;
+  --paper:#FFFFFF;
+  --sun:#F7C24B;
+  --sun-deep:#D99A0B;
+  --berry:#B4576B;
+
+  --line:rgba(27,51,38,.16);
+  --line-strong:rgba(27,51,38,.42);
+
+  --r-lg:28px; --r-md:18px; --r-sm:12px;
+  --shadow:0 16px 38px -24px rgba(27,51,38,.6);
+  --shadow-soft:0 8px 22px -18px rgba(27,51,38,.5);
+
+  --display:"Fraunces",Georgia,serif;
+  --body:"Karla",system-ui,-apple-system,sans-serif;
+
+  --wrap:1140px;
+  --chrome-h:52px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  overflow-x:hidden;
+  font-family:var(--body);
+  font-size:clamp(16px,.4vw + 15px,17px);
+  line-height:1.65;
+  color:var(--pine);
+  background:var(--paper);
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3,h4{
+  font-family:var(--display);
+  font-variation-settings:"SOFT" 60,"WONK" 1,"opsz" 100;
+  font-weight:600;
+  line-height:1.08;
+  letter-spacing:-.015em;
+  margin:0;
+}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+
+.wrap{width:min(100% - clamp(28px,6vw,48px),var(--wrap));margin-inline:auto}
+.eyebrow{
+  font-size:12px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.14em;color:var(--stone);margin-bottom:14px;
+}
+.lede{font-size:clamp(17px,.5vw + 16px,19px);color:var(--pine-soft);max-width:56ch}
+
+/* ---------- knapper ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--body);font-weight:700;font-size:16px;
+  padding:14px 24px;border-radius:999px;border:2px solid transparent;
+  text-decoration:none;cursor:pointer;
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.btn--primary{background:var(--sun);color:var(--pine);box-shadow:var(--shadow-soft)}
+.btn--primary:hover{transform:translateY(-2px);box-shadow:0 14px 28px -18px rgba(217,154,11,.9)}
+.btn--ghost{border-color:var(--line-strong);color:var(--pine)}
+.btn--ghost:hover{background:var(--sky);transform:translateY(-2px)}
+.btn--light{background:var(--sun);color:var(--pine)}
+:focus-visible{outline:3px solid var(--sun-deep);outline-offset:3px;border-radius:6px}
+
+/* ============================================================
+   MOCKUP-CHROME (kun til gennemsyn â er ikke en del af temaet)
+   ============================================================ */
+.chrome{
+  position:sticky;top:0;z-index:100;height:var(--chrome-h);
+  background:#12211A;color:#CFE0D2;display:flex;align-items:center;gap:18px;
+  padding:0 20px;font-size:13px;
+}
+.chrome b{font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:11px;color:#8FAE96}
+.chrome nav{display:flex;gap:6px;flex-wrap:wrap}
+.chrome button{
+  font:inherit;font-weight:600;color:#CFE0D2;background:transparent;
+  border:1px solid rgba(207,224,210,.25);border-radius:999px;
+  padding:6px 14px;cursor:pointer;
+}
+.chrome button[aria-selected="true"]{background:var(--sun);color:#12211A;border-color:var(--sun)}
+.page[hidden]{display:none}
+
+/* ============================================================
+   HEADER  â  parts/header.html
+   ============================================================ */
+.site-header{
+  position:sticky;top:var(--chrome-h);z-index:60;
+  background:rgba(255,255,255,.9);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.site-header__in{display:flex;align-items:center;gap:26px;padding:14px 0;min-width:0}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;min-width:0}
+.brand svg{flex-shrink:0}
+.brand__name{min-width:0}
+.brand__name{font-family:var(--display);font-size:19px;font-weight:600;line-height:1.05;font-variation-settings:"SOFT" 60,"WONK" 1,"opsz" 40}
+.brand__name small{display:block;font-family:var(--body);font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--stone)}
+.nav{display:flex;gap:24px;margin-left:auto;font-size:15px;font-weight:500}
+.nav a{text-decoration:none;padding:6px 0;border-bottom:2px solid transparent}
+.nav a:hover,.nav a[aria-current]{border-color:var(--sun-deep)}
+.is-todo{color:var(--stone);text-decoration:underline dotted;text-underline-offset:4px;cursor:not-allowed}
+.mobile-nav a.is-todo{text-decoration:none;opacity:.55}
+.status-chip{
+  display:inline-flex;align-items:center;gap:8px;flex-shrink:0;white-space:nowrap;max-width:100%;
+  background:var(--sun);color:var(--pine);font-weight:700;font-size:14px;
+  padding:9px 16px;border-radius:999px;text-decoration:none;
+}
+.status-chip .dot{width:8px;height:8px;border-radius:50%;background:var(--pine);flex-shrink:0}
+.burger{
+  display:none;flex:0 0 46px;width:46px;height:46px;aspect-ratio:1;
+  align-items:center;justify-content:center;padding:0;
+  background:none;border:1px solid var(--line-strong);border-radius:12px;
+  font-size:18px;line-height:1;cursor:pointer;color:var(--pine);
+}
+.mobile-nav{border-top:1px solid var(--line);background:var(--paper);padding:14px 0 22px}
+.mobile-nav .wrap{display:grid;gap:2px}
+.mobile-nav a{text-decoration:none;font-size:17px;font-weight:500;padding:14px 4px;border-bottom:1px solid var(--line)}
+.mobile-nav .btn{margin-top:18px;justify-content:center;border-bottom:none}
+
+/* ============================================================
+   HERO  â  block: lene/hero
+   ============================================================ */
+.hero{position:relative;overflow:hidden;background:var(--sky);padding:clamp(48px,7vw,78px) 0 clamp(70px,8vw,88px)}
+.hero::after{
+  content:"";position:absolute;inset:auto -10% -60% 40%;height:70%;
+  background:radial-gradient(closest-side,rgba(247,194,75,.35),transparent 70%);
+  pointer-events:none;
+}
+.hero__grid{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center}
+.hero h1{font-size:clamp(38px,5vw,62px)}
+.hero .lede{margin-top:22px}
+.hero__cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.hero__facts{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:34px;padding-top:22px;border-top:1px solid var(--line)}
+.hero__facts li{font-size:14px;color:var(--pine-soft);display:flex;align-items:center;gap:8px}
+.hero__facts li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--sun-deep)}
+
+.hero__media{position:relative}
+.frame{border-radius:var(--r-lg);overflow:hidden;background:var(--sky-deep);box-shadow:var(--shadow);aspect-ratio:4/3.4}
+.frame img{width:100%;height:100%;object-fit:cover}
+.next-card{
+  position:absolute;left:-26px;bottom:-26px;width:250px;
+  background:var(--paper);border-radius:var(--r-md);padding:18px 20px;
+  box-shadow:var(--shadow);border:1px solid var(--line);
+}
+.next-card small{font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--stone)}
+.next-card strong{display:block;font-family:var(--display);font-size:25px;font-weight:600;margin-top:6px;font-variation-settings:"SOFT" 60,"WONK" 1,"opsz" 60}
+.next-card span{font-size:13.5px;color:var(--stone)}
+
+/* ============================================================
+   SIGNATUR: PLADSTAVLEN  â  block: lene/pladstavle
+   ============================================================ */
+.section{padding:clamp(56px,8vw,90px) 0}
+.section--sky{background:var(--sky)}
+.section__head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px 30px;margin-bottom:clamp(32px,5vw,52px);flex-wrap:wrap}
+.section__head h2{font-size:clamp(30px,3.6vw,44px);max-width:16ch}
+.updated{font-size:13px;color:var(--stone);display:flex;align-items:center;gap:8px}
+.updated::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--sun-deep)}
+
+.rail{padding-top:6px}
+
+/* lodret variant â bruges pÃ¥ undersiden og automatisk under 900px */
+.rail--lodret .rail__items{
+  grid-template-columns:1fr;gap:16px;
+  border-top:none;border-left:2px solid var(--line-strong);
+  padding-left:26px;margin-left:6px;
+}
+.rail--lodret .plads{flex-direction:row;align-items:center;text-align:left}
+.rail--lodret .plads::before{margin:0 0 0 -32px}
+.rail--lodret .plads__string{width:20px;height:2px;flex-shrink:0}
+.rail--lodret .plads__tag{
+  width:100%;padding:18px 22px;display:grid;
+  grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 18px;
+}
+.rail--lodret .plads:nth-child(odd) .plads__tag,
+.rail--lodret .plads:nth-child(even) .plads__tag{transform:none}
+.rail--lodret .plads__tag:hover{transform:translateY(-2px)}
+.rail--lodret .plads__hole{display:none}
+.rail--lodret .plads__date{font-size:26px;grid-column:1;grid-row:1}
+.rail--lodret .plads__date span{margin:0 0 0 10px;font-size:14px;padding:4px 11px}
+.rail--lodret .plads__count{grid-column:1;grid-row:2;margin-top:5px}
+.rail--lodret .plads__dots{grid-column:1;grid-row:3;margin-top:9px}
+.rail--lodret .plads__status{grid-column:2;grid-row:1/-1;margin-top:0;align-self:center}
+
+.rail__items{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px;
+  border-top:2px solid var(--line-strong);
+}
+.plads{display:flex;flex-direction:column;align-items:center;text-align:center}
+.plads::before{
+  content:"";width:11px;height:11px;border-radius:50%;
+  background:var(--pine);margin-top:-6.5px;flex-shrink:0;
+}
+.plads__string{width:2px;height:32px;background:var(--line-strong)}
+.plads__tag{
+  width:100%;padding:20px 16px 18px;border-radius:var(--r-md);
+  border:2px solid;background:var(--paper);
+  transition:transform .22s ease,box-shadow .22s ease;
+}
+.plads:nth-child(odd) .plads__tag{transform:rotate(-1.2deg)}
+.plads:nth-child(even) .plads__tag{transform:rotate(1deg)}
+.plads__tag:hover{transform:rotate(0) translateY(-4px);box-shadow:var(--shadow)}
+.plads__hole{
+  display:block;width:11px;height:11px;border-radius:50%;
+  border:2px solid var(--line-strong);margin:0 auto 14px;background:transparent;
+}
+.plads__date{font-family:var(--display);font-size:27px;font-weight:600;line-height:1.05;font-variation-settings:"SOFT" 60,"WONK" 1,"opsz" 80}
+.plads__date span{
+  display:inline-block;margin-top:7px;font-family:var(--body);font-size:14px;font-weight:700;
+  letter-spacing:.06em;padding:4px 11px;border-radius:999px;
+  background:var(--sky);color:var(--pine-soft);
+}
+.plads__count{font-size:15px;color:var(--pine-soft);margin-top:12px;font-weight:500}
+.plads__count b{
+  font-family:var(--display);font-size:24px;font-weight:600;margin-right:3px;
+  font-variation-settings:"SOFT" 60,"WONK" 1,"opsz" 50;
+}
+/* prikker: Ã©n prik pr. plads pÃ¥ datoen */
+.plads__count.is-zero b{font-size:19px;color:var(--stone)}
+.plads__dots{display:flex;gap:6px;margin-top:11px}
+.plads__dots li{
+  width:14px;height:14px;border-radius:50%;
+  border:2px solid var(--line-strong);background:transparent;
+}
+.plads__dots li.free{background:var(--sun);border-color:var(--sun-deep)}
+.plads__dots li.taken{border-style:dashed}
+.plads__status{
+  display:inline-block;margin-top:16px;font-size:12px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;padding:7px 15px;border-radius:999px;
+  border:1.5px solid transparent;
+}
+/* statusvarianter â det kunden skifter imellem */
+/* LEDIG â fyldt, varmt og med en blÃ¸d glÃ¸d omkring skiltet */
+.plads.is-ledig .plads__tag{
+  border-color:var(--sun-deep);background:var(--sun);
+  box-shadow:0 0 0 6px rgba(247,194,75,.30), 0 16px 32px -20px rgba(217,154,11,.95);
+}
+.plads.is-ledig .plads__tag:hover{
+  box-shadow:0 0 0 8px rgba(247,194,75,.40), 0 22px 38px -20px rgba(217,154,11,1);
+}
+.plads.is-ledig .plads__hole{border-color:rgba(27,51,38,.45)}
+.plads.is-ledig .plads__date span{background:rgba(27,51,38,.12);color:var(--pine)}
+.plads.is-ledig .plads__count{color:var(--pine)}
+.plads.is-ledig .plads__status{
+  background:var(--pine);color:var(--sun);border-color:var(--pine);
+  box-shadow:0 0 0 4px rgba(255,255,255,.55), 0 8px 18px -8px rgba(27,51,38,.75);
+}
+/* DELVIST LEDIG â lys bund, fast gul kant, dÃ¦mpet glÃ¸d */
+.plads.is-delvis .plads__tag{
+  border-color:var(--sun-deep);background:#FFFAEE;
+  box-shadow:0 0 0 4px rgba(247,194,75,.20), 0 12px 26px -20px rgba(217,154,11,.8);
+}
+.plads.is-delvis .plads__tag:hover{box-shadow:0 0 0 6px rgba(247,194,75,.30), 0 18px 32px -20px rgba(217,154,11,.95)}
+.plads.is-delvis .plads__status{
+  background:var(--sun);color:var(--pine);border-color:var(--sun-deep);
+  box-shadow:0 4px 12px -6px rgba(217,154,11,.9);
+}
+/* pÃ¥ gul bund skal de ledige prikker skifte til grÃ¸n */
+.plads.is-ledig .plads__dots li.free{background:var(--pine);border-color:var(--pine)}
+.plads.is-ledig .plads__dots li.taken{border-color:rgba(27,51,38,.45)}
+/* RESERVERET â stiplet, uden fyld og uden glÃ¸d */
+.plads.is-reserveret .plads__tag{border-style:dashed;border-color:var(--line-strong);background:transparent}
+.plads.is-reserveret .plads__date{color:var(--pine-soft)}
+.plads.is-reserveret .plads__count{color:var(--stone)}
+.plads.is-reserveret .plads__count b{color:var(--stone);opacity:.8}
+.plads.is-reserveret .plads__status{
+  background:transparent;color:var(--stone);
+  border-color:var(--line-strong);border-style:dashed;
+}
+/* OPTAGET */
+.plads.is-optaget .plads__tag{border-color:transparent;background:var(--sky-deep);opacity:.7}
+.plads.is-optaget .plads__status{background:var(--berry);color:#fff;border-color:var(--berry)}
+
+.rail__legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:38px;font-size:14px;color:var(--stone)}
+.rail__legend li{display:flex;align-items:center;gap:9px}
+.swatch{width:16px;height:16px;border-radius:5px;border:2px solid}
+.swatch--ledig{background:var(--sun);border-color:var(--sun-deep);box-shadow:0 0 0 3px rgba(247,194,75,.35)}
+.swatch--delvis{background:#FFFAEE;border-color:var(--sun-deep)}
+.swatch--res{background:transparent;border-color:var(--line-strong);border-style:dashed}
+.swatch--opt{background:var(--sky-deep);border-color:transparent}
+
+.rail__foot{
+  margin-top:clamp(30px,4vw,44px);padding:clamp(22px,3vw,26px) clamp(22px,3vw,30px);border-radius:var(--r-md);
+  background:var(--paper);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
+}
+.section--sky .rail__foot{background:var(--paper)}
+.rail__foot p{max-width:52ch;color:var(--pine-soft)}
+
+/* ============================================================
+   DAGSRYTME  â  block: lene/dagsrytme
+   ============================================================ */
+.rhythm{display:grid;grid-template-columns:repeat(2,1fr);gap:0 60px}
+.rhythm li{display:grid;grid-template-columns:96px 1fr;gap:22px;padding:22px 0;border-bottom:1px solid var(--line)}
+.rhythm .time{font-family:var(--display);font-size:22px;font-weight:600;color:var(--sun-deep);font-variation-settings:"SOFT" 60,"WONK" 1,"opsz" 40}
+.rhythm h3{font-size:19px;margin-bottom:5px}
+.rhythm p{font-size:15.5px;color:var(--stone)}
+
+/* ============================================================
+   KORTGITTER  â  block: lene/kortgitter
+   ============================================================ */
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,2.5vw,28px)}
+.card{background:var(--paper);border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-soft)}
+.card__img{aspect-ratio:5/4;background:var(--sky-deep)}
+.card__img img{width:100%;height:100%;object-fit:cover}
+.card__body{padding:26px 26px 30px}
+.card h3{font-size:22px;margin-bottom:9px}
+.card p{font-size:15.5px;color:var(--stone)}
+
+/* ============================================================
+   CITAT  â  block: lene/citat
+   ============================================================ */
+.quote{text-align:center;max-width:44ch;margin-inline:auto}
+.quote blockquote{
+  font-family:var(--display);font-style:italic;font-weight:400;
+  font-size:clamp(24px,3.2vw,34px);line-height:1.32;
+  font-variation-settings:"SOFT" 70,"WONK" 1,"opsz" 100;margin:0;
+}
+.quote cite{display:block;margin-top:24px;font-style:normal;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--stone)}
+
+/* ============================================================
+   KONTAKT  â  block: lene/kontaktkort
+   ============================================================ */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:clamp(34px,5vw,56px);align-items:start}
+.contact h2{font-size:clamp(28px,3.4vw,40px);margin-bottom:18px}
+.contact__list{margin-top:30px;display:grid;gap:2px}
+.contact__list li{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);font-size:16px}
+.contact__list span{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--stone);padding-top:4px}
+.contact__list a{text-decoration:none;border-bottom:1px solid var(--sun-deep)}
+.form{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(22px,3.5vw,32px);box-shadow:var(--shadow-soft)}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:13px;font-weight:700;letter-spacing:.06em;margin-bottom:7px}
+.field input,.field textarea,.field select{
+  width:100%;font:inherit;font-size:16px;padding:12px 14px;
+  border:1.5px solid var(--line-strong);border-radius:var(--r-sm);
+  background:var(--paper);color:var(--pine);
+}
+.field textarea{min-height:110px;resize:vertical}
+
+
+/* ============================================================
+   ÃBNINGSTIDER  â  block: lene/aabningstider
+   ============================================================ */
+.hours{display:grid;gap:12px}
+.hours__row{display:grid;grid-template-columns:150px minmax(0,1fr);gap:22px;align-items:center}
+.hours__day{font-family:var(--display);font-size:19px;font-weight:600;font-variation-settings:"SOFT" 60,"WONK" 1,"opsz" 40}
+.hours__track{position:relative;height:48px;background:var(--sky-deep);border-radius:14px}
+.hours__bar{
+  position:absolute;top:0;bottom:0;border-radius:14px;
+  background:var(--sun);border:2px solid var(--sun-deep);
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:0 15px;font-size:14px;font-weight:700;color:var(--pine);
+  box-shadow:0 0 0 4px rgba(247,194,75,.22);
+}
+.hours__axis{display:grid;grid-template-columns:150px minmax(0,1fr);gap:22px;margin-top:10px}
+.hours__ticks{position:relative;height:22px;border-top:1px solid var(--line);padding-top:8px}
+.hours__ticks span{position:absolute;top:8px;transform:translateX(-50%);font-size:12px;color:var(--stone)}
+.hours__now{
+  display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:700;
+  background:var(--pine);color:var(--sun);padding:9px 16px;border-radius:999px;
+}
+.hours__now .dot{width:8px;height:8px;border-radius:50%;background:var(--sun)}
+.hours__note{margin-top:26px;font-size:15px;color:var(--stone);max-width:60ch}
+
+/* ============================================================
+   PRISER  â  block: lene/pris
+   ============================================================ */
+.receipt{
+  max-width:640px;background:var(--paper);border:1px solid var(--line);
+  border-radius:var(--r-lg);padding:clamp(24px,4vw,34px);box-shadow:var(--shadow-soft);
+}
+.receipt__row{display:flex;align-items:baseline;gap:14px;padding:15px 0;border-bottom:1px solid var(--line)}
+.receipt__row:first-child{padding-top:0}
+.receipt__label{font-size:16px;color:var(--pine-soft)}
+.receipt__fill{flex:1;min-width:20px;border-bottom:2px dotted var(--line);transform:translateY(-5px)}
+.receipt__amount{
+  font-family:var(--display);font-size:23px;font-weight:600;white-space:nowrap;
+  font-variation-settings:"SOFT" 60,"WONK" 1,"opsz" 50;
+}
+.receipt__amount.is-minus{color:var(--stone)}
+.receipt__total{
+  margin-top:20px;background:var(--sun);border:2px solid var(--sun-deep);border-radius:var(--r-md);
+  padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  box-shadow:0 0 0 5px rgba(247,194,75,.26), 0 16px 32px -24px rgba(217,154,11,.95);
+}
+.receipt__total span{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.receipt__total b{
+  font-family:var(--display);font-size:clamp(30px,4.5vw,38px);font-weight:600;line-height:1;
+  font-variation-settings:"SOFT" 60,"WONK" 1,"opsz" 90;
+}
+.receipt__fine{margin-top:22px;display:grid;gap:9px}
+.receipt__fine li{position:relative;padding-left:22px;font-size:14.5px;color:var(--stone)}
+.receipt__fine li::before{content:"Â·";position:absolute;left:7px;color:var(--sun-deep);font-weight:700}
+
+/* ============================================================
+   LUKKEDAGE  â  block: lene/lukkedage
+   ============================================================ */
+.closed{display:grid;gap:12px}
+.closed__row{
+  display:grid;grid-template-columns:132px minmax(0,1fr) auto;gap:24px;align-items:center;
+  padding:20px 26px;border-radius:var(--r-md);border:2px solid var(--line);background:var(--paper);
+}
+.closed__row.is-next{border-color:var(--berry);background:#FDF5F7}
+.closed__uge{
+  font-family:var(--display);font-size:21px;font-weight:600;line-height:1.1;
+  font-variation-settings:"SOFT" 60,"WONK" 1,"opsz" 50;
+}
+.closed__dates{font-size:16px;color:var(--pine-soft)}
+.closed__note{font-size:14px;color:var(--stone);margin-top:3px}
+.closed__flag{
+  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:6px 13px;border-radius:999px;background:var(--berry);color:#fff;white-space:nowrap;
+}
+.closed__foot{margin-top:26px;font-size:15px;color:var(--stone);max-width:62ch}
+
+/* ============================================================
+   FOOTER  â  parts/footer.html
+   ============================================================ */
+.site-footer{background:var(--pine);color:#C9DBCD;padding:clamp(50px,7vw,70px) 0 34px}
+.site-footer h4{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7E9C86;font-family:var(--body);margin-bottom:16px}
+.footer__grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:clamp(30px,4vw,48px)}
+.footer__brand .brand__name{color:#fff}
+.footer__grid p,.footer__grid li{font-size:15px}
+.footer__grid a{text-decoration:none}
+.footer__grid a:hover{color:var(--sun)}
+.footer__grid ul{display:grid;gap:9px}
+.footer__bottom{margin-top:52px;padding-top:22px;border-top:1px solid rgba(201,219,205,.18);display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:13.5px;color:#89A490}
+
+/* ============================================================
+   PAGE HEADER (undersider)
+   ============================================================ */
+.pagehead{background:var(--sky);padding:clamp(42px,6vw,64px) 0 clamp(40px,5vw,58px);border-bottom:1px solid var(--line)}
+.pagehead h1{font-size:clamp(34px,4.6vw,54px)}
+.pagehead .lede{margin-top:18px}
+
+
+.faq{display:grid;gap:0;max-width:760px}
+.faq details{border-bottom:1px solid var(--line);padding:20px 0}
+.faq summary{font-family:var(--display);font-size:20px;font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:20px;font-variation-settings:"SOFT" 60,"WONK" 1,"opsz" 40}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--sun-deep);font-family:var(--body);font-weight:700}
+.faq details[open] summary::after{content:"â";}
+.faq p{margin-top:12px;color:var(--stone);max-width:62ch}
+
+/* ============================================================
+   BLOK-OVERSIGT (dokumentation)
+   ============================================================ */
+.doc{padding:clamp(40px,6vw,60px) 0 clamp(60px,8vw,90px)}
+.doc h2{font-size:34px;margin-bottom:10px}
+.doc h3{font-size:22px}
+.doc__intro{max-width:70ch;color:var(--pine-soft);margin-bottom:44px}
+.blockdoc{border:1px solid var(--line);border-radius:var(--r-md);padding:clamp(20px,3vw,26px) clamp(20px,3vw,28px);margin-bottom:18px;background:var(--paper)}
+.blockdoc__top{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.slug{font-family:ui-monospace,"SFMono-Regular",Menlo,monospace;font-size:13px;background:var(--sky);border:1px solid var(--line);padding:3px 9px;border-radius:7px}
+.blockdoc p{color:var(--stone);font-size:15.5px;max-width:70ch}
+.attrs{margin-top:16px;border-top:1px solid var(--line)}
+.attrs li{display:grid;grid-template-columns:190px 130px 1fr;gap:16px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.attrs code{font-family:ui-monospace,Menlo,monospace;font-size:13px}
+.attrs em{font-style:normal;color:var(--stone)}
+.palette{display:flex;gap:14px;flex-wrap:wrap;margin:22px 0 40px}
+.palette div{width:120px}
+.palette i{display:block;height:66px;border-radius:var(--r-sm);border:1px solid var(--line)}
+.palette b{display:block;font-size:13px;margin-top:8px}
+.palette span{font-size:12px;color:var(--stone);font-family:ui-monospace,Menlo,monospace}
+
+/* editor-mock */
+.editor{display:grid;grid-template-columns:1fr 300px;border:1px solid var(--line-strong);border-radius:var(--r-md);overflow:hidden;margin:24px 0 44px;background:var(--paper)}
+.editor__canvas{padding:clamp(20px,3.5vw,34px);background:#F7F8F7;overflow:hidden}
+.editor__side{border-left:1px solid var(--line-strong);background:var(--paper);padding:20px}
+.editor__side h4{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);font-family:var(--body);margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.editor .plads__tag{position:relative}
+.editor .is-selected .plads__tag{outline:2px solid #3858E9;outline-offset:5px;transform:rotate(0)}
+.editor .field{margin-bottom:16px}
+.editor .field label{font-size:12px}
+.editor .field input,.editor .field select{font-size:14px;padding:8px 10px}
+.hint{font-size:13px;color:var(--stone);margin-top:-6px}
+.notes{background:var(--sky);border-radius:var(--r-md);padding:clamp(22px,3.5vw,28px) clamp(22px,3.5vw,30px);margin-top:36px}
+.notes li{padding:9px 0 9px 24px;position:relative;font-size:15.5px;color:var(--pine-soft);border-bottom:1px solid var(--line)}
+.notes li:last-child{border:none}
+.notes li::before{content:"â";position:absolute;left:0;color:var(--sun-deep);font-weight:700}
+
+/* ============================================================
+   RESPONSIVT
+   ============================================================ */
+/* --- op til 1180px: giv navigationen luft --- */
+@media (max-width:1180px){
+  .nav{gap:18px;font-size:14.5px}
+  .site-header__in{gap:18px}
+  .hero__grid{gap:44px}
+  .rail__items{gap:12px}
+  .plads__tag{padding:18px 12px 16px}
+  .plads__date{font-size:23px}
+}
+
+/* --- tablet: navigationen bliver til menuknap --- */
+@media (max-width:1024px){
+  .nav{display:none}
+  .burger{display:flex;margin-left:auto}
+  .status-chip{margin-left:12px}
+  .hero__grid{grid-template-columns:1fr;gap:clamp(38px,6vw,52px)}
+  .hero__media{max-width:620px}
+  .next-card{left:auto;right:18px;bottom:-24px;width:min(240px,60vw)}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .card:last-child{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr)}
+  .card:last-child .card__img{aspect-ratio:auto;height:100%}
+  .contact{grid-template-columns:1fr}
+  .editor{grid-template-columns:1fr}
+  .editor__side{border-left:none;border-top:1px solid var(--line-strong)}
+}
+
+/* --- pladstavlen vipper om og bliver lodret --- */
+@media (max-width:900px){
+  .rail__items{
+    grid-template-columns:1fr;gap:16px;
+    border-top:none;border-left:2px solid var(--line-strong);
+    padding-left:26px;margin-left:6px;
+  }
+  .plads{flex-direction:row;align-items:center;text-align:left}
+  .plads::before{margin:0 0 0 -32px}
+  .plads__string{width:20px;height:2px;flex-shrink:0}
+  .plads__tag{
+    width:100%;padding:18px 22px;display:grid;
+    grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 18px;
+  }
+  .plads:nth-child(odd) .plads__tag,
+  .plads:nth-child(even) .plads__tag{transform:none}
+  .plads__tag:hover{transform:translateY(-2px)}
+  .plads__hole{display:none}
+  .plads__date{font-size:26px;grid-column:1;grid-row:1}
+  .plads__date span{margin:0 0 0 10px;font-size:14px;padding:4px 11px}
+  .plads__count{grid-column:1;grid-row:2;margin-top:5px}
+  .plads__dots{grid-column:1;grid-row:3;margin-top:9px}
+  .plads__status{grid-column:2;grid-row:1/-1;margin-top:0;align-self:center}
+  .rhythm{grid-template-columns:1fr}
+  .rail__legend{gap:12px 22px}
+}
+
+/* --- telefon --- */
+@media (max-width:680px){
+  .chrome{position:static;height:auto;padding:10px 16px;flex-wrap:wrap;gap:10px}
+  .chrome button{padding:5px 11px;font-size:12px}
+  .site-header{top:0}
+  .site-header__in{padding:11px 0}
+  .brand__name{font-size:17px}
+  .status-chip{font-size:13px;padding:8px 13px}
+  .hero__facts{gap:8px 18px}
+  .hero__facts li{font-size:13.5px}
+  .next-card{position:static;width:100%;margin-top:16px;box-shadow:var(--shadow-soft)}
+  .cards{grid-template-columns:1fr}
+  .card:last-child{display:block;grid-column:auto}
+  .card:last-child .card__img{aspect-ratio:5/4;height:auto}
+  .card__body{padding:22px 22px 26px}
+  .footer__grid{grid-template-columns:1fr}
+  .footer__bottom{margin-top:38px}
+  .contact__list li{grid-template-columns:1fr;gap:2px;padding:12px 0}
+  .contact__list span{padding-top:0}
+  .hours__row,.hours__axis{grid-template-columns:1fr;gap:8px}
+  .hours__day{font-size:17px}
+  .hours__bar{font-size:13px;padding:0 12px}
+  .closed__row{grid-template-columns:minmax(0,1fr) auto;gap:10px 18px;padding:18px 20px}
+  .closed__uge{grid-column:1}
+  .closed__flag{grid-column:2;grid-row:1}
+  .closed__body{grid-column:1/-1}
+  .receipt__row{flex-wrap:wrap;gap:6px 12px}
+  .receipt__fill{display:none}
+  .receipt__label{flex:1}
+  .rhythm li{grid-template-columns:70px 1fr;gap:14px;padding:18px 0}
+  .rhythm .time{font-size:19px}
+  .attrs li{grid-template-columns:1fr;gap:2px;padding:14px 0}
+  .palette div{width:calc(50% - 7px)}
+  .rail__foot{flex-direction:column;align-items:flex-start;gap:18px}
+  .rail__foot .btn{width:100%;justify-content:center}
+  .section__head{align-items:flex-start;flex-direction:column}
+  .section__head .lede{max-width:none}
+}
+
+/* --- smÃ¥ telefoner --- */
+@media (max-width:420px){
+  .hero__cta{flex-direction:column;align-items:stretch}
+  .hero__cta .btn{justify-content:center}
+  .plads__tag{padding:14px 16px}
+  .plads__date{font-size:21px}
+  .plads__date span{display:block;margin:6px 0 0}
+  .plads__count b{font-size:20px}
+  .plads__status{font-size:11px;padding:6px 11px;letter-spacing:.08em}
+  .status-chip{font-size:12.5px;padding:7px 11px;gap:6px}
+  .status-chip .word{display:none}
+  .brand__name small{font-size:9.5px;letter-spacing:.12em}
+  .rail__items{padding-left:22px}
+  .plads::before{margin-left:-28px}
+  .plads__string{width:16px}
+  .faq summary{font-size:18px}
+  .palette div{width:100%}
+  .form{padding:20px 16px}
+  .btn{width:100%;justify-content:center}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .plads__tag{transform:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ MOCKUP-CHROME (fjernes i det fÃ¦rdige tema) ============ -->
+<div class="chrome">
+  <b>Mockup</b>
+  <nav role="tablist">
+    <button role="tab" aria-selected="true" data-page="forside">Forside</button>
+    <button role="tab" aria-selected="false" data-page="pladser">Ledige pladser</button>
+    <button role="tab" aria-selected="false" data-page="praktisk">Praktisk info</button>
+    <button role="tab" aria-selected="false" data-page="blokke">Blokke &amp; tokens</button>
+  </nav>
+</div>
+
+<!-- ================================================================
+     SIDE 1 â FORSIDE
+     ================================================================ -->
+<div class="page" id="page-forside">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="wrap site-header__in">
+      <a class="brand" href="#">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+          <line x1="4" y1="9" x2="30" y2="9" stroke="#1B3326" stroke-width="2" stroke-linecap="round"/>
+          <line x1="11" y1="9" x2="11" y2="15" stroke="#1B3326" stroke-width="1.6"/>
+          <line x1="23" y1="9" x2="23" y2="15" stroke="#1B3326" stroke-width="1.6"/>
+          <rect x="4.5" y="15" width="13" height="12" rx="3.5" fill="#F7C24B" stroke="#D99A0B" stroke-width="1.6"/>
+          <rect x="18.5" y="15" width="11" height="12" rx="3.5" fill="none" stroke="#1B3326" stroke-width="1.6" stroke-dasharray="3 3"/>
+        </svg>
+        <span class="brand__name">Lenes<small>Pasningsordning</small></span>
+      </a>
+      <nav class="nav">
+        <a href="#" data-goto="forside" aria-current="page">Hjem</a>
+        <a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Om Lene</a>
+        <a href="#" data-goto="forside" data-anchor="rytme">Hverdagen</a>
+        <a href="#" data-goto="praktisk">Praktisk info</a>
+        <a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Fotoalbum</a>
+        <a href="#" data-goto="forside" data-anchor="kontakt">Kontakt</a>
+      </nav>
+      <button class="burger" aria-label="Ãbn menu" aria-expanded="false">â°</button>
+      <a class="status-chip" href="#" data-goto="pladser"><span class="dot"></span>3 ledige<span class="word">&nbsp;pladser</span></a>
+    </div>
+      <div class="mobile-nav" hidden>
+        <div class="wrap">
+          <a href="#" data-goto="forside">Hjem</a>
+          <a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Om Lene</a>
+          <a href="#" data-goto="forside" data-anchor="rytme">Hverdagen</a>
+          <a href="#" data-goto="praktisk">Praktisk info</a>
+          <a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Fotoalbum</a>
+          <a href="#" data-goto="forside" data-anchor="kontakt">Kontakt</a>
+          <a class="btn btn--primary" href="#" data-goto="pladser">Se ledige pladser</a>
+        </div>
+      </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div>
+        <p class="eyebrow">Privat pasningsordning Â· Ringe</p>
+        <h1>Hjemlige dage med tid til hvert enkelt barn</h1>
+        <p class="lede">Jeg hedder Lene og har arbejdet med bÃ¸rn i 18 Ã¥r. Hos mig er der en fast, rolig hverdag, en lille bÃ¸rneflok og masser af tid udenfor.</p>
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="#" data-goto="pladser">Se ledige pladser</a>
+          <a class="btn btn--ghost" href="#">MÃ¸d Lene</a>
+        </div>
+        <ul class="hero__facts">
+          <li>18 Ã¥rs erfaring</li>
+          <li>Godkendt pasningsordning</li>
+          <li>Linde AllÃ© 69, 5750 Ringe</li>
+        </ul>
+      </div>
+      <div class="hero__media">
+        <div class="frame">
+          <img src="https://lenesprivatepasningsordning.dk/wp-content/uploads/2025/02/i284008264541036852.jpg" alt="BÃ¸rnene i pasningsordningen samlet udenfor" onerror="this.style.display='none'">
+        </div>
+        <div class="next-card">
+          <small>NÃ¦ste ledige plads</small>
+          <strong>1. januar 2028</strong>
+          <span>Skriv til Lene for venteliste</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNATUR: PLADSTAVLEN -->
+  <section class="section section--sky" id="pladser">
+    <div class="wrap">
+      <div class="section__head">
+        <h2>Pladser og venteliste</h2>
+        <p class="updated">Opdateret 28. juli 2026</p>
+      </div>
+
+      <div class="rail">
+        <ul class="rail__items">
+          <li class="plads is-reserveret">
+            <span class="plads__string"></span>
+            <div class="plads__tag">
+              <span class="plads__hole"></span>
+              <p class="plads__date">1. nov<span>2026</span></p>
+              <p class="plads__count is-zero"><b>0</b> af 1 plads ledig</p>
+              <ul class="plads__dots" aria-hidden="true"><li class="taken"></li></ul>
+              <p class="plads__status">Reserveret</p>
+            </div>
+          </li>
+          <li class="plads is-reserveret">
+            <span class="plads__string"></span>
+            <div class="plads__tag">
+              <span class="plads__hole"></span>
+              <p class="plads__date">1. april<span>2027</span></p>
+              <p class="plads__count is-zero"><b>0</b> af 2 pladser ledige</p>
+              <ul class="plads__dots" aria-hidden="true"><li class="taken"></li><li class="taken"></li></ul>
+              <p class="plads__status">Reserveret</p>
+            </div>
+          </li>
+          <li class="plads is-reserveret">
+            <span class="plads__string"></span>
+            <div class="plads__tag">
+              <span class="plads__hole"></span>
+              <p class="plads__date">1. maj<span>2027</span></p>
+              <p class="plads__count is-zero"><b>0</b> af 1 plads ledig</p>
+              <ul class="plads__dots" aria-hidden="true"><li class="taken"></li></ul>
+              <p class="plads__status">Reserveret</p>
+            </div>
+          </li>
+          <li class="plads is-delvis">
+            <span class="plads__string"></span>
+            <div class="plads__tag">
+              <span class="plads__hole"></span>
+              <p class="plads__date">1. jan<span>2028</span></p>
+              <p class="plads__count"><b>2</b> af 3 pladser ledige</p>
+              <ul class="plads__dots" aria-hidden="true"><li class="free"></li><li class="free"></li><li class="taken"></li></ul>
+              <p class="plads__status">Delvist ledig</p>
+            </div>
+          </li>
+          <li class="plads is-ledig">
+            <span class="plads__string"></span>
+            <div class="plads__tag">
+              <span class="plads__hole"></span>
+              <p class="plads__date">1. marts<span>2028</span></p>
+              <p class="plads__count"><b>1</b> plads</p>
+              <ul class="plads__dots" aria-hidden="true"><li class="free"></li></ul>
+              <p class="plads__status">Ledig</p>
+            </div>
+          </li>
+        </ul>
+
+        <ul class="rail__legend">
+          <li><span class="swatch swatch--ledig"></span> Ledig â hele datoen er fri</li>
+          <li><span class="swatch swatch--delvis"></span> Delvist ledig â nogle pladser er taget</li>
+          <li><span class="swatch swatch--res"></span> Reserveret â stÃ¥r pÃ¥ venteliste</li>
+          <li><span class="swatch swatch--opt"></span> Optaget</li>
+        </ul>
+
+        <div class="rail__foot">
+          <p>Har du et barn pÃ¥ vej? Lene tager imod tilmeldinger i god tid, og du kan komme pÃ¥ venteliste til en reserveret plads.</p>
+          <a class="btn btn--primary" href="#" data-goto="forside" data-anchor="kontakt">Skriv til Lene</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAGSRYTME -->
+  <section class="section" id="rytme">
+    <div class="wrap">
+      <div class="section__head">
+        <div>
+          <p class="eyebrow">Vores dag</p>
+          <h2>Den samme rytme hver dag</h2>
+        </div>
+        <p class="lede" style="max-width:38ch">Faste rutiner gÃ¸r dagen forudsigelig og tryg. Herunder er en helt almindelig hverdag hos os.</p>
+      </div>
+      <ul class="rhythm">
+        <li><span class="time">6.45</span><div><h3>Godmorgen</h3><p>Vi spiser morgenmad frem til 7.30 og starter dagen stille og roligt.</p></div></li>
+        <li><span class="time">7.30</span><div><h3>Leg indenfor</h3><p>BÃ¸ger, sanglege og gymnastik. Tid til nÃ¦rvÃ¦r og til at Ã¸ve motorikken.</p></div></li>
+        <li><span class="time">9.00</span><div><h3>Frugt og sang</h3><p>Vi spiser frugt sammen og synger, inden vi kommer i tÃ¸jet.</p></div></li>
+        <li><span class="time">9.30</span><div><h3>Ud af dÃ¸ren</h3><p>Haven, legepladsen, Ã¦nderne ved sÃ¸en â eller besÃ¸g hos de andre private passere.</p></div></li>
+        <li><span class="time">11.00</span><div><h3>Frokost</h3><p>RugbrÃ¸d, pÃ¥lÃ¦g, fisk, ost, grÃ¸nt eller en lun ret. Sundt og varieret.</p></div></li>
+        <li><span class="time">12.00</span><div><h3>Middagslur</h3><p>NÃ¥r der er sovet, er der eftermiddagsmad, og sÃ¥ leges der videre inde eller ude.</p></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- KORTGITTER -->
+  <section class="section section--sky">
+    <div class="wrap">
+      <div class="section__head">
+        <h2>SÃ¥dan er det at gÃ¥ hos Lene</h2>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <div class="card__img"><img src="https://lenesprivatepasningsordning.dk/wp-content/uploads/2025/02/i284008264541038669.png" alt="Barn pÃ¥ tur i naturen" onerror="this.style.display='none'"></div>
+          <div class="card__body"><h3>Ude hver dag</h3><p>Vi gÃ¥r pÃ¥ tur, samler pinde og bruger haven â ogsÃ¥ nÃ¥r det regner. Der er regntÃ¸j og gummistÃ¸vler til alle.</p></div>
+        </article>
+        <article class="card">
+          <div class="card__img"><img src="https://lenesprivatepasningsordning.dk/wp-content/uploads/2025/02/i284008264541038774.png" alt="BÃ¸rn der leger med Duplo-klodser" onerror="this.style.display='none'"></div>
+          <div class="card__body"><h3>En lille flok</h3><p>FÃ¥ bÃ¸rn betyder, at jeg kan nÃ¥ omkring alle. Der er tid til at trÃ¸ste, til at lytte og til at lege med.</p></div>
+        </article>
+        <article class="card">
+          <div class="card__img"><img src="https://lenesprivatepasningsordning.dk/wp-content/uploads/2025/02/i284008264541061276.png" alt="Barn der leger i haven" onerror="this.style.display='none'"></div>
+          <div class="card__body"><h3>Godkendt og med tilskud</h3><p>Ordningen er godkendt af kommunen, og du kan sÃ¸ge tilskud til pasningen. Jeg hjÃ¦lper gerne med papirerne.</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CITAT -->
+  <section class="section">
+    <div class="wrap quote">
+      <blockquote>Vores datter lÃ¸b ind ad dÃ¸ren hver morgen. Bedre anbefaling kan jeg ikke give.</blockquote>
+      <cite>ForÃ¦lder i Ringe</cite>
+    </div>
+  </section>
+
+  <!-- KONTAKT -->
+  <section class="section section--sky" id="kontakt">
+    <div class="wrap contact">
+      <div>
+        <p class="eyebrow">Kontakt</p>
+        <h2>Kom forbi og se stedet</h2>
+        <p class="lede">Du er altid velkommen til at ringe eller skrive. Det bedste er at komme pÃ¥ besÃ¸g en formiddag, hvor du kan se hverdagen, som den er.</p>
+        <ul class="contact__list">
+          <li><span>Navn</span><div>Lene M. Aksgaard</div></li>
+          <li><span>Adresse</span><div>Linde AllÃ© 69, 5750 Ringe</div></li>
+          <li><span>Telefon</span><div><a href="tel:+4528748456">+45 28 74 84 56</a></div></li>
+          <li><span>E-mail</span><div><a href="mailto:lene.koebke@hotmail.com">lene.koebke@hotmail.com</a></div></li>
+        </ul>
+      </div>
+      <div class="form">
+        <div class="field"><label for="n">Dit navn</label><input id="n" type="text" placeholder="Fx Maria Jensen"></div>
+        <div class="field"><label for="e">E-mail</label><input id="e" type="email" placeholder="dig@eksempel.dk"></div>
+        <div class="field"><label for="d">Ãnsket startdato</label><input id="d" type="text" placeholder="Fx august 2027"></div>
+        <div class="field"><label for="m">Besked</label><textarea id="m" placeholder="FortÃ¦l lidt om dit barn"></textarea></div>
+        <button class="btn btn--primary" type="button">Send besked</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="wrap footer__grid">
+      <div class="footer__brand">
+        <span class="brand__name" style="color:#fff">Lenes<small>Pasningsordning</small></span>
+        <p style="margin-top:16px;max-width:34ch">Privat pasningsordning og dagpleje i Ringe pÃ¥ Midtfyn.</p>
+      </div>
+      <div>
+        <h4>Sider</h4>
+        <ul>
+          <li><a href="#" data-goto="forside">Hjem</a></li>
+          <li><a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Om Lene</a></li>
+          <li><a href="#" data-goto="forside" data-anchor="rytme">Hverdagen</a></li>
+          <li><a href="#" data-goto="praktisk">Praktisk info</a></li>
+          <li><a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Fotoalbum</a></li>
+          <li><a href="#" data-goto="pladser">Ledige pladser</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Kontakt</h4>
+        <ul>
+          <li>Lene M. Aksgaard</li>
+          <li>Linde AllÃ© 69, 5750 Ringe</li>
+          <li><a href="tel:+4528748456">+45 28 74 84 56</a></li>
+          <li><a href="mailto:lene.koebke@hotmail.com">lene.koebke@hotmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap footer__bottom">
+      <span>Â© 2026 Lenes Private Pasningsordning</span>
+      <span>Facebook Â· Instagram</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ================================================================
+     SIDE 2 â LEDIGE PLADSER
+     ================================================================ -->
+<div class="page" id="page-pladser" hidden>
+
+  <header class="site-header">
+    <div class="wrap site-header__in">
+      <a class="brand" href="#">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+          <line x1="4" y1="9" x2="30" y2="9" stroke="#1B3326" stroke-width="2" stroke-linecap="round"/>
+          <line x1="11" y1="9" x2="11" y2="15" stroke="#1B3326" stroke-width="1.6"/>
+          <line x1="23" y1="9" x2="23" y2="15" stroke="#1B3326" stroke-width="1.6"/>
+          <rect x="4.5" y="15" width="13" height="12" rx="3.5" fill="#F7C24B" stroke="#D99A0B" stroke-width="1.6"/>
+          <rect x="18.5" y="15" width="11" height="12" rx="3.5" fill="none" stroke="#1B3326" stroke-width="1.6" stroke-dasharray="3 3"/>
+        </svg>
+        <span class="brand__name">Lenes<small>Pasningsordning</small></span>
+      </a>
+      <nav class="nav">
+        <a href="#" data-goto="forside">Hjem</a>
+        <a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Om Lene</a>
+        <a href="#" data-goto="forside" data-anchor="rytme">Hverdagen</a>
+        <a href="#" data-goto="praktisk">Praktisk info</a>
+        <a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Fotoalbum</a>
+        <a href="#" data-goto="forside" data-anchor="kontakt">Kontakt</a>
+      </nav>
+      <button class="burger" aria-label="Ãbn menu" aria-expanded="false">â°</button>
+      <a class="status-chip" href="#" data-goto="pladser"><span class="dot"></span>3 ledige<span class="word">&nbsp;pladser</span></a>
+    </div>
+      <div class="mobile-nav" hidden>
+        <div class="wrap">
+          <a href="#" data-goto="forside">Hjem</a>
+          <a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Om Lene</a>
+          <a href="#" data-goto="forside" data-anchor="rytme">Hverdagen</a>
+          <a href="#" data-goto="praktisk">Praktisk info</a>
+          <a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Fotoalbum</a>
+          <a href="#" data-goto="forside" data-anchor="kontakt">Kontakt</a>
+          <a class="btn btn--primary" href="#" data-goto="pladser">Se ledige pladser</a>
+        </div>
+      </div>
+  </header>
+
+  <section class="pagehead">
+    <div class="wrap">
+      <p class="eyebrow">Pladser</p>
+      <h1>Ledige pladser</h1>
+      <p class="lede">Her kan du se, hvornÃ¥r der bliver plads hos mig. Listen bliver rettet, sÃ¥ snart noget Ã¦ndrer sig.</p>
+      <p class="updated" style="margin-top:22px">Opdateret 28. juli 2026</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:56px">
+    <div class="wrap">
+      <div class="rail rail--lodret">
+        <ul class="rail__items">
+          <li class="plads is-reserveret">
+            <span class="plads__string"></span>
+            <div class="plads__tag">
+              <span class="plads__hole"></span>
+              <p class="plads__date">1. november<span>2026</span></p>
+              <p class="plads__count is-zero"><b>0</b> af 1 plads ledig</p>
+              <ul class="plads__dots" aria-hidden="true"><li class="taken"></li></ul>
+              <p class="plads__status">Reserveret</p>
+            </div>
+          </li>
+          <li class="plads is-reserveret">
+            <span class="plads__string"></span>
+            <div class="plads__tag">
+              <span class="plads__hole"></span>
+              <p class="plads__date">1. april<span>2027</span></p>
+              <p class="plads__count is-zero"><b>0</b> af 2 pladser ledige</p>
+              <ul class="plads__dots" aria-hidden="true"><li class="taken"></li><li class="taken"></li></ul>
+              <p class="plads__status">Reserveret</p>
+            </div>
+          </li>
+          <li class="plads is-reserveret">
+            <span class="plads__string"></span>
+            <div class="plads__tag">
+              <span class="plads__hole"></span>
+              <p class="plads__date">1. maj<span>2027</span></p>
+              <p class="plads__count is-zero"><b>0</b> af 1 plads ledig</p>
+              <ul class="plads__dots" aria-hidden="true"><li class="taken"></li></ul>
+              <p class="plads__status">Reserveret</p>
+            </div>
+          </li>
+          <li class="plads is-delvis">
+            <span class="plads__string"></span>
+            <div class="plads__tag">
+              <span class="plads__hole"></span>
+              <p class="plads__date">1. januar<span>2028</span></p>
+              <p class="plads__count"><b>2</b> af 3 pladser ledige</p>
+              <ul class="plads__dots" aria-hidden="true"><li class="free"></li><li class="free"></li><li class="taken"></li></ul>
+              <p class="plads__status">Delvist ledig</p>
+            </div>
+          </li>
+          <li class="plads is-ledig">
+            <span class="plads__string"></span>
+            <div class="plads__tag">
+              <span class="plads__hole"></span>
+              <p class="plads__date">1. marts<span>2028</span></p>
+              <p class="plads__count"><b>1</b> plads</p>
+              <ul class="plads__dots" aria-hidden="true"><li class="free"></li></ul>
+              <p class="plads__status">Ledig</p>
+            </div>
+          </li>
+        </ul>
+
+        <ul class="rail__legend">
+          <li><span class="swatch swatch--ledig"></span> Ledig â hele datoen er fri</li>
+          <li><span class="swatch swatch--delvis"></span> Delvist ledig â nogle pladser er taget</li>
+          <li><span class="swatch swatch--res"></span> Reserveret â stÃ¥r pÃ¥ venteliste</li>
+          <li><span class="swatch swatch--opt"></span> Optaget</li>
+        </ul>
+
+        <div class="rail__foot">
+          <p>En reserveret plads er lovet vÃ¦k, men planer kan Ã¦ndre sig. Skriv endelig, hvis du vil stÃ¥ pÃ¥ venteliste til en bestemt dato.</p>
+          <a class="btn btn--primary" href="#" data-goto="forside" data-anchor="kontakt">Skriv til Lene</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sky" style="padding-top:70px">
+    <div class="wrap">
+      <div class="section__head"><h2>Ofte stillede spÃ¸rgsmÃ¥l</h2></div>
+      <div class="faq">
+        <details open><summary>Hvordan kommer vi pÃ¥ venteliste?</summary><p>Skriv eller ring til Lene med barnets navn, fÃ¸dselsdato og hvornÃ¥r I gerne vil starte. SÃ¥ noterer hun jer pÃ¥ listen og giver besked, hvis der bliver plads fÃ¸r tid.</p></details>
+        <details><summary>Hvad koster en plads?</summary><p>Prisen aftales direkte, og du kan sÃ¸ge kommunalt tilskud til privat pasning. Lene hjÃ¦lper gerne med at udfylde ansÃ¸gningen.</p></details>
+        <details><summary>Kan vi komme pÃ¥ besÃ¸g fÃ¸rst?</summary><p>Ja, og det anbefales. Kom gerne en formiddag, hvor bÃ¸rnene er der, sÃ¥ I kan se hverdagen, som den ser ud til daglig.</p></details>
+        <details><summary>Hvad skal vi selv have med?</summary><p>SkiftetÃ¸j, ble og en sut eller bamse hvis barnet bruger det. Mad, regntÃ¸j og barnevognsplads sÃ¸rger Lene for.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap footer__grid">
+      <div class="footer__brand">
+        <span class="brand__name" style="color:#fff">Lenes<small>Pasningsordning</small></span>
+        <p style="margin-top:16px;max-width:34ch">Privat pasningsordning og dagpleje i Ringe pÃ¥ Midtfyn.</p>
+      </div>
+      <div><h4>Sider</h4><ul><li><a href="#" data-goto="forside">Hjem</a></li><li><a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Om Lene</a></li><li><a href="#" data-goto="forside" data-anchor="rytme">Hverdagen</a></li><li><a href="#" data-goto="praktisk">Praktisk info</a></li><li><a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Fotoalbum</a></li><li><a href="#" data-goto="pladser">Ledige pladser</a></li></ul></div>
+      <div><h4>Kontakt</h4><ul><li>Lene M. Aksgaard</li><li>Linde AllÃ© 69, 5750 Ringe</li><li><a href="tel:+4528748456">+45 28 74 84 56</a></li><li><a href="mailto:lene.koebke@hotmail.com">lene.koebke@hotmail.com</a></li></ul></div>
+    </div>
+    <div class="wrap footer__bottom"><span>Â© 2026 Lenes Private Pasningsordning</span><span>Facebook Â· Instagram</span></div>
+  </footer>
+</div>
+
+<!-- ================================================================
+     SIDE 3 â PRAKTISK INFO
+     ================================================================ -->
+<div class="page" id="page-praktisk" hidden>
+
+  <header class="site-header">
+    <div class="wrap site-header__in">
+      <a class="brand" href="#">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+          <line x1="4" y1="9" x2="30" y2="9" stroke="#1B3326" stroke-width="2" stroke-linecap="round"/>
+          <line x1="11" y1="9" x2="11" y2="15" stroke="#1B3326" stroke-width="1.6"/>
+          <line x1="23" y1="9" x2="23" y2="15" stroke="#1B3326" stroke-width="1.6"/>
+          <rect x="4.5" y="15" width="13" height="12" rx="3.5" fill="#F7C24B" stroke="#D99A0B" stroke-width="1.6"/>
+          <rect x="18.5" y="15" width="11" height="12" rx="3.5" fill="none" stroke="#1B3326" stroke-width="1.6" stroke-dasharray="3 3"/>
+        </svg>
+        <span class="brand__name">Lenes<small>Pasningsordning</small></span>
+      </a>
+      <nav class="nav">
+        <a href="#" data-goto="forside">Hjem</a>
+        <a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Om Lene</a>
+        <a href="#" data-goto="forside" data-anchor="rytme">Hverdagen</a>
+        <a href="#" data-goto="praktisk">Praktisk info</a>
+        <a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Fotoalbum</a>
+        <a href="#" data-goto="forside" data-anchor="kontakt">Kontakt</a>
+      </nav>
+      <button class="burger" aria-label="Ãbn menu" aria-expanded="false">â°</button>
+      <a class="status-chip" href="#" data-goto="pladser"><span class="dot"></span>3 ledige<span class="word">&nbsp;pladser</span></a>
+    </div>
+      <div class="mobile-nav" hidden>
+        <div class="wrap">
+          <a href="#" data-goto="forside">Hjem</a>
+          <a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Om Lene</a>
+          <a href="#" data-goto="forside" data-anchor="rytme">Hverdagen</a>
+          <a href="#" data-goto="praktisk">Praktisk info</a>
+          <a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Fotoalbum</a>
+          <a href="#" data-goto="forside" data-anchor="kontakt">Kontakt</a>
+          <a class="btn btn--primary" href="#" data-goto="pladser">Se ledige pladser</a>
+        </div>
+      </div>
+  </header>
+
+  <section class="pagehead">
+    <div class="wrap">
+      <p class="eyebrow">Praktisk</p>
+      <h1>Praktisk info</h1>
+      <p class="lede">Ãbningstider, hvad en plads koster, og hvornÃ¥r pasningsordningen holder lukket.</p>
+    </div>
+  </section>
+
+  <!-- ÃBNINGSTIDER -->
+  <section class="section" style="padding-top:clamp(48px,6vw,70px)">
+    <div class="wrap">
+      <div class="section__head">
+        <div>
+          <p class="eyebrow">Ãbningstider</p>
+          <h2>HvornÃ¥r har jeg Ã¥bent</h2>
+        </div>
+        <p class="hours__now"><span class="dot"></span>Ãbent nu Â· lukker 16.00</p>
+      </div>
+
+      <div class="hours">
+        <div class="hours__row">
+          <p class="hours__day">Mandag â torsdag</p>
+          <div class="hours__track"><div class="hours__bar" style="left:6.8%;width:84.1%"><span>6.45</span><span>16.00</span></div></div>
+        </div>
+        <div class="hours__row">
+          <p class="hours__day">Fredag</p>
+          <div class="hours__track"><div class="hours__bar" style="left:6.8%;width:72.7%"><span>6.45</span><span>14.45</span></div></div>
+        </div>
+        <div class="hours__axis">
+          <span></span>
+          <div class="hours__ticks"><span style="left:0.00%">6</span><span style="left:18.18%">8</span><span style="left:36.36%">10</span><span style="left:54.55%">12</span><span style="left:72.73%">14</span><span style="left:90.91%">16</span></div>
+        </div>
+      </div>
+
+      <p class="hours__note">Tiderne kan tilpasses, hvis I har brug for det â jeg er meget fleksibel. Der mÃ¥ dog hÃ¸jst benyttes 46 timer om ugen.</p>
+    </div>
+  </section>
+
+  <!-- PRISER -->
+  <section class="section section--sky">
+    <div class="wrap">
+      <div class="section__head">
+        <div>
+          <p class="eyebrow">Priser</p>
+          <h2>Hvad koster en plads</h2>
+        </div>
+      </div>
+
+      <div class="receipt">
+        <div class="receipt__row">
+          <span class="receipt__label">Fuldtidsplads pr. mÃ¥ned</span>
+          <span class="receipt__fill"></span>
+          <span class="receipt__amount">9.100 kr.</span>
+        </div>
+        <div class="receipt__row">
+          <span class="receipt__label">Tilskud via fritvalgsordningen</span>
+          <span class="receipt__fill"></span>
+          <span class="receipt__amount is-minus">â 6.478 kr.</span>
+        </div>
+        <div class="receipt__total">
+          <span>Din egenbetaling pr. mÃ¥ned</span>
+          <b>2.622 kr.</b>
+        </div>
+        <ul class="receipt__fine">
+          <li>Der gives op til 75 % i tilskud. Kommunen har et loft, sÃ¥ det prÃ¦cise belÃ¸b kan variere.</li>
+          <li>Der er mulighed for sÃ¸skenderabat fra kommunen.</li>
+          <li>Der betales i 12 mÃ¥neder om Ã¥ret.</li>
+          <li>Jeg hjÃ¦lper gerne med at udfylde ansÃ¸gningen om tilskud.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- LUKKEDAGE -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section__head">
+        <div>
+          <p class="eyebrow">Ferie</p>
+          <h2>Lukkedage</h2>
+        </div>
+        <p class="updated">Ferieplan meldes ud to gange Ã¥rligt</p>
+      </div>
+
+      <ul class="closed">
+        <li class="closed__row is-next">
+          <p class="closed__uge">Uge 29â30<br><span style="font-size:14px;color:var(--stone)">2026</span></p>
+          <div class="closed__body">
+            <p class="closed__dates">13.â24. juli</p>
+            <p class="closed__note">Sommerferie</p>
+          </div>
+          <span class="closed__flag">NÃ¦ste lukkeuge</span>
+        </li>
+        <li class="closed__row">
+          <p class="closed__uge">Uge 42<br><span style="font-size:14px;color:var(--stone)">2026</span></p>
+          <div class="closed__body">
+            <p class="closed__dates">12.â16. oktober</p>
+            <p class="closed__note">EfterÃ¥rsferie</p>
+          </div>
+          <span class="closed__flag" style="background:var(--sky-deep);color:var(--stone)">Lukket</span>
+        </li>
+        <li class="closed__row">
+          <p class="closed__uge">24. dec â 1. jan<br><span style="font-size:14px;color:var(--stone)">2026/27</span></p>
+          <div class="closed__body">
+            <p class="closed__dates">Jul og nytÃ¥r</p>
+            <p class="closed__note">Lukket mellem jul og nytÃ¥r</p>
+          </div>
+          <span class="closed__flag" style="background:var(--sky-deep);color:var(--stone)">Lukket</span>
+        </li>
+        <li class="closed__row">
+          <p class="closed__uge">Uge 7<br><span style="font-size:14px;color:var(--stone)">2027</span></p>
+          <div class="closed__body">
+            <p class="closed__dates">15.â19. februar</p>
+            <p class="closed__note">Vinterferie</p>
+          </div>
+          <span class="closed__flag" style="background:var(--sky-deep);color:var(--stone)">Lukket</span>
+        </li>
+      </ul>
+
+      <p class="closed__foot">Ved sygdom kontakter jeg altid forÃ¦ldrene tidligt om morgenen. Er jeres barn sygt, vil jeg gerne have besked senest kl. 8.30, da der kan vÃ¦re arrangeret udflugter.</p>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap footer__grid">
+      <div class="footer__brand">
+        <span class="brand__name" style="color:#fff">Lenes<small>Pasningsordning</small></span>
+        <p style="margin-top:16px;max-width:34ch">Privat pasningsordning og dagpleje i Ringe pÃ¥ Midtfyn.</p>
+      </div>
+      <div><h4>Sider</h4><ul><li><a href="#" data-goto="forside">Hjem</a></li><li><a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Om Lene</a></li><li><a href="#" data-goto="forside" data-anchor="rytme">Hverdagen</a></li><li><a href="#" data-goto="praktisk">Praktisk info</a></li><li><a href="#" class="is-todo" title="Ikke tegnet i denne mockup">Fotoalbum</a></li><li><a href="#" data-goto="pladser">Ledige pladser</a></li></ul></div>
+      <div><h4>Kontakt</h4><ul><li>Lene M. Aksgaard</li><li>Linde AllÃ© 69, 5750 Ringe</li><li><a href="tel:+4528748456">+45 28 74 84 56</a></li><li><a href="mailto:lene.koebke@hotmail.com">lene.koebke@hotmail.com</a></li></ul></div>
+    </div>
+    <div class="wrap footer__bottom"><span>Â© 2026 Lenes Private Pasningsordning</span><span>Facebook Â· Instagram</span></div>
+  </footer>
+</div>
+
+<!-- ================================================================
+     SIDE 4 â BLOKKE & TOKENS
+     ================================================================ -->
+<div class="page doc" id="page-blokke" hidden>
+  <div class="wrap">
+    <p class="eyebrow">Til udvikling</p>
+    <h2>Blokke, tokens og redigering</h2>
+    <p class="doc__intro">Designet er bygget som et fast antal sektionstyper, sÃ¥ hele sitet kan sÃ¦ttes op med en hÃ¥ndfuld blokke. Ingen sider krÃ¦ver frihÃ¥ndslayout â kunden udfylder felter.</p>
+
+    <h3>Farver â <code class="slug">theme.json</code> palette</h3>
+    <div class="palette">
+      <div><i style="background:#1B3326"></i><b>SkovgrÃ¸n</b><span>#1B3326</span></div>
+      <div><i style="background:#2E4A38"></i><b>SkovgrÃ¸n lys</b><span>#2E4A38</span></div>
+      <div><i style="background:#6B7C6F"></i><b>Sten</b><span>#6B7C6F</span></div>
+      <div><i style="background:#E9EFE8"></i><b>Dis</b><span>#E9EFE8</span></div>
+      <div><i style="background:#F7C24B"></i><b>Solgul</b><span>#F7C24B</span></div>
+      <div><i style="background:#D99A0B"></i><b>Solgul mÃ¸rk</b><span>#D99A0B</span></div>
+      <div><i style="background:#B4576B"></i><b>BÃ¦r</b><span>#B4576B</span></div>
+    </div>
+
+    <h3>Typografi</h3>
+    <p class="blockdoc" style="margin-top:14px">
+      <strong style="font-family:var(--display);font-size:28px;font-variation-settings:'SOFT' 60,'WONK' 1,'opsz' 100">Fraunces</strong> â overskrifter, tid og datoer. Variabel akse <code class="slug">SOFT 60, WONK 1</code> giver de blÃ¸de, let skÃ¦ve former.<br><br>
+      <strong style="font-size:22px">Karla</strong> â brÃ¸dtekst, knapper, labels og navigation. Begge hostes lokalt i temaet (GDPR â ingen kald til Google Fonts).
+    </p>
+
+    <h3 style="margin-top:44px">Blokke</h3>
+    <p class="doc__intro" style="margin-bottom:24px">Alle blokke registreres med <code class="slug">block.json</code> og har lÃ¥st layout. Kunden kan kun Ã¦ndre tekst, billeder og status â ikke farver og afstande.</p>
+
+    <div class="blockdoc">
+      <div class="blockdoc__top"><h3>Pladstavle</h3><span class="slug">lene/pladstavle</span><em style="color:var(--sun-deep);font-weight:700;font-style:normal;font-size:13px">SIGNATUR Â· DYNAMISK</em></div>
+      <p>RÃ¦kken af hÃ¦ngende skilte. Dynamisk blok, der henter pladserne Ã©t sted fra, sÃ¥ forsiden, undersiden og tallet i menuen altid viser det samme. Kan sÃ¦ttes ind pÃ¥ enhver side i to visninger.</p>
+      <ul class="attrs">
+        <li><code>retning</code><em>select</em><em>Vandret (forside) eller Lodret (underside) â samme skilte</em></li>
+        <li><code>overskrift</code><em>string</em><em>Fx "Pladser og venteliste"</em></li>
+        <li><code>visKunLedige</code><em>boolean</em><em>Skjul reserverede pladser</em></li>
+        <li><code>visPrikker</code><em>boolean</em><em>Ãn prik pr. plads pÃ¥ datoen</em></li>
+        <li><code>maksAntal</code><em>number</em><em>Vis fx kun de nÃ¦ste 5</em></li>
+        <li><code>visOpdateret</code><em>boolean</em><em>Viser "Opdateret &lt;dato&gt;"</em></li>
+      </ul>
+    </div>
+
+    <div class="blockdoc">
+      <div class="blockdoc__top"><h3>Hero</h3><span class="slug">lene/hero</span></div>
+      <p>Forsidens topsektion. Det lille kort med "NÃ¦ste ledige plads" udfyldes automatisk fra pladsdataene og kan slÃ¥s fra.</p>
+      <ul class="attrs">
+        <li><code>overrubrik</code><em>string</em><em>â</em></li>
+        <li><code>titel</code><em>string</em><em>â</em></li>
+        <li><code>tekst</code><em>richtext</em><em>â</em></li>
+        <li><code>knapper</code><em>array (2)</em><em>Tekst + link</em></li>
+        <li><code>fakta</code><em>array</em><em>Punkterne under stregen</em></li>
+        <li><code>billede</code><em>media</em><em>â</em></li>
+        <li><code>visNaestePlads</code><em>boolean</em><em>Auto-udfyldt kort</em></li>
+      </ul>
+    </div>
+
+    <div class="blockdoc">
+      <div class="blockdoc__top"><h3>Dagsrytme</h3><span class="slug">lene/dagsrytme</span></div>
+      <p>To-kolonners tidsplan. Hver rÃ¦kke er en indre blok <code class="slug">lene/dagsrytme-punkt</code>, sÃ¥ kunden kan trÃ¦kke rundt pÃ¥ rÃ¦kkefÃ¸lgen.</p>
+      <ul class="attrs">
+        <li><code>tidspunkt</code><em>string</em><em>Fx "6.30"</em></li>
+        <li><code>titel</code><em>string</em><em>â</em></li>
+        <li><code>tekst</code><em>richtext</em><em>â</em></li>
+      </ul>
+    </div>
+
+    <div class="blockdoc">
+      <div class="blockdoc__top"><h3>Kortgitter</h3><span class="slug">lene/kortgitter</span></div>
+      <p>2â4 kort med billede, overskrift og tekst. Bruges pÃ¥ forsiden og pÃ¥ "Praktisk info".</p>
+      <ul class="attrs">
+        <li><code>kolonner</code><em>number 2â4</em><em>â</em></li>
+        <li><code>kort[]</code><em>innerblocks</em><em>billede, titel, tekst, link</em></li>
+      </ul>
+    </div>
+
+    <div class="blockdoc">
+      <div class="blockdoc__top"><h3>Citat</h3><span class="slug">lene/citat</span></div>
+      <p>Centreret udtalelse i Fraunces kursiv.</p>
+      <ul class="attrs"><li><code>citat</code><em>richtext</em><em>â</em></li><li><code>kilde</code><em>string</em><em>â</em></li></ul>
+    </div>
+
+    <div class="blockdoc">
+      <div class="blockdoc__top"><h3>Kontaktkort</h3><span class="slug">lene/kontaktkort</span></div>
+      <p>Kontaktoplysninger + formular. Oplysningerne hentes fra Ã©n indstillingsside, sÃ¥ telefonnummer kun skal rettes Ã©t sted â ogsÃ¥ i footeren.</p>
+      <ul class="attrs">
+        <li><code>overskrift</code><em>string</em><em>â</em></li>
+        <li><code>tekst</code><em>richtext</em><em>â</em></li>
+        <li><code>visFormular</code><em>boolean</em><em>â</em></li>
+      </ul>
+    </div>
+
+    <div class="blockdoc">
+      <div class="blockdoc__top"><h3>FAQ</h3><span class="slug">lene/faq</span></div>
+      <p>Foldeliste med indre blokke. Udsender automatisk FAQPage-schema til Google.</p>
+      <ul class="attrs"><li><code>spoergsmaal</code><em>string</em><em>â</em></li><li><code>svar</code><em>richtext</em><em>â</em></li></ul>
+    </div>
+
+
+    <div class="blockdoc">
+      <div class="blockdoc__top"><h3>Ãbningstider</h3><span class="slug">lene/aabningstider</span><em style="color:var(--sun-deep);font-weight:700;font-style:normal;font-size:13px">DYNAMISK</em></div>
+      <p>En rÃ¦kke pr. ugedag, tegnet som en bjÃ¦lke pÃ¥ en timeakse â sÃ¥ ser man med det samme, at fredag er kortere. Temaet kan bruge de samme tider til at vise "Ãbent nu Â· lukker 16.00" i headeren.</p>
+      <ul class="attrs">
+        <li><code>dage[]</code><em>innerblocks</em><em>Etiket, Ã¥bner, lukker</em></li>
+        <li><code>visStatus</code><em>boolean</em><em>Beregner Ãbent/Lukket ud fra klokken</em></li>
+        <li><code>note</code><em>richtext</em><em>Fx om fleksibilitet og 46-timers loft</em></li>
+      </ul>
+    </div>
+
+    <div class="blockdoc">
+      <div class="blockdoc__top"><h3>Priser</h3><span class="slug">lene/pris</span></div>
+      <p>Opstillet som en kvittering: pris, tilskud og egenbetaling. BelÃ¸bene er <strong>felter, ikke en formel</strong> â tilskuddet er loftlagt af kommunens bruttodriftsudgift, sÃ¥ 75 % af prisen ville give et forkert tal.</p>
+      <ul class="attrs">
+        <li><code>linjer[]</code><em>innerblocks</em><em>Tekst + belÃ¸b + minus ja/nej</em></li>
+        <li><code>totalTekst</code><em>string</em><em>Fx "Din egenbetaling pr. mÃ¥ned"</em></li>
+        <li><code>totalBeloeb</code><em>string</em><em>FremhÃ¦vet med gul og glÃ¸d</em></li>
+        <li><code>medSmaat[]</code><em>innerblocks</em><em>SÃ¸skenderabat, 12 mdr. osv.</em></li>
+      </ul>
+    </div>
+
+    <div class="blockdoc">
+      <div class="blockdoc__top"><h3>Lukkedage</h3><span class="slug">lene/lukkedage</span><em style="color:var(--sun-deep);font-weight:700;font-style:normal;font-size:13px">DYNAMISK</em></div>
+      <p>Samme princip som pladstavlen: en indholdstype for sig, sÃ¥ perioder kan genbruges pÃ¥ forsiden som "NÃ¦ste lukkeuge". Perioder der er passeret, skjules automatisk.</p>
+      <ul class="attrs">
+        <li><code>periode</code><em>string</em><em>Fx "Uge 29â30" eller "24. dec â 1. jan"</em></li>
+        <li><code>datoer</code><em>string</em><em>Fx "13.â24. juli"</em></li>
+        <li><code>aarsag</code><em>string</em><em>Sommerferie, kursus, helligdag â¦</em></li>
+        <li><code>skjulEfter</code><em>date</em><em>Falder af listen nÃ¥r datoen er passeret</em></li>
+      </ul>
+    </div>
+
+    <h3 style="margin-top:44px">SÃ¥dan retter kunden en plads</h3>
+    <p class="doc__intro">Pladserne ligger som en indholdstype for sig (<code class="slug">plads</code>). Kunden skriver kun to tal: hvor mange pladser der er pÃ¥ datoen, og hvor mange af dem der er ledige. MÃ¦rkatet, farven, prikkerne og tallet i menuen beregnes af temaet.</p>
+    <ul class="attrs" style="max-width:820px;margin-bottom:8px">
+      <li><code>antal</code><em>number</em><em>Pladser pÃ¥ datoen i alt</em></li>
+      <li><code>antalLedige</code><em>number</em><em>Heraf ledige</em></li>
+      <li><code>status</code><em>auto</em><em>0 ledige = Reserveret/Optaget Â· alle ledige = Ledig Â· derimellem = Delvist ledig. Teksten er altid "X af Y pladser".</em></li>
+    </ul>
+
+    <div class="editor">
+      <div class="editor__canvas">
+        <div class="rail">
+          <ul class="rail__items">
+            <li class="plads is-reserveret">
+              <span class="plads__string"></span>
+              <div class="plads__tag">
+                <span class="plads__hole"></span>
+                <p class="plads__date">1. nov<span>2026</span></p>
+                <p class="plads__count is-zero"><b>0</b> af 1 plads ledig</p>
+                <ul class="plads__dots" aria-hidden="true"><li class="taken"></li></ul>
+                <p class="plads__status">Reserveret</p>
+              </div>
+            </li>
+            <li class="plads is-reserveret">
+              <span class="plads__string"></span>
+              <div class="plads__tag">
+                <span class="plads__hole"></span>
+                <p class="plads__date">1. april<span>2027</span></p>
+                <p class="plads__count is-zero"><b>0</b> af 2 pladser ledige</p>
+                <ul class="plads__dots" aria-hidden="true"><li class="taken"></li><li class="taken"></li></ul>
+                <p class="plads__status">Reserveret</p>
+              </div>
+            </li>
+            <li class="plads is-delvis">
+              <span class="plads__string"></span>
+              <div class="plads__tag">
+                <span class="plads__hole"></span>
+                <p class="plads__date">1. jan<span>2028</span></p>
+                <p class="plads__count"><b>2</b> af 3 pladser ledige</p>
+                <ul class="plads__dots" aria-hidden="true"><li class="free"></li><li class="free"></li><li class="taken"></li></ul>
+                <p class="plads__status">Delvist ledig</p>
+              </div>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+      <aside class="editor__side">
+        <h4>Plads</h4>
+        <div class="field"><label>Dato</label><input type="text" value="1. januar 2028" readonly></div>
+        <div class="field"><label>Antal pladser i alt</label><input type="number" value="3" readonly></div>
+        <div class="field"><label>Heraf ledige</label><input type="number" value="2" readonly></div>
+        <p class="hint">Skriv 3 og 2, og skiltet viser "2 af 3 pladser" med to gule prikker. Formlen er den samme pÃ¥ alle datoer â ogsÃ¥ "0 af 1 plads".</p>
+        <div class="field" style="margin-top:18px"><label>NÃ¥r 0 er ledige, vis som</label>
+          <select><option selected>Reserveret</option><option>Optaget</option></select>
+        </div>
+        <div class="field"><label>Note (valgfri)</label><input type="text" placeholder="Fx: kun formiddage" readonly></div>
+      </aside>
+    </div>
+
+    <div class="notes">
+      <h3 style="margin-bottom:14px">Til beslutning</h3>
+      <ul>
+        <li>Menuen er skÃ¥ret fra 7 til 5 punkter. "Vores dag" + "Hvem er jeg" er slÃ¥et sammen til "Om Lene", og "Ãbningstider" er lagt ind under "Praktisk info".</li>
+        <li>"Ledige pladser" er flyttet fra menuen ud i det gule mÃ¦rke Ã¸verst til hÃ¸jre â det er den vigtigste information for en forÃ¦lder og bÃ¸r vÃ¦re synlig pÃ¥ alle sider.</li>
+        <li>Ãbningstider, priser, dagsrytme og sygdomsregler er hentet fra det nuvÃ¦rende site. <strong>Lukkedagene er opdigtede</strong> og skal erstattes af Lenes rigtige ferieplan.</li>
+        <li>Udtalelsen pÃ¥ forsiden er placeholder og skal bekrÃ¦ftes af Lene, fÃ¸r den gÃ¥r i luften.</li>
+        <li>Tilskuddet er skrevet som et fast belÃ¸b (6.478 kr.), fordi 75 % af 9.100 kr. ikke giver den egenbetaling, der stÃ¥r pÃ¥ det nuvÃ¦rende site. Tallet skal tjekkes med kommunen.</li>
+        <li>Billederne er hentet fra det nuvÃ¦rende site. Nye, skarpe billeder i samme format (4:3) vil lÃ¸fte designet mÃ¦rkbart.</li>
+        <li>Fonte hostes lokalt i temaet, sÃ¥ der ikke kaldes til Google â det holder siden pÃ¥ ren dansk cookie-praksis.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.chrome [data-page]');
+
+  function luk(){
+    document.querySelectorAll('.mobile-nav').forEach(function(m){ m.hidden = true; });
+    document.querySelectorAll('.burger').forEach(function(b){
+      b.setAttribute('aria-expanded','false');
+      b.setAttribute('aria-label','Åbn menu');
+      b.textContent = '☰';
+    });
+  }
+
+  function vis(side, anker){
+    document.querySelectorAll('.page').forEach(function(p){
+      p.hidden = (p.id !== 'page-' + side);
+    });
+    tabs.forEach(function(t){
+      t.setAttribute('aria-selected', String(t.dataset.page === side));
+    });
+    luk();
+    if (anker){
+      var el = document.getElementById('page-' + side).querySelector('#' + anker);
+      if (el){ el.scrollIntoView({behavior:'smooth', block:'start'}); return; }
+    }
+    window.scrollTo({top:0});
+  }
+
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){ vis(t.dataset.page); });
+  });
+
+  document.querySelectorAll('[data-goto]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      vis(a.dataset.goto, a.dataset.anchor);
+    });
+  });
+
+  document.querySelectorAll('.is-todo').forEach(function(a){
+    a.addEventListener('click', function(e){ e.preventDefault(); });
+  });
+
+  document.querySelectorAll('.burger').forEach(function(b){
+    b.addEventListener('click', function(){
+      var menu = b.closest('.site-header').querySelector('.mobile-nav');
+      var open = b.getAttribute('aria-expanded') === 'true';
+      if (open){ luk(); return; }
+      b.setAttribute('aria-expanded','true');
+      b.setAttribute('aria-label','Luk menu');
+      b.textContent = '✕';
+      menu.hidden = false;
+    });
+  });
+})();
+</script>
+</body>
+</html>

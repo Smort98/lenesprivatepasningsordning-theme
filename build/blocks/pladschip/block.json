@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "lene/pladschip",
+  "title": "Pladse-mærkat",
+  "category": "lene-sektioner",
+  "icon": "megaphone",
+  "description": "Det gule mærke i headeren med antal ledige pladser. Beregnes altid fra CPT plads — skrives aldrig i hånden.",
+  "keywords": [
+    "plads",
+    "mærkat",
+    "header"
+  ],
+  "textdomain": "lene",
+  "attributes": {
+    "link": {
+      "type": "string",
+      "default": "/ledige-pladser/"
+    }
+  },
+  "supports": {
+    "html": false,
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

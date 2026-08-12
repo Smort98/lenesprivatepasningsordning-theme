@@ -1,0 +1,81 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "lene/hero",
+  "title": "Hero",
+  "category": "lene-sektioner",
+  "icon": "cover-image",
+  "description": "Forsidens topsektion. Kortet \"Næste ledige plads\" udfyldes automatisk fra CPT plads.",
+  "keywords": [
+    "forside",
+    "hero",
+    "top"
+  ],
+  "textdomain": "lene",
+  "attributes": {
+    "overrubrik": {
+      "type": "string",
+      "default": "Privat pasningsordning · Ringe"
+    },
+    "titel": {
+      "type": "string",
+      "default": "Hjemlige dage med tid til hvert enkelt barn"
+    },
+    "tekst": {
+      "type": "string",
+      "default": "Jeg hedder Lene og har arbejdet med børn i 18 år. Hos mig er der en fast, rolig hverdag, en lille børneflok og masser af tid udenfor."
+    },
+    "knapPrimaerTekst": {
+      "type": "string",
+      "default": "Se ledige pladser"
+    },
+    "knapPrimaerLink": {
+      "type": "string",
+      "default": "/ledige-pladser/"
+    },
+    "knapSekundaerTekst": {
+      "type": "string",
+      "default": "Mød Lene"
+    },
+    "knapSekundaerLink": {
+      "type": "string",
+      "default": "/hvem-er-jeg/"
+    },
+    "fakta": {
+      "type": "array",
+      "default": [
+        "18 års erfaring",
+        "Godkendt pasningsordning",
+        "Linde Allé 69, 5750 Ringe"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "billede": {
+      "type": "object",
+      "default": {
+        "id": 0,
+        "url": "",
+        "alt": ""
+      }
+    },
+    "visNaestePlads": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}
