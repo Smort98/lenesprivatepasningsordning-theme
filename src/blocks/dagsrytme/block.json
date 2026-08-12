@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "lene/dagsrytme",
+	"title": "Dagsrytme",
+	"category": "lene-sektioner",
+	"icon": "clock",
+	"description": "To-kolonners tidsplan. Hver række er en indre blok, kunden kan trække rundt på.",
+	"keywords": [ "dagsrytme", "hverdag", "tidsplan" ],
+	"textdomain": "lene",
+	"attributes": {
+		"eyebrow": { "type": "rich-text", "source": "rich-text", "selector": ".eyebrow", "default": "Vores dag" },
+		"titel": { "type": "rich-text", "source": "rich-text", "selector": "h2", "default": "Den samme rytme hver dag" },
+		"lede": { "type": "rich-text", "source": "rich-text", "selector": ".lede", "default": "Faste rutiner gør dagen forudsigelig og tryg. Herunder er en helt almindelig hverdag hos os." }
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"color": false,
+		"spacing": false,
+		"typography": false
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css"
+}

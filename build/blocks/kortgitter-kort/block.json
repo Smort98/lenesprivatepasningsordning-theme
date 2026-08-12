@@ -1,0 +1,43 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "lene/kortgitter-kort",
+  "title": "Kort",
+  "category": "lene-sektioner",
+  "icon": "id",
+  "description": "Ét kort med billede, titel og tekst.",
+  "textdomain": "lene",
+  "parent": [
+    "lene/kortgitter"
+  ],
+  "attributes": {
+    "billede": {
+      "type": "object",
+      "default": {
+        "id": 0,
+        "url": "",
+        "alt": ""
+      }
+    },
+    "titel": {
+      "type": "rich-text",
+      "source": "rich-text",
+      "selector": "h3",
+      "default": ""
+    },
+    "tekst": {
+      "type": "rich-text",
+      "source": "rich-text",
+      "selector": "p",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "reusable": false,
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "editorScript": "file:./index.js"
+}

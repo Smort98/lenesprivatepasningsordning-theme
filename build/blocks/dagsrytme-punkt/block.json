@@ -1,0 +1,41 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "lene/dagsrytme-punkt",
+  "title": "Dagsrytme-punkt",
+  "category": "lene-sektioner",
+  "icon": "clock",
+  "description": "Ét tidspunkt i dagsrytmen.",
+  "textdomain": "lene",
+  "parent": [
+    "lene/dagsrytme"
+  ],
+  "attributes": {
+    "tidspunkt": {
+      "type": "rich-text",
+      "source": "rich-text",
+      "selector": ".time",
+      "default": "6.45"
+    },
+    "titel": {
+      "type": "rich-text",
+      "source": "rich-text",
+      "selector": "h3",
+      "default": "Godmorgen"
+    },
+    "tekst": {
+      "type": "rich-text",
+      "source": "rich-text",
+      "selector": "p",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "reusable": false,
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "editorScript": "file:./index.js"
+}

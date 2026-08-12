@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "lene/citat",
+	"title": "Udtalelse (Lene)",
+	"category": "lene-sektioner",
+	"icon": "format-quote",
+	"description": "Centreret udtalelse i Fraunces-kursiv.",
+	"keywords": [ "citat", "udtalelse", "anmeldelse" ],
+	"textdomain": "lene",
+	"attributes": {
+		"citat": {
+			"type": "rich-text",
+			"source": "rich-text",
+			"selector": "blockquote",
+			"default": "Vores datter løb ind ad døren hver morgen. Bedre anbefaling kan jeg ikke give."
+		},
+		"kilde": {
+			"type": "rich-text",
+			"source": "rich-text",
+			"selector": "cite",
+			"default": "Forælder i Ringe"
+		}
+	},
+	"supports": {
+		"html": false,
+		"color": false,
+		"spacing": false,
+		"typography": false
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css"
+}

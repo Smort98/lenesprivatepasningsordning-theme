@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "lene/kortgitter",
+  "title": "Kortgitter",
+  "category": "lene-sektioner",
+  "icon": "grid-view",
+  "description": "2–4 kort med billede, titel og tekst.",
+  "keywords": [
+    "kort",
+    "grid",
+    "ydelser"
+  ],
+  "textdomain": "lene",
+  "attributes": {
+    "titel": {
+      "type": "rich-text",
+      "source": "rich-text",
+      "selector": "h2",
+      "default": "Sådan er det at gå hos Lene"
+    },
+    "kolonner": {
+      "type": "number",
+      "default": 3
+    },
+    "baggrund": {
+      "type": "string",
+      "enum": [
+        "sky",
+        "paper"
+      ],
+      "default": "sky"
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css"
+}

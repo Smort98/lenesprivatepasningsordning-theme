@@ -1,0 +1,51 @@
+.wp-block-lene-dagsrytme.section {
+	padding: clamp( 56px, 8vw, 90px ) 0;
+}
+
+.wp-block-lene-dagsrytme .rhythm {
+	display: grid;
+	grid-template-columns: repeat( 2, 1fr );
+	gap: 0 60px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.wp-block-lene-dagsrytme .rhythm > li {
+	display: grid;
+	grid-template-columns: 96px 1fr;
+	gap: 22px;
+	padding: 22px 0;
+	border-bottom: 1px solid var( --line );
+}
+.wp-block-lene-dagsrytme .rhythm .time {
+	font-family: var( --display );
+	font-size: 22px;
+	font-weight: 600;
+	color: var( --sun-deep );
+	font-variation-settings: "SOFT" 60, "WONK" 1, "opsz" 40;
+}
+.wp-block-lene-dagsrytme .rhythm h3 {
+	font-size: 19px;
+	margin: 0 0 5px;
+}
+.wp-block-lene-dagsrytme .rhythm p {
+	font-size: 15.5px;
+	color: var( --stone );
+	margin: 0;
+}
+
+@media ( max-width: 900px ) {
+	.wp-block-lene-dagsrytme .rhythm {
+		grid-template-columns: 1fr;
+	}
+}
+@media ( max-width: 680px ) {
+	.wp-block-lene-dagsrytme .rhythm > li {
+		grid-template-columns: 70px 1fr;
+		gap: 14px;
+		padding: 18px 0;
+	}
+	.wp-block-lene-dagsrytme .rhythm .time {
+		font-size: 19px;
+	}
+}
