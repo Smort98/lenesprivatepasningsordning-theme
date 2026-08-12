@@ -1,0 +1,29 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "lene/lukkedage",
+	"title": "Lukkedage",
+	"category": "lene-sektioner",
+	"icon": "palmtree",
+	"description": "Læser CPT lukkedag. Fremhæver den næste periode og skjuler dem der er passeret.",
+	"keywords": [ "lukkedage", "ferie" ],
+	"textdomain": "lene",
+	"attributes": {
+		"eyebrow": { "type": "string", "default": "Ferie" },
+		"titel": { "type": "string", "default": "Lukkedage" },
+		"footTekst": {
+			"type": "string",
+			"default": "Ved sygdom kontakter jeg altid forældrene tidligt om morgenen. Er jeres barn sygt, vil jeg gerne have besked senest kl. 8.30, da der kan være arrangeret udflugter."
+		}
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"color": false,
+		"spacing": false,
+		"typography": false
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

@@ -1,0 +1,107 @@
+.wp-block-lene-pris.section {
+	padding: clamp( 56px, 8vw, 90px ) 0;
+}
+.wp-block-lene-pris.section--sky {
+	background: var( --sky );
+}
+
+.wp-block-lene-pris .receipt {
+	max-width: 640px;
+	background: var( --paper );
+	border: 1px solid var( --line );
+	border-radius: var( --r-lg );
+	padding: clamp( 24px, 4vw, 34px );
+	box-shadow: var( --shadow-soft );
+}
+.wp-block-lene-pris .receipt__row {
+	display: flex;
+	align-items: baseline;
+	gap: 14px;
+	padding: 15px 0;
+	border-bottom: 1px solid var( --line );
+}
+.wp-block-lene-pris .receipt__row:first-child {
+	padding-top: 0;
+}
+.wp-block-lene-pris .receipt__label {
+	font-size: 16px;
+	color: var( --pine-soft );
+}
+.wp-block-lene-pris .receipt__fill {
+	flex: 1;
+	min-width: 20px;
+	border-bottom: 2px dotted var( --line );
+	transform: translateY( -5px );
+}
+.wp-block-lene-pris .receipt__amount {
+	font-family: var( --display );
+	font-size: 23px;
+	font-weight: 600;
+	white-space: nowrap;
+	font-variation-settings: "SOFT" 60, "WONK" 1, "opsz" 50;
+}
+.wp-block-lene-pris .receipt__amount.is-minus {
+	color: var( --stone );
+}
+.wp-block-lene-pris .receipt__amount.is-minus::before {
+	content: "− ";
+}
+.wp-block-lene-pris .receipt__total {
+	margin-top: 20px;
+	background: var( --sun );
+	border: 2px solid var( --sun-deep );
+	border-radius: var( --r-md );
+	padding: 20px 24px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 18px;
+	flex-wrap: wrap;
+	box-shadow: 0 0 0 5px rgba( 247, 194, 75, 0.26 ), 0 16px 32px -24px rgba( 217, 154, 11, 0.95 );
+}
+.wp-block-lene-pris .receipt__total span {
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+.wp-block-lene-pris .receipt__total b {
+	font-family: var( --display );
+	font-size: clamp( 30px, 4.5vw, 38px );
+	font-weight: 600;
+	line-height: 1;
+	font-variation-settings: "SOFT" 60, "WONK" 1, "opsz" 90;
+}
+.wp-block-lene-pris .receipt__fine {
+	margin-top: 22px;
+	display: grid;
+	gap: 9px;
+	list-style: none;
+	padding: 0;
+}
+.wp-block-lene-pris .receipt__fine li {
+	position: relative;
+	padding-left: 22px;
+	font-size: 14.5px;
+	color: var( --stone );
+}
+.wp-block-lene-pris .receipt__fine li::before {
+	content: "·";
+	position: absolute;
+	left: 7px;
+	color: var( --sun-deep );
+	font-weight: 700;
+}
+
+@media ( max-width: 680px ) {
+	.wp-block-lene-pris .receipt__row {
+		flex-wrap: wrap;
+		gap: 6px 12px;
+	}
+	.wp-block-lene-pris .receipt__fill {
+		display: none;
+	}
+	.wp-block-lene-pris .receipt__label {
+		flex: 1;
+	}
+}

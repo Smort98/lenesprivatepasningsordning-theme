@@ -6,6 +6,7 @@
 defined( 'ABSPATH' ) || exit;
 
 require_once get_theme_file_path( 'inc/cpt-plads.php' );
+require_once get_theme_file_path( 'inc/cpt-lukkedag.php' );
 
 /**
  * Theme support.

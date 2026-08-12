@@ -1,0 +1,57 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "lene/pris",
+  "title": "Priser",
+  "category": "lene-sektioner",
+  "icon": "money-alt",
+  "description": "Opstillet som en kvittering: pris, tilskud og egenbetaling. Beløbene er felter, ikke en formel.",
+  "keywords": [
+    "pris",
+    "kvittering",
+    "tilskud"
+  ],
+  "textdomain": "lene",
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "default": "Priser"
+    },
+    "titel": {
+      "type": "string",
+      "default": "Hvad koster en plads"
+    },
+    "totalTekst": {
+      "type": "string",
+      "default": "Din egenbetaling pr. måned"
+    },
+    "totalBeloeb": {
+      "type": "string",
+      "default": "2.622 kr."
+    },
+    "medSmaat": {
+      "type": "array",
+      "default": [
+        "Der gives op til 75 % i tilskud. Kommunen har et loft, så det præcise beløb kan variere.",
+        "Der er mulighed for søskenderabat fra kommunen.",
+        "Der betales i 12 måneder om året.",
+        "Jeg hjælper gerne med at udfylde ansøgningen om tilskud."
+      ],
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css"
+}

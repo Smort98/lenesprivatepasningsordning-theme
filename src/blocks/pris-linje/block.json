@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "lene/pris-linje",
+	"title": "Prislinje",
+	"category": "lene-sektioner",
+	"icon": "money-alt",
+	"description": "Én linje i kvitteringen: tekst + beløb.",
+	"textdomain": "lene",
+	"parent": [ "lene/pris" ],
+	"attributes": {
+		"tekst": { "type": "rich-text", "source": "rich-text", "selector": ".receipt__label", "default": "" },
+		"beloeb": { "type": "rich-text", "source": "rich-text", "selector": ".receipt__amount", "default": "" },
+		"erMinus": { "type": "boolean", "default": false }
+	},
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"color": false,
+		"spacing": false,
+		"typography": false
+	},
+	"editorScript": "file:./index.js"
+}

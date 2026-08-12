@@ -1,0 +1,34 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "lene/aabningstider",
+	"title": "Åbningstider",
+	"category": "lene-sektioner",
+	"icon": "clock",
+	"description": "Bjælker på en timeakse. Beregner \"Åbent nu · lukker 16.00\" ud fra klokken.",
+	"keywords": [ "åbningstider", "timer" ],
+	"textdomain": "lene",
+	"attributes": {
+		"titel": { "type": "string", "default": "Hvornår har jeg åbent" },
+		"eyebrow": { "type": "string", "default": "Åbningstider" },
+		"dage": {
+			"type": "array",
+			"default": [
+				{ "etiket": "Mandag – torsdag", "ugedage": [ 1, 2, 3, 4 ], "aabner": "06:45", "lukker": "16:00" },
+				{ "etiket": "Fredag", "ugedage": [ 5 ], "aabner": "06:45", "lukker": "14:45" }
+			]
+		},
+		"visStatus": { "type": "boolean", "default": true },
+		"note": { "type": "string", "default": "Tiderne kan tilpasses, hvis I har brug for det — jeg er meget fleksibel. Der må dog højst benyttes 46 timer om ugen." }
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"color": false,
+		"spacing": false,
+		"typography": false
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}
