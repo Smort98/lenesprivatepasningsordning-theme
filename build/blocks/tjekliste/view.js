@@ -1,0 +1,1 @@
+document.querySelectorAll(".tjekliste__print").forEach(function(n){n.addEventListener("click",function(){window.print()})});

@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "lene/tjekliste",
+	"title": "Tjekliste",
+	"category": "lene-sektioner",
+	"icon": "yes",
+	"description": "\"Hvad skal vi medbringe\" — afkrydsningsfelter der virker visuelt, og kan printes.",
+	"keywords": [ "tjekliste", "pakkeliste", "medbringe" ],
+	"textdomain": "lene",
+	"attributes": {
+		"eyebrow": { "type": "string", "default": "Praktisk" },
+		"titel": { "type": "string", "default": "Hvad skal vi medbringe" },
+		"visPrintknap": { "type": "boolean", "default": true }
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"color": false,
+		"spacing": false,
+		"typography": false
+	},
+	"editorScript": "file:./index.js",
+	"viewScript": "file:./view.js",
+	"style": "file:./style-index.css"
+}

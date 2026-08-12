@@ -1,0 +1,35 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "lene/tjekliste-punkt",
+  "title": "Tjekliste-punkt",
+  "category": "lene-sektioner",
+  "icon": "yes",
+  "description": "Ét punkt på pakkelisten.",
+  "textdomain": "lene",
+  "parent": [
+    "lene/tjekliste"
+  ],
+  "attributes": {
+    "tekst": {
+      "type": "rich-text",
+      "source": "rich-text",
+      "selector": ".tjekliste__tekst",
+      "default": ""
+    },
+    "note": {
+      "type": "rich-text",
+      "source": "rich-text",
+      "selector": ".tjekliste__note",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "reusable": false,
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "editorScript": "file:./index.js"
+}

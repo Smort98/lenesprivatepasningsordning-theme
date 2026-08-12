@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "lene/tidslinje",
+	"title": "Tidslinje",
+	"category": "lene-sektioner",
+	"icon": "clock",
+	"description": "Efteruddannelser med årstal. Genbruger dagsrytmens mønster, men lodret med en tynd linje mellem punkterne.",
+	"keywords": [ "tidslinje", "uddannelse", "kurser" ],
+	"textdomain": "lene",
+	"attributes": {
+		"eyebrow": { "type": "string", "default": "Efteruddannelse" },
+		"titel": { "type": "string", "default": "Løbende opdateret" }
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"color": false,
+		"spacing": false,
+		"typography": false
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css"
+}

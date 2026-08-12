@@ -1,0 +1,41 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "lene/regelkort",
+  "title": "Regelkort",
+  "category": "lene-sektioner",
+  "icon": "warning",
+  "description": "Sygdomsreglerne som korte kort — læsbare på fem sekunder.",
+  "keywords": [
+    "sygdom",
+    "regler",
+    "syg"
+  ],
+  "textdomain": "lene",
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "default": "Sygdom"
+    },
+    "titel": {
+      "type": "string",
+      "default": "Hvornår skal barnet blive hjemme"
+    },
+    "kolonner": {
+      "type": "number",
+      "default": 3
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css"
+}

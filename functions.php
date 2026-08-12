@@ -31,6 +31,8 @@ add_action( 'after_setup_theme', 'lene_theme_setup' );
  * så et attributskift altid ser ens ud begge steder.
  */
 function lene_enqueue_assets() {
+	wp_enqueue_style( 'dashicons' );
+
 	$base_path = get_theme_file_path( 'assets/css/base.css' );
 	wp_enqueue_style( 'lene-base', get_theme_file_uri( 'assets/css/base.css' ), array(), file_exists( $base_path ) ? filemtime( $base_path ) : false );
 

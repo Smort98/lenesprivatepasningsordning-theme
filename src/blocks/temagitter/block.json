@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "lene/temagitter",
+	"title": "Temagitter",
+	"category": "lene-sektioner",
+	"icon": "star-filled",
+	"description": "De seks pædagogiske læreplanstemaer.",
+	"keywords": [ "læreplan", "pædagogik", "temaer" ],
+	"textdomain": "lene",
+	"attributes": {
+		"eyebrow": { "type": "string", "default": "Pædagogik" },
+		"titel": { "type": "string", "default": "De seks læreplanstemaer" },
+		"kolonner": { "type": "number", "default": 3 }
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"color": false,
+		"spacing": false,
+		"typography": false
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css"
+}

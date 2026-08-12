@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "lene/temagitter-tema",
+	"title": "Læreplanstema",
+	"category": "lene-sektioner",
+	"icon": "star-filled",
+	"description": "Ét pædagogisk læreplanstema.",
+	"textdomain": "lene",
+	"parent": [ "lene/temagitter" ],
+	"attributes": {
+		"ikon": { "type": "string", "enum": [ "udvikling", "sociale", "sprog", "krop", "natur", "kultur" ], "default": "udvikling" },
+		"titel": { "type": "rich-text", "source": "rich-text", "selector": "h3", "default": "" },
+		"tekst": { "type": "rich-text", "source": "rich-text", "selector": "p", "default": "" }
+	},
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"color": false,
+		"spacing": false,
+		"typography": false
+	},
+	"editorScript": "file:./index.js"
+}
