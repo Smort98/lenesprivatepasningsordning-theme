@@ -18,5 +18,5 @@ $wrapper_attributes = get_block_wrapper_attributes(
 );
 ?>
 <a <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> href="<?php echo esc_url( home_url( $link ) ); ?>">
-	<span class="dot"></span><?php echo esc_html( $antal . ' ' . $ord ); ?><span class="word">&nbsp;pladser</span>
+	<span class="dot"></span><span><?php echo esc_html( $antal . ' ' . $ord ); ?></span><span class="word">pladser</span>
 </a>
