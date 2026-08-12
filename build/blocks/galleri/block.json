@@ -1,0 +1,46 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "lene/galleri",
+  "title": "Fotoalbum",
+  "category": "lene-sektioner",
+  "icon": "format-gallery",
+  "description": "Fotoalbum med lightbox. Bygget som en indpakning om core/image, ikke et helt eget mediebibliotek.",
+  "keywords": [
+    "galleri",
+    "billeder",
+    "fotoalbum"
+  ],
+  "textdomain": "lene",
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "default": ""
+    },
+    "titel": {
+      "type": "string",
+      "default": ""
+    },
+    "kolonner": {
+      "type": "number",
+      "default": 3
+    },
+    "lightbox": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "editorScript": "file:./index.js",
+  "viewScript": "file:./view.js",
+  "style": "file:./style-index.css"
+}

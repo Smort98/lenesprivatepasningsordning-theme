@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "lene/faq",
+  "title": "FAQ",
+  "category": "lene-sektioner",
+  "icon": "editor-help",
+  "description": "Foldeliste med spørgsmål/svar. Udsender automatisk FAQPage-schema til Google.",
+  "keywords": [
+    "faq",
+    "spørgsmål",
+    "ofte stillede"
+  ],
+  "textdomain": "lene",
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "default": ""
+    },
+    "titel": {
+      "type": "string",
+      "default": "Ofte stillede spørgsmål"
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

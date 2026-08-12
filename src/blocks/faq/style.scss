@@ -1,0 +1,44 @@
+.wp-block-lene-faq.section {
+	padding: clamp( 56px, 8vw, 90px ) 0;
+}
+.wp-block-lene-faq.section--sky {
+	background: var( --sky );
+}
+
+.wp-block-lene-faq .faq {
+	display: grid;
+	gap: 0;
+	max-width: 760px;
+}
+.wp-block-lene-faq .faq details {
+	border-bottom: 1px solid var( --line );
+	padding: 20px 0;
+}
+.wp-block-lene-faq .faq summary {
+	font-family: var( --display );
+	font-size: 20px;
+	font-weight: 600;
+	cursor: pointer;
+	list-style: none;
+	display: flex;
+	justify-content: space-between;
+	gap: 20px;
+	font-variation-settings: "SOFT" 60, "WONK" 1, "opsz" 40;
+}
+.wp-block-lene-faq .faq summary::-webkit-details-marker {
+	display: none;
+}
+.wp-block-lene-faq .faq summary::after {
+	content: "+";
+	color: var( --sun-deep );
+	font-family: var( --body );
+	font-weight: 700;
+}
+.wp-block-lene-faq .faq details[open] summary::after {
+	content: "−";
+}
+.wp-block-lene-faq .faq p {
+	margin-top: 12px;
+	color: var( --stone );
+	max-width: 62ch;
+}

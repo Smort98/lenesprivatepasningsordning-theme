@@ -101,12 +101,18 @@
 	background: var(--line-strong);
 }
 .lene-pladstavle .plads__tag {
+	display: block;
 	width: 100%;
 	padding: 20px 16px 18px;
 	border-radius: var(--r-md);
 	border: 2px solid;
 	background: var(--paper);
+	text-decoration: none;
+	color: inherit;
 	transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+a.plads__tag {
+	cursor: pointer;
 }
 .lene-pladstavle .plads:nth-child(odd) .plads__tag {
 	transform: rotate(-1.2deg);

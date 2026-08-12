@@ -15,6 +15,7 @@ $vis_kun_ledige = ! empty( $attributes['visKunLedige'] );
 $vis_prikker    = $attributes['visPrikker'] ?? true;
 $maks_antal     = (int) ( $attributes['maksAntal'] ?? 0 );
 $vis_opdateret  = $attributes['visOpdateret'] ?? true;
+$tilmelding_link = $attributes['tilmeldingLink'] ?? '/tilmelding/';
 $kort_maaned    = 'vandret' === $retning;
 
 $pladser = lene_hent_pladser( true );
@@ -65,9 +66,16 @@ $wrapper_attributes = get_block_wrapper_attributes(
 						<?php
 						$dele = lene_dansk_dato_dele( $plads['timestamp'], $kort_maaned );
 						?>
+						<?php
+						$kan_tilmelde = 'optaget' !== $plads['status'];
+						$tag_element  = $kan_tilmelde ? 'a' : 'div';
+						$tag_href     = $kan_tilmelde
+							? ' href="' . esc_url( add_query_arg( 'plads', $plads['id'], home_url( $tilmelding_link ) ) ) . '"'
+							: '';
+						?>
 						<li class="plads is-<?php echo esc_attr( $plads['status'] ); ?>">
 							<span class="plads__string"></span>
-							<div class="plads__tag">
+							<<?php echo esc_html( $tag_element ) . $tag_href; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> class="plads__tag">
 								<span class="plads__hole"></span>
 								<p class="plads__date"><?php echo esc_html( $dele['dag_maaned'] ); ?><span><?php echo esc_html( $dele['aar'] ); ?></span></p>
 								<p class="plads__count<?php echo 0 === $plads['antal_ledige'] ? ' is-zero' : ''; ?>">
@@ -81,7 +89,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 									</ul>
 								<?php endif; ?>
 								<p class="plads__status"><?php echo esc_html( $plads['status_label'] ); ?></p>
-							</div>
+							</<?php echo esc_html( $tag_element ); ?>>
 						</li>
 					<?php endforeach; ?>
 				</ul>

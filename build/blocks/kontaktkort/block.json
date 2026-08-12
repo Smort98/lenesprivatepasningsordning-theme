@@ -1,0 +1,45 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "lene/kontaktkort",
+  "title": "Kontaktkort",
+  "category": "lene-sektioner",
+  "icon": "email",
+  "description": "Kontaktoplysninger + formular. Oplysningerne hentes fra indstillingssiden Kontaktoplysninger.",
+  "keywords": [
+    "kontakt",
+    "formular"
+  ],
+  "textdomain": "lene",
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "default": "Kontakt"
+    },
+    "titel": {
+      "type": "string",
+      "default": "Kom forbi og se stedet"
+    },
+    "tekst": {
+      "type": "string",
+      "default": "Du er altid velkommen til at ringe eller skrive. Det bedste er at komme på besøg en formiddag, hvor du kan se hverdagen, som den er."
+    },
+    "visFormular": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

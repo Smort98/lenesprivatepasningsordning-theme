@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "lene/faq-item",
+  "title": "Spørgsmål",
+  "category": "lene-sektioner",
+  "icon": "editor-help",
+  "description": "Ét spørgsmål/svar-par.",
+  "textdomain": "lene",
+  "parent": [
+    "lene/faq"
+  ],
+  "attributes": {
+    "spoergsmaal": {
+      "type": "rich-text",
+      "source": "rich-text",
+      "selector": "summary",
+      "default": ""
+    },
+    "svar": {
+      "type": "rich-text",
+      "source": "rich-text",
+      "selector": "p",
+      "default": ""
+    },
+    "aabenSomStandard": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "supports": {
+    "html": false,
+    "reusable": false,
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "editorScript": "file:./index.js"
+}

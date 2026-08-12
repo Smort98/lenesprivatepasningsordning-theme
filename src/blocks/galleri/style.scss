@@ -1,0 +1,102 @@
+.wp-block-lene-galleri.section {
+	padding: clamp( 56px, 8vw, 90px ) 0;
+}
+
+.wp-block-lene-galleri .galleri {
+	display: grid;
+	grid-template-columns: repeat( var( --kolonner, 3 ), minmax( 0, 1fr ) );
+	gap: clamp( 14px, 2vw, 20px );
+}
+.wp-block-lene-galleri .galleri .wp-block-image {
+	margin: 0;
+}
+.wp-block-lene-galleri .galleri .wp-block-image img {
+	width: 100%;
+	height: 100%;
+	aspect-ratio: 1;
+	object-fit: cover;
+	border-radius: var( --r-md );
+	display: block;
+	transition: transform 0.25s ease;
+}
+.wp-block-lene-galleri .galleri .wp-block-image img:hover {
+	transform: scale( 1.02 );
+}
+
+@media ( max-width: 1024px ) {
+	.wp-block-lene-galleri .galleri {
+		grid-template-columns: repeat( 2, minmax( 0, 1fr ) );
+	}
+}
+@media ( max-width: 480px ) {
+	.wp-block-lene-galleri .galleri {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* Lightbox — indsat i <body> af view.js, ikke inde i blokken */
+.lene-lightbox {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	background: rgba( 27, 51, 38, 0.92 );
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.lene-lightbox__img {
+	max-width: min( 90vw, 1100px );
+	max-height: 88vh;
+	object-fit: contain;
+	border-radius: 8px;
+	box-shadow: 0 30px 60px -20px rgba( 0, 0, 0, 0.6 );
+}
+.lene-lightbox__luk,
+.lene-lightbox__prev,
+.lene-lightbox__next {
+	position: absolute;
+	background: rgba( 255, 255, 255, 0.12 );
+	color: #fff;
+	border: none;
+	border-radius: 999px;
+	cursor: pointer;
+	font-size: 22px;
+	line-height: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.lene-lightbox__luk {
+	top: 20px;
+	right: 20px;
+	width: 44px;
+	height: 44px;
+}
+.lene-lightbox__prev,
+.lene-lightbox__next {
+	top: 50%;
+	transform: translateY( -50% );
+	width: 52px;
+	height: 52px;
+	font-size: 28px;
+}
+.lene-lightbox__prev {
+	left: 20px;
+}
+.lene-lightbox__next {
+	right: 20px;
+}
+.lene-lightbox__luk:hover,
+.lene-lightbox__prev:hover,
+.lene-lightbox__next:hover {
+	background: rgba( 255, 255, 255, 0.25 );
+}
+
+@media ( max-width: 680px ) {
+	.lene-lightbox__prev,
+	.lene-lightbox__next {
+		width: 42px;
+		height: 42px;
+		font-size: 22px;
+	}
+}

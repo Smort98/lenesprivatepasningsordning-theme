@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "lene/tilmelding",
+  "title": "Tilmelding",
+  "category": "lene-sektioner",
+  "icon": "clipboard",
+  "description": "Udvidet tilmeldingsformular. Slår pladsen op fra ?plads=<ID> når man kommer fra pladstavlen.",
+  "keywords": [
+    "tilmelding",
+    "venteliste",
+    "ansøgning"
+  ],
+  "textdomain": "lene",
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "default": "Tilmelding"
+    },
+    "titel": {
+      "type": "string",
+      "default": "Skriv dig på venteliste"
+    },
+    "tekst": {
+      "type": "string",
+      "default": "Udfyld formularen, så vender Lene tilbage hurtigst muligt."
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

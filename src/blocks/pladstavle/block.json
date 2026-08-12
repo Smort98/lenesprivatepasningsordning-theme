@@ -33,6 +33,10 @@
 		"visOpdateret": {
 			"type": "boolean",
 			"default": true
+		},
+		"tilmeldingLink": {
+			"type": "string",
+			"default": "/tilmelding/"
 		}
 	},
 	"supports": {
