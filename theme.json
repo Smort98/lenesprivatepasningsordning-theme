@@ -120,6 +120,12 @@
 		}
 	},
 	"styles": {
+		"spacing": {
+			"padding": {
+				"left": "clamp(14px, 3vw, 24px)",
+				"right": "clamp(14px, 3vw, 24px)"
+			}
+		},
 		"color": {
 			"background": "var(--wp--preset--color--paper)",
 			"text": "var(--wp--preset--color--pine)"
