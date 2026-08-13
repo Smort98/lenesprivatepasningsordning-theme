@@ -68,7 +68,7 @@ add_filter( 'block_categories_all', 'lene_block_category' );
  */
 function lene_gamle_side_redirects() {
 	if ( is_page( 'vores-dag' ) ) {
-		wp_safe_redirect( home_url( '/hvem-er-jeg/#rytme' ), 301 );
+		wp_safe_redirect( home_url( '/#rytme' ), 301 );
 		exit;
 	}
 	if ( is_page( 'aabningstider' ) ) {

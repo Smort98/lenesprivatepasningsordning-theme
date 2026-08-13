@@ -67,6 +67,26 @@ h4 {
 	margin-inline: auto;
 }
 
+/*
+ * Alle Lene-sektioner er bygget til at være fuldbredde-bånd (baggrund
+ * kant-til-kant, indhold centreret via .wrap indeni) — uanset om
+ * blokkens "align"-attribut rent faktisk er sat til "full" i det
+ * gemte indhold. WP's constrained-layout ("is-layout-constrained")
+ * spænder ellers disse ned til contentSize (1140px) med
+ * "margin-left/right: auto !important", så vi bryder ud manuelt her
+ * i stedet for at være afhængige af at align:"full" er sat korrekt på
+ * hver eneste blok-instans.
+ */
+.wp-site-blocks .section,
+.wp-site-blocks .pagehead,
+.editor-styles-wrapper .section,
+.editor-styles-wrapper .pagehead {
+	width: 100vw !important;
+	max-width: none !important;
+	margin-left: calc(50% - 50vw) !important;
+	margin-right: calc(50% - 50vw) !important;
+}
+
 .eyebrow {
 	font-size: 12px;
 	font-weight: 700;
@@ -308,6 +328,7 @@ h4 {
 	top: 0;
 	z-index: 60;
 	background: rgba(255, 255, 255, 0.9);
+	-webkit-backdrop-filter: blur(12px);
 	backdrop-filter: blur(12px);
 	border-bottom: 1px solid var(--line);
 }
