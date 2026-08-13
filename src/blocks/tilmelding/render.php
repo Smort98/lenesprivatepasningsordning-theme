@@ -10,6 +10,7 @@ defined( 'ABSPATH' ) || exit;
 $eyebrow = $attributes['eyebrow'] ?? '';
 $titel   = $attributes['titel'] ?? '';
 $tekst   = $attributes['tekst'] ?? '';
+$punkter = is_array( $attributes['punkter'] ?? null ) ? $attributes['punkter'] : array();
 
 $plads_id     = isset( $_GET['plads'] ) ? absint( $_GET['plads'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $valgt_plads  = null;
@@ -29,24 +30,30 @@ $wrapper_attributes = get_block_wrapper_attributes(
 );
 ?>
 <section <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-	<div class="wrap">
-		<div class="section__head">
-			<div>
-				<?php if ( $eyebrow ) : ?>
-					<p class="eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
-				<?php endif; ?>
-				<?php if ( $titel ) : ?>
-					<h2><?php echo esc_html( $titel ); ?></h2>
-				<?php endif; ?>
-				<?php if ( $tekst ) : ?>
-					<p class="lede"><?php echo esc_html( $tekst ); ?></p>
-				<?php endif; ?>
-			</div>
-		</div>
+	<div class="wrap tilmelding__grid">
+		<div>
+			<?php if ( $eyebrow ) : ?>
+				<p class="eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
+			<?php endif; ?>
+			<?php if ( $titel ) : ?>
+				<h2><?php echo esc_html( $titel ); ?></h2>
+			<?php endif; ?>
+			<?php if ( $tekst ) : ?>
+				<p class="lede"><?php echo esc_html( $tekst ); ?></p>
+			<?php endif; ?>
 
-		<?php if ( $valgt_plads ) : ?>
-			<p class="tilmelding__plads">Du skriver om pladsen <?php echo esc_html( lene_dansk_dato( $valgt_plads['timestamp'] ) ); ?></p>
-		<?php endif; ?>
+			<?php if ( $valgt_plads ) : ?>
+				<p class="tilmelding__plads">Du skriver om pladsen <?php echo esc_html( lene_dansk_dato( $valgt_plads['timestamp'] ) ); ?></p>
+			<?php endif; ?>
+
+			<?php if ( $punkter ) : ?>
+				<ul class="tilmelding__punkter">
+					<?php foreach ( $punkter as $punkt ) : ?>
+						<li><?php echo esc_html( $punkt ); ?></li>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
+		</div>
 
 		<div class="form tilmelding__form">
 			<?php if ( 'tak' === $status ) : ?>

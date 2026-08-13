@@ -24,6 +24,17 @@
     "tekst": {
       "type": "string",
       "default": "Udfyld formularen, så vender Lene tilbage hurtigst muligt."
+    },
+    "punkter": {
+      "type": "array",
+      "default": [
+        "Lene vender selv tilbage — ingen automatisk svar",
+        "Ingen forpligtelse ved at skrive dig på ventelisten",
+        "Dine oplysninger bruges kun til at kontakte dig om pladsen"
+      ],
+      "items": {
+        "type": "string"
+      }
     }
   },
   "supports": {
