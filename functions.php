@@ -61,6 +61,24 @@ function lene_block_category( array $categories ): array {
 add_filter( 'block_categories_all', 'lene_block_category' );
 
 /**
+ * 301-redirects for sider hvis indhold er lagt sammen med andre sider
+ * under omlægningen fra Kadence. "Vores dag" er lagt ind under "Om Lene",
+ * og "Åbningstider" er lagt ind under "Praktisk info" (som foreslået i
+ * mockuppen).
+ */
+function lene_gamle_side_redirects() {
+	if ( is_page( 'vores-dag' ) ) {
+		wp_safe_redirect( home_url( '/hvem-er-jeg/#rytme' ), 301 );
+		exit;
+	}
+	if ( is_page( 'aabningstider' ) ) {
+		wp_safe_redirect( home_url( '/praktisk-info/#aabningstider' ), 301 );
+		exit;
+	}
+}
+add_action( 'template_redirect', 'lene_gamle_side_redirects' );
+
+/**
  * Auto-registrér alle blokke bygget med wp-scripts.
  * Hver blok ligger i build/blocks/<navn>/block.json — ingen manuel
  * registrering nødvendig når en ny blok tilføjes under src/blocks/.
