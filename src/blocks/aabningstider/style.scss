@@ -58,7 +58,7 @@
 	font-size: 14px;
 	font-weight: 700;
 	color: var( --pine );
-	box-shadow: 0 0 0 4px rgba( 247, 194, 75, 0.22 );
+	box-shadow: 0 0 0 4px color-mix( in srgb, var( --sun ) 22%, transparent );
 }
 .lene-aabningstider .hours__axis {
 	display: grid;

@@ -39,7 +39,7 @@
 	position: fixed;
 	inset: 0;
 	z-index: 100000;
-	background: rgba( 27, 51, 38, 0.92 );
+	background: color-mix( in srgb, var( --pine ) 92%, transparent );
 	display: flex;
 	align-items: center;
 	justify-content: center;

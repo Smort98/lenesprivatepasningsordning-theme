@@ -204,16 +204,16 @@ a.plads__tag {
 .lene-pladstavle .plads.is-ledig .plads__tag {
 	border-color: var(--sun-deep);
 	background: var(--sun);
-	box-shadow: 0 0 0 6px rgba(247, 194, 75, 0.3), 0 16px 32px -20px rgba(217, 154, 11, 0.95);
+	box-shadow: 0 0 0 6px color-mix(in srgb, var(--sun) 30%, transparent), 0 16px 32px -20px color-mix(in srgb, var(--sun-deep) 95%, transparent);
 }
 .lene-pladstavle .plads.is-ledig .plads__tag:hover {
-	box-shadow: 0 0 0 8px rgba(247, 194, 75, 0.4), 0 22px 38px -20px rgba(217, 154, 11, 1);
+	box-shadow: 0 0 0 8px color-mix(in srgb, var(--sun) 40%, transparent), 0 22px 38px -20px var(--sun-deep);
 }
 .lene-pladstavle .plads.is-ledig .plads__hole {
-	border-color: rgba(27, 51, 38, 0.45);
+	border-color: color-mix(in srgb, var(--pine) 45%, transparent);
 }
 .lene-pladstavle .plads.is-ledig .plads__date span {
-	background: rgba(27, 51, 38, 0.12);
+	background: color-mix(in srgb, var(--pine) 12%, transparent);
 	color: var(--pine);
 }
 .lene-pladstavle .plads.is-ledig .plads__count {
@@ -223,30 +223,30 @@ a.plads__tag {
 	background: var(--pine);
 	color: var(--sun);
 	border-color: var(--pine);
-	box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.55), 0 8px 18px -8px rgba(27, 51, 38, 0.75);
+	box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.55), 0 8px 18px -8px color-mix(in srgb, var(--pine) 75%, transparent);
 }
 .lene-pladstavle .plads.is-ledig .plads__dots li.free {
 	background: var(--pine);
 	border-color: var(--pine);
 }
 .lene-pladstavle .plads.is-ledig .plads__dots li.taken {
-	border-color: rgba(27, 51, 38, 0.45);
+	border-color: color-mix(in srgb, var(--pine) 45%, transparent);
 }
 
 /* DELVIST LEDIG — lys bund, fast gul kant, dæmpet glød */
 .lene-pladstavle .plads.is-delvis .plads__tag {
 	border-color: var(--sun-deep);
-	background: #fffaee;
-	box-shadow: 0 0 0 4px rgba(247, 194, 75, 0.2), 0 12px 26px -20px rgba(217, 154, 11, 0.8);
+	background: var(--tint-gold);
+	box-shadow: 0 0 0 4px color-mix(in srgb, var(--sun) 20%, transparent), 0 12px 26px -20px color-mix(in srgb, var(--sun-deep) 80%, transparent);
 }
 .lene-pladstavle .plads.is-delvis .plads__tag:hover {
-	box-shadow: 0 0 0 6px rgba(247, 194, 75, 0.3), 0 18px 32px -20px rgba(217, 154, 11, 0.95);
+	box-shadow: 0 0 0 6px color-mix(in srgb, var(--sun) 30%, transparent), 0 18px 32px -20px color-mix(in srgb, var(--sun-deep) 95%, transparent);
 }
 .lene-pladstavle .plads.is-delvis .plads__status {
 	background: var(--sun);
 	color: var(--pine);
 	border-color: var(--sun-deep);
-	box-shadow: 0 4px 12px -6px rgba(217, 154, 11, 0.9);
+	box-shadow: 0 4px 12px -6px color-mix(in srgb, var(--sun-deep) 90%, transparent);
 }
 
 /* RESERVERET — stiplet, uden fyld og uden glød */
@@ -306,10 +306,10 @@ a.plads__tag {
 .lene-pladstavle .swatch--ledig {
 	background: var(--sun);
 	border-color: var(--sun-deep);
-	box-shadow: 0 0 0 3px rgba(247, 194, 75, 0.35);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--sun) 35%, transparent);
 }
 .lene-pladstavle .swatch--delvis {
-	background: #fffaee;
+	background: var(--tint-gold);
 	border-color: var(--sun-deep);
 }
 .lene-pladstavle .swatch--res {

@@ -18,6 +18,13 @@
 	--line: var(--wp--custom--line);
 	--line-strong: var(--wp--custom--line-strong);
 
+	--footer-text: var(--wp--custom--footer--text);
+	--footer-heading: var(--wp--custom--footer--heading);
+	--footer-meta: var(--wp--custom--footer--meta);
+	--footer-border: var(--wp--custom--footer--border);
+	--tint-berry: var(--wp--custom--tint--berry);
+	--tint-gold: var(--wp--custom--tint--gold);
+
 	--r-lg: var(--wp--custom--radius--lg);
 	--r-md: var(--wp--custom--radius--md);
 	--r-sm: var(--wp--custom--radius--sm);
@@ -123,7 +130,7 @@ h4 {
 }
 .btn--primary:hover {
 	transform: translateY(-2px);
-	box-shadow: 0 14px 28px -18px rgba(217, 154, 11, 0.9);
+	box-shadow: 0 14px 28px -18px color-mix(in srgb, var(--sun-deep) 90%, transparent);
 }
 .btn--ghost {
 	border-color: var(--line-strong);
@@ -290,11 +297,11 @@ h4 {
 	font-size: 15px;
 }
 .form__besked--ok {
-	background: rgba( 27, 51, 38, 0.08 );
+	background: color-mix( in srgb, var( --pine ) 8%, transparent );
 	color: var( --pine );
 }
 .form__besked--fejl {
-	background: rgba( 180, 87, 107, 0.12 );
+	background: color-mix( in srgb, var( --berry ) 12%, transparent );
 	color: var( --berry );
 }
 
@@ -460,7 +467,7 @@ h4 {
    ============================================================ */
 .site-footer {
 	background: var(--pine);
-	color: #c9dbcd;
+	color: var(--footer-text);
 	padding: clamp(50px, 7vw, 70px) 0 34px;
 }
 .site-footer h4 {
@@ -468,7 +475,7 @@ h4 {
 	font-weight: 700;
 	letter-spacing: 0.14em;
 	text-transform: uppercase;
-	color: #7e9c86;
+	color: var(--footer-heading);
 	font-family: var(--body);
 	margin-bottom: 16px;
 }
@@ -498,13 +505,13 @@ h4 {
 .footer__bottom {
 	margin-top: 52px;
 	padding-top: 22px;
-	border-top: 1px solid rgba(201, 219, 205, 0.18);
+	border-top: 1px solid var(--footer-border);
 	display: flex;
 	justify-content: space-between;
 	gap: 18px;
 	flex-wrap: wrap;
 	font-size: 13.5px;
-	color: #89a490;
+	color: var(--footer-meta);
 }
 
 @media (max-width: 680px) {

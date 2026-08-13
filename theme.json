@@ -109,7 +109,17 @@
 				"lifted": "0 16px 38px -24px rgba(27,51,38,.6)"
 			},
 			"line": "rgba(27,51,38,.16)",
-			"line-strong": "rgba(27,51,38,.42)"
+			"line-strong": "rgba(27,51,38,.42)",
+			"footer": {
+				"text": "#C9DBCD",
+				"heading": "#7E9C86",
+				"meta": "#89A490",
+				"border": "rgba(201,219,205,.18)"
+			},
+			"tint": {
+				"berry": "#FDF5F7",
+				"gold": "#FFFAEE"
+			}
 		},
 		"blocks": {
 			"core/paragraph": {
