@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 64" width="340" height="64" role="img" aria-label="Lenes Private Pasningsordning">
+	<path d="M8 18 Q28 8 48 18" fill="none" stroke="#1B3326" stroke-width="3.4" stroke-linecap="round"/>
+	<line x1="16" y1="17" x2="16" y2="26" stroke="#1B3326" stroke-width="2.2"/>
+	<line x1="40" y1="17" x2="40" y2="24" stroke="#1B3326" stroke-width="2.2"/>
+	<circle cx="16" cy="35" r="9" fill="#F7C24B" stroke="#D99A0B" stroke-width="2"/>
+	<rect x="31" y="26" width="16" height="16" rx="4.5" fill="none" stroke="#1B3326" stroke-width="2.2" stroke-dasharray="3 3" transform="rotate(8 39 34)"/>
+	<text x="70" y="34" font-family="Fraunces, Georgia, serif" font-size="27" font-weight="600" fill="#1B3326">Lenes</text>
+	<text x="70" y="50" font-family="Karla, sans-serif" font-size="10.5" font-weight="700" letter-spacing="1.6" fill="#D99A0B">PRIVATE PASNINGSORDNING</text>
+</svg>
