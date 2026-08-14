@@ -63,6 +63,10 @@
     "visNaestePlads": {
       "type": "boolean",
       "default": true
+    },
+    "visAabningstider": {
+      "type": "boolean",
+      "default": true
     }
   },
   "supports": {

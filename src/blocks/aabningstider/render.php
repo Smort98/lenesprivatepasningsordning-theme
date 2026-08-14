@@ -10,29 +10,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! function_exists( 'lene_aabningstider_format_tid' ) ) {
-	/**
-	 * "06:45" -> "6.45" (dansk klokkeslætsformat, ingen foranstillet nul).
-	 */
-	function lene_aabningstider_format_tid( string $hhmm ): string {
-		$dele = explode( ':', $hhmm );
-		if ( count( $dele ) < 2 ) {
-			return $hhmm;
-		}
-		return (int) $dele[0] . '.' . $dele[1];
-	}
-}
-
-if ( ! function_exists( 'lene_aabningstider_minutter' ) ) {
-	function lene_aabningstider_minutter( string $hhmm ): int {
-		$dele = explode( ':', $hhmm );
-		if ( count( $dele ) < 2 ) {
-			return 0;
-		}
-		return ( (int) $dele[0] ) * 60 + (int) $dele[1];
-	}
-}
-
 $titel      = $attributes['titel'] ?? '';
 $eyebrow    = $attributes['eyebrow'] ?? '';
 $dage       = is_array( $attributes['dage'] ?? null ) ? $attributes['dage'] : array();
@@ -73,26 +50,7 @@ for ( $t = $akse_start_time; $t <= $akse_slut_time; $t += 120 ) {
 	);
 }
 
-$status_tekst = '';
-if ( $vis_status ) {
-	$nu_ugedag  = (int) current_time( 'N' );
-	$nu_minutter = ( (int) current_time( 'G' ) ) * 60 + (int) current_time( 'i' );
-	foreach ( $dage as $dag ) {
-		$ugedage = is_array( $dag['ugedage'] ?? null ) ? array_map( 'intval', $dag['ugedage'] ) : array();
-		if ( ! in_array( $nu_ugedag, $ugedage, true ) ) {
-			continue;
-		}
-		$aabner = lene_aabningstider_minutter( $dag['aabner'] );
-		$lukker = lene_aabningstider_minutter( $dag['lukker'] );
-		if ( $nu_minutter >= $aabner && $nu_minutter < $lukker ) {
-			$status_tekst = 'Åbent nu · lukker ' . lene_aabningstider_format_tid( $dag['lukker'] );
-		}
-		break;
-	}
-	if ( '' === $status_tekst ) {
-		$status_tekst = 'Lukket nu';
-	}
-}
+$status_tekst = $vis_status ? lene_aabningstider_beregn_status( $dage ) : '';
 
 $baggrund = 'sky' === ( $attributes['baggrund'] ?? 'paper' ) ? 'sky' : 'paper';
 

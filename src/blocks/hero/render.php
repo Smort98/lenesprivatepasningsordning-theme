@@ -17,8 +17,15 @@ $knap2_link   = $attributes['knapSekundaerLink'] ?? '#';
 $fakta        = is_array( $attributes['fakta'] ?? null ) ? $attributes['fakta'] : array();
 $billede      = $attributes['billede'] ?? array();
 $vis_naeste   = $attributes['visNaestePlads'] ?? true;
+$vis_aabningstider = $attributes['visAabningstider'] ?? true;
 
 $naeste = $vis_naeste ? lene_naeste_ledige_plads() : null;
+
+$aabningstider_status = '';
+if ( $vis_aabningstider ) {
+	$aabningstider_data   = lene_hent_aabningstider_data();
+	$aabningstider_status = lene_aabningstider_beregn_status( $aabningstider_data['dage'] );
+}
 
 $wrapper_attributes = get_block_wrapper_attributes(
 	array(
@@ -48,12 +55,15 @@ $wrapper_attributes = get_block_wrapper_attributes(
 					<?php endif; ?>
 				</div>
 			<?php endif; ?>
-			<?php if ( ! empty( $fakta ) ) : ?>
+			<?php if ( ! empty( $fakta ) || $aabningstider_status ) : ?>
 				<ul class="hero__facts">
 					<?php foreach ( $fakta as $punkt ) : ?>
 						<?php if ( '' === trim( (string) $punkt ) ) continue; ?>
 						<li><?php echo esc_html( $punkt ); ?></li>
 					<?php endforeach; ?>
+					<?php if ( $aabningstider_status ) : ?>
+						<li><?php echo esc_html( $aabningstider_status ); ?></li>
+					<?php endif; ?>
 				</ul>
 			<?php endif; ?>
 		</div>

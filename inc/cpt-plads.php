@@ -163,6 +163,8 @@ function lene_gem_plads_meta( int $post_id ) {
 		return;
 	}
 
+	$antal_ledige_foer = max( 0, (int) get_post_meta( $post_id, 'antal_ledige', true ) );
+
 	$dato         = isset( $_POST['lene_plads_dato'] ) ? sanitize_text_field( wp_unslash( $_POST['lene_plads_dato'] ) ) : '';
 	$antal        = isset( $_POST['lene_plads_antal'] ) ? max( 0, (int) $_POST['lene_plads_antal'] ) : 0;
 	$antal_ledige = isset( $_POST['lene_plads_antal_ledige'] ) ? max( 0, (int) $_POST['lene_plads_antal_ledige'] ) : 0;
@@ -175,6 +177,11 @@ function lene_gem_plads_meta( int $post_id ) {
 	update_post_meta( $post_id, 'antal_ledige', $antal_ledige );
 	update_post_meta( $post_id, 'status_naar_fuld', $status );
 	update_post_meta( $post_id, 'note', $note );
+
+	// En plads er lige blevet ledig (var 0, er nu >0) — giv pladsalarm-listen besked.
+	if ( 0 === $antal_ledige_foer && $antal_ledige > 0 && function_exists( 'lene_pladsalarm_send_besked' ) ) {
+		lene_pladsalarm_send_besked();
+	}
 
 	// Titlen sættes automatisk ud fra datoen — kunden skal ikke selv holde den i sync.
 	if ( $dato ) {

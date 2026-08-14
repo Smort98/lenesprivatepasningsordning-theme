@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "lene/pladsalarm",
+  "title": "Pladsalarm",
+  "category": "lene-sektioner",
+  "icon": "email-alt2",
+  "description": "Tilmelding til \"få besked når der bliver en ledig plads\". Gemmer i CPT pladsalarm og sender automatisk mail, når en plads bliver ledig.",
+  "keywords": [
+    "pladsalarm",
+    "besked",
+    "venteliste",
+    "notifikation"
+  ],
+  "textdomain": "lene",
+  "attributes": {
+    "titel": {
+      "type": "string",
+      "default": "Få besked når der bliver en ledig plads"
+    },
+    "tekst": {
+      "type": "string",
+      "default": "Skriv din e-mail, så skriver vi til dig, med det samme der bliver en plads ledig."
+    },
+    "baggrund": {
+      "type": "string",
+      "enum": [
+        "sky",
+        "paper"
+      ],
+      "default": "paper"
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

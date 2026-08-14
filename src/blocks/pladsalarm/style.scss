@@ -1,0 +1,61 @@
+.lene-pladsalarm.section {
+	padding: clamp( 40px, 6vw, 64px ) 0;
+}
+.lene-pladsalarm .pladsalarm__box {
+	background: var( --paper );
+	border: 1px solid var( --line );
+	border-radius: var( --r-md );
+	padding: clamp( 22px, 3vw, 30px );
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	flex-wrap: wrap;
+	box-shadow: var( --shadow-soft );
+}
+.lene-pladsalarm .pladsalarm__box > div:first-child {
+	max-width: 52ch;
+}
+.lene-pladsalarm .pladsalarm__box h2 {
+	font-size: clamp( 22px, 2.6vw, 28px );
+	margin-bottom: 6px;
+}
+.lene-pladsalarm .pladsalarm__box p {
+	color: var( --pine-soft );
+}
+.lene-pladsalarm .pladsalarm__form {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+	align-items: center;
+}
+.lene-pladsalarm .pladsalarm__form input[type='email'] {
+	padding: 12px 16px;
+	border: 1px solid var( --line );
+	border-radius: var( --r-sm );
+	font-family: var( --body );
+	font-size: 15px;
+	min-width: 220px;
+}
+.lene-pladsalarm .form__besked {
+	width: 100%;
+}
+
+@media ( max-width: 680px ) {
+	.lene-pladsalarm .pladsalarm__box {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.lene-pladsalarm .pladsalarm__form {
+		width: 100%;
+	}
+	.lene-pladsalarm .pladsalarm__form input[type='email'] {
+		flex: 1;
+		min-width: 0;
+		width: 100%;
+	}
+	.lene-pladsalarm .pladsalarm__form .btn {
+		width: 100%;
+		justify-content: center;
+	}
+}
