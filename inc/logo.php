@@ -159,19 +159,46 @@ function lene_registrer_logo_indstilling() {
 add_action( 'admin_init', 'lene_registrer_logo_indstilling' );
 
 /**
- * Favoritikonet (browser-fane) kan ikke bruge var(--pine) osv., da det
- * vises uden for sitets CSS — så hver ikon-variant har et matchende,
- * allerede-tegnet PNG i assets/favicons/. Når man skifter ikon under
- * Indstillinger, importeres/genbruges det matchende PNG som medie og
- * sættes automatisk som site_icon.
+ * Er stilarten "Original (bordeaux)" den aktive globale stilart lige nu?
+ * Slås op ved at kigge i det aktive tema-farve-overskrivningen (samme
+ * post Site Editor → Design → Stilarter gemmer i) efter "pine"-farven —
+ * "#371D27" er kun brugt i styles/original.json.
  */
-function lene_favicon_attachment_id( string $variant ): int {
+function lene_farvetema_er_original(): bool {
+	$post = get_page_by_path( 'wp-global-styles-' . get_stylesheet(), OBJECT, 'wp_global_styles' );
+	if ( ! $post || ! $post->post_content ) {
+		return false;
+	}
+	$data = json_decode( $post->post_content, true );
+	$palette = $data['settings']['color']['palette']['theme'] ?? array();
+	foreach ( $palette as $farve ) {
+		if ( 'pine' === ( $farve['slug'] ?? '' ) ) {
+			return '#371D27' === strtoupper( $farve['color'] ?? '' );
+		}
+	}
+	return false;
+}
+
+/**
+ * Favoritikonet (browser-fane) kan ikke bruge var(--pine) osv., da det
+ * vises uden for sitets CSS — så hver ikon-variant findes som to
+ * færdigtegnede PNG'er i assets/favicons/: én i det grønne standard-tema
+ * og én i "Original (bordeaux)" (filnavn med -original). Når man skifter
+ * ikon under Indstillinger, ELLER skifter farvetema i Site Editor,
+ * importeres/genbruges det matchende PNG som medie og sættes automatisk
+ * som site_icon.
+ */
+function lene_favicon_noegle( string $variant ): string {
+	return lene_farvetema_er_original() ? "{$variant}-original" : $variant;
+}
+
+function lene_favicon_attachment_id( string $noegle ): int {
 	$eksisterende = get_posts(
 		array(
 			'post_type'      => 'attachment',
 			'posts_per_page' => 1,
 			'meta_key'       => '_lene_favicon_variant',
-			'meta_value'     => $variant,
+			'meta_value'     => $noegle,
 			'fields'         => 'ids',
 		)
 	);
@@ -179,7 +206,7 @@ function lene_favicon_attachment_id( string $variant ): int {
 		return (int) $eksisterende[0];
 	}
 
-	$kilde = get_theme_file_path( "assets/favicons/{$variant}.png" );
+	$kilde = get_theme_file_path( "assets/favicons/{$noegle}.png" );
 	if ( ! file_exists( $kilde ) ) {
 		return 0;
 	}
@@ -189,17 +216,19 @@ function lene_favicon_attachment_id( string $variant ): int {
 	require_once ABSPATH . 'wp-admin/includes/media.php';
 
 	$upload_dir = wp_upload_dir();
-	$filnavn    = wp_unique_filename( $upload_dir['path'], "favicon-{$variant}.png" );
+	$filnavn    = wp_unique_filename( $upload_dir['path'], "favicon-{$noegle}.png" );
 	$destination = $upload_dir['path'] . '/' . $filnavn;
 
 	if ( ! copy( $kilde, $destination ) ) {
 		return 0;
 	}
 
+	$variant = preg_replace( '/-original$/', '', $noegle );
+
 	$attachment_id = wp_insert_attachment(
 		array(
 			'post_mime_type' => 'image/png',
-			'post_title'     => 'Site-ikon (' . ( lene_logo_varianter()[ $variant ] ?? $variant ) . ')',
+			'post_title'     => 'Site-ikon (' . ( lene_logo_varianter()[ $variant ] ?? $variant ) . ( $noegle !== $variant ? ', bordeaux' : '' ) . ')',
 			'post_status'    => 'inherit',
 		),
 		$destination
@@ -207,20 +236,40 @@ function lene_favicon_attachment_id( string $variant ): int {
 
 	if ( ! is_wp_error( $attachment_id ) && $attachment_id ) {
 		wp_update_attachment_metadata( $attachment_id, wp_generate_attachment_metadata( $attachment_id, $destination ) );
-		update_post_meta( $attachment_id, '_lene_favicon_variant', $variant );
+		update_post_meta( $attachment_id, '_lene_favicon_variant', $noegle );
 		return (int) $attachment_id;
 	}
 
 	return 0;
 }
 
-function lene_synkroniser_favicon( $old_value, $value ) {
-	if ( $old_value === $value ) {
-		return;
-	}
-	$attachment_id = lene_favicon_attachment_id( $value );
+function lene_synkroniser_favicon_nu() {
+	$attachment_id = lene_favicon_attachment_id( lene_favicon_noegle( lene_hent_logo_variant() ) );
 	if ( $attachment_id ) {
 		update_option( 'site_icon', $attachment_id );
 	}
 }
-add_action( 'update_option_' . LENE_LOGO_OPTION, 'lene_synkroniser_favicon', 10, 2 );
+
+function lene_synkroniser_favicon_ved_ikonskift( $old_value, $value ) {
+	if ( $old_value === $value ) {
+		return;
+	}
+	lene_synkroniser_favicon_nu();
+}
+add_action( 'update_option_' . LENE_LOGO_OPTION, 'lene_synkroniser_favicon_ved_ikonskift', 10, 2 );
+
+/**
+ * Global stilart (farvetema) gemmes som en revision af wp_global_styles-
+ * indlægget, når man klikker en anden stilart i Site Editor. Synkroniser
+ * favicon igen, så den følger med til det nye farvetema.
+ */
+function lene_synkroniser_favicon_ved_temaskift( $post_id, $post ) {
+	if ( 'wp_global_styles' !== $post->post_type || wp_is_post_revision( $post_id ) ) {
+		return;
+	}
+	if ( 'wp-global-styles-' . get_stylesheet() !== $post->post_name ) {
+		return;
+	}
+	lene_synkroniser_favicon_nu();
+}
+add_action( 'save_post', 'lene_synkroniser_favicon_ved_temaskift', 20, 2 );
