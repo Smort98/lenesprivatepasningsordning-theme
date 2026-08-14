@@ -1,0 +1,32 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"title": "Havblå",
+	"settings": {
+		"color": {
+			"palette": [
+				{ "slug": "pine", "name": "Mørk teal", "color": "#1B3A42" },
+				{ "slug": "pine-soft", "name": "Teal", "color": "#2E5560" },
+				{ "slug": "stone", "name": "Blågrå", "color": "#6B8791" },
+				{ "slug": "sky", "name": "Lys blå", "color": "#E5EFF1" },
+				{ "slug": "sky-deep", "name": "Blå mørk", "color": "#D2E3E6" },
+				{ "slug": "paper", "name": "Hvid", "color": "#FFFFFF" },
+				{ "slug": "sun", "name": "Koral", "color": "#F4A97C" },
+				{ "slug": "sun-deep", "name": "Koral mørk", "color": "#D97F45" },
+				{ "slug": "berry", "name": "Tegl", "color": "#C2574F" }
+			]
+		},
+		"custom": {
+			"footer": {
+				"text": "#C9DEE2",
+				"heading": "#7FAAB4",
+				"meta": "#6B95A0",
+				"border": "rgba(201,222,226,.18)"
+			},
+			"tint": {
+				"berry": "#F5DFDC",
+				"gold": "#FBEADD"
+			}
+		}
+	}
+}

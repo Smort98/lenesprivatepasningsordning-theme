@@ -1,0 +1,32 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"title": "Lavendel",
+	"settings": {
+		"color": {
+			"palette": [
+				{ "slug": "pine", "name": "Mørk lilla", "color": "#362F4A" },
+				{ "slug": "pine-soft", "name": "Lilla", "color": "#514570" },
+				{ "slug": "stone", "name": "Lavendelgrå", "color": "#7C7291" },
+				{ "slug": "sky", "name": "Lys lavendel", "color": "#ECE7F5" },
+				{ "slug": "sky-deep", "name": "Lavendel mørk", "color": "#DCD3EC" },
+				{ "slug": "paper", "name": "Hvid", "color": "#FFFFFF" },
+				{ "slug": "sun", "name": "Guld", "color": "#E8B84B" },
+				{ "slug": "sun-deep", "name": "Guld mørk", "color": "#C99420" },
+				{ "slug": "berry", "name": "Mauve", "color": "#A65B7A" }
+			]
+		},
+		"custom": {
+			"footer": {
+				"text": "#DCD3EC",
+				"heading": "#A896C4",
+				"meta": "#9483B0",
+				"border": "rgba(220,211,236,.18)"
+			},
+			"tint": {
+				"berry": "#F0DCE6",
+				"gold": "#FBF0D9"
+			}
+		}
+	}
+}

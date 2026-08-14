@@ -159,37 +159,53 @@ function lene_registrer_logo_indstilling() {
 add_action( 'admin_init', 'lene_registrer_logo_indstilling' );
 
 /**
- * Er stilarten "Original (bordeaux)" den aktive globale stilart lige nu?
- * Slås op ved at kigge i det aktive tema-farve-overskrivningen (samme
- * post Site Editor → Design → Stilarter gemmer i) efter "pine"-farven —
- * "#371D27" er kun brugt i styles/original.json.
+ * Hver farve-stilart i styles/*.json har sin egen unikke "pine"-farve.
+ * Bruges til at slå op hvilken stilart der er aktiv lige nu, uden at
+ * skulle læse selve JSON-filerne (den aktive stilart er en overskrivning
+ * gemt i en wp_global_styles-post, ikke nødvendigvis identisk med filen).
  */
-function lene_farvetema_er_original(): bool {
+function lene_farvetema_noegler(): array {
+	return array(
+		'371D27' => 'bordeaux',
+		'1B3A42' => 'havblaa',
+		'3D2B1F' => 'ler',
+		'362F4A' => 'lavendel',
+	);
+}
+
+/**
+ * Hvilket farvetema er aktivt lige nu? Returnerer 'standard' (temaets
+ * grønne theme.json-farver) hvis der ingen overskrivning er, ellers
+ * nøglen for den matchende stilart i styles/*.json.
+ */
+function lene_hent_aktivt_farvetema(): string {
 	$post = get_page_by_path( 'wp-global-styles-' . get_stylesheet(), OBJECT, 'wp_global_styles' );
 	if ( ! $post || ! $post->post_content ) {
-		return false;
+		return 'standard';
 	}
-	$data = json_decode( $post->post_content, true );
+	$data    = json_decode( $post->post_content, true );
 	$palette = $data['settings']['color']['palette']['theme'] ?? array();
 	foreach ( $palette as $farve ) {
 		if ( 'pine' === ( $farve['slug'] ?? '' ) ) {
-			return '#371D27' === strtoupper( $farve['color'] ?? '' );
+			$hex = strtoupper( ltrim( $farve['color'] ?? '', '#' ) );
+			return lene_farvetema_noegler()[ $hex ] ?? 'standard';
 		}
 	}
-	return false;
+	return 'standard';
 }
 
 /**
  * Favoritikonet (browser-fane) kan ikke bruge var(--pine) osv., da det
- * vises uden for sitets CSS — så hver ikon-variant findes som to
- * færdigtegnede PNG'er i assets/favicons/: én i det grønne standard-tema
- * og én i "Original (bordeaux)" (filnavn med -original). Når man skifter
- * ikon under Indstillinger, ELLER skifter farvetema i Site Editor,
- * importeres/genbruges det matchende PNG som medie og sættes automatisk
- * som site_icon.
+ * vises uden for sitets CSS — så hver ikon-variant findes som ét
+ * færdigtegnet PNG pr. farvetema i assets/favicons/ (fx "hus.png" for
+ * standard-temaet, "hus-bordeaux.png", "hus-havblaa.png" osv.). Når man
+ * skifter ikon under Indstillinger, ELLER skifter farvetema i Site
+ * Editor, importeres/genbruges det matchende PNG som medie og sættes
+ * automatisk som site_icon.
  */
 function lene_favicon_noegle( string $variant ): string {
-	return lene_farvetema_er_original() ? "{$variant}-original" : $variant;
+	$tema = lene_hent_aktivt_farvetema();
+	return 'standard' === $tema ? $variant : "{$variant}-{$tema}";
 }
 
 function lene_favicon_attachment_id( string $noegle ): int {
@@ -223,12 +239,26 @@ function lene_favicon_attachment_id( string $noegle ): int {
 		return 0;
 	}
 
-	$variant = preg_replace( '/-original$/', '', $noegle );
+	$temanavne = array(
+		'bordeaux' => 'bordeaux',
+		'havblaa'  => 'havblå',
+		'ler'      => 'ler',
+		'lavendel' => 'lavendel',
+	);
+	$variant = $noegle;
+	$tema_titel = '';
+	foreach ( $temanavne as $tema_noegle => $tema_navn ) {
+		if ( str_ends_with( $noegle, "-{$tema_noegle}" ) ) {
+			$variant    = substr( $noegle, 0, -strlen( "-{$tema_noegle}" ) );
+			$tema_titel = ", {$tema_navn}";
+			break;
+		}
+	}
 
 	$attachment_id = wp_insert_attachment(
 		array(
 			'post_mime_type' => 'image/png',
-			'post_title'     => 'Site-ikon (' . ( lene_logo_varianter()[ $variant ] ?? $variant ) . ( $noegle !== $variant ? ', bordeaux' : '' ) . ')',
+			'post_title'     => 'Site-ikon (' . ( lene_logo_varianter()[ $variant ] ?? $variant ) . $tema_titel . ')',
 			'post_status'    => 'inherit',
 		),
 		$destination
