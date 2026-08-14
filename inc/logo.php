@@ -157,3 +157,70 @@ function lene_registrer_logo_indstilling() {
 	);
 }
 add_action( 'admin_init', 'lene_registrer_logo_indstilling' );
+
+/**
+ * Favoritikonet (browser-fane) kan ikke bruge var(--pine) osv., da det
+ * vises uden for sitets CSS — så hver ikon-variant har et matchende,
+ * allerede-tegnet PNG i assets/favicons/. Når man skifter ikon under
+ * Indstillinger, importeres/genbruges det matchende PNG som medie og
+ * sættes automatisk som site_icon.
+ */
+function lene_favicon_attachment_id( string $variant ): int {
+	$eksisterende = get_posts(
+		array(
+			'post_type'      => 'attachment',
+			'posts_per_page' => 1,
+			'meta_key'       => '_lene_favicon_variant',
+			'meta_value'     => $variant,
+			'fields'         => 'ids',
+		)
+	);
+	if ( ! empty( $eksisterende ) ) {
+		return (int) $eksisterende[0];
+	}
+
+	$kilde = get_theme_file_path( "assets/favicons/{$variant}.png" );
+	if ( ! file_exists( $kilde ) ) {
+		return 0;
+	}
+
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	require_once ABSPATH . 'wp-admin/includes/media.php';
+
+	$upload_dir = wp_upload_dir();
+	$filnavn    = wp_unique_filename( $upload_dir['path'], "favicon-{$variant}.png" );
+	$destination = $upload_dir['path'] . '/' . $filnavn;
+
+	if ( ! copy( $kilde, $destination ) ) {
+		return 0;
+	}
+
+	$attachment_id = wp_insert_attachment(
+		array(
+			'post_mime_type' => 'image/png',
+			'post_title'     => 'Site-ikon (' . ( lene_logo_varianter()[ $variant ] ?? $variant ) . ')',
+			'post_status'    => 'inherit',
+		),
+		$destination
+	);
+
+	if ( ! is_wp_error( $attachment_id ) && $attachment_id ) {
+		wp_update_attachment_metadata( $attachment_id, wp_generate_attachment_metadata( $attachment_id, $destination ) );
+		update_post_meta( $attachment_id, '_lene_favicon_variant', $variant );
+		return (int) $attachment_id;
+	}
+
+	return 0;
+}
+
+function lene_synkroniser_favicon( $old_value, $value ) {
+	if ( $old_value === $value ) {
+		return;
+	}
+	$attachment_id = lene_favicon_attachment_id( $value );
+	if ( $attachment_id ) {
+		update_option( 'site_icon', $attachment_id );
+	}
+}
+add_action( 'update_option_' . LENE_LOGO_OPTION, 'lene_synkroniser_favicon', 10, 2 );
