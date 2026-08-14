@@ -11,9 +11,9 @@
 				{ "slug": "sky", "name": "Lys rosa", "color": "#F0E4EA" },
 				{ "slug": "sky-deep", "name": "Rosa mørk", "color": "#E3CFDA" },
 				{ "slug": "paper", "name": "Hvid", "color": "#FCFCFC" },
-				{ "slug": "sun", "name": "Blush", "color": "#F3D4E0" },
+				{ "slug": "sun", "name": "Rosa accent", "color": "#E8A9C0" },
 				{ "slug": "sun-deep", "name": "Bordeaux accent", "color": "#AA4F77" },
-				{ "slug": "berry", "name": "Bær", "color": "#873F5F" }
+				{ "slug": "berry", "name": "Vinrød mørk", "color": "#4B2933" }
 			]
 		},
 		"custom": {
@@ -24,8 +24,8 @@
 				"border": "rgba(231,203,213,.18)"
 			},
 			"tint": {
-				"berry": "#FBEEF1",
-				"gold": "#FBF3E4"
+				"berry": "#F0DEE2",
+				"gold": "#F8E3EC"
 			}
 		}
 	}
