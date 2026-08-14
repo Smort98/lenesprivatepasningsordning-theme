@@ -17,6 +17,8 @@ require_once get_theme_file_path( 'inc/logo.php' );
 require_once get_theme_file_path( 'inc/aabningstider.php' );
 require_once get_theme_file_path( 'inc/schema.php' );
 require_once get_theme_file_path( 'inc/cookie-samtykke-integration.php' );
+require_once get_theme_file_path( 'inc/app-rest.php' );
+require_once get_theme_file_path( 'inc/app.php' );
 
 /**
  * Theme support.
