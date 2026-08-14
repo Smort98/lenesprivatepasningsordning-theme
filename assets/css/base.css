@@ -106,6 +106,22 @@ h4 {
 	margin-top: 0 !important;
 }
 
+/*
+ * Mockuppens .section har kun lodret PADDING (56-90px), aldrig margin —
+ * sektionerne støder direkte op til hinanden, og det er paddingen der
+ * giver luften. WordPress' automatiske blockGap lægger dog 24px margin
+ * oven på det, både mellem header og den første sektion og mellem den
+ * sidste sektion og footeren, hvilket viser sig som en tynd, uønsket
+ * stribe af sidens bund-farve. Hver rigtig side starter og slutter med
+ * en fuldbredde-sektion (hero/sidehoved/tilmelding .. pladstavle/galleri
+ * osv.), som allerede har rigelig egen padding, så mellemrummet kan
+ * fjernes helt her uden at siderne kommer til at virke trange.
+ */
+.wp-site-blocks > main,
+.wp-site-blocks > footer {
+	margin-top: 0 !important;
+}
+
 .eyebrow {
 	font-size: 12px;
 	font-weight: 700;
