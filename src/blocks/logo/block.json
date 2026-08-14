@@ -1,0 +1,18 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "lene/logo",
+	"title": "Logo-ikon",
+	"category": "lene-sektioner",
+	"icon": "art",
+	"description": "Viser det ikon der er valgt under Indstillinger → Kontaktoplysninger → Logo. Følger automatisk det aktive farvetema.",
+	"textdomain": "lene",
+	"supports": {
+		"html": false,
+		"color": false,
+		"spacing": false,
+		"typography": false
+	},
+	"editorScript": "file:./index.js",
+	"render": "file:./render.php"
+}
