@@ -94,6 +94,18 @@ h4 {
 	margin-right: calc(50% - 50vw) !important;
 }
 
+/*
+ * Hero har altid farvet (--sky) baggrund. Følges den direkte af en
+ * sektion med samme farvede baggrund (fx kortgitter sat til "sky"),
+ * fjernes mellemrummet mellem dem, så de glider sammen til én
+ * sammenhængende farvet flade i stedet for at vise en tynd, akavet
+ * stribe af sidens hvide bund imellem to ens farver.
+ */
+.wp-site-blocks .lene-hero.hero + .section--sky,
+.editor-styles-wrapper .lene-hero.hero + .section--sky {
+	margin-top: 0 !important;
+}
+
 .eyebrow {
 	font-size: 12px;
 	font-weight: 700;
