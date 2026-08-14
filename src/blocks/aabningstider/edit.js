@@ -7,6 +7,7 @@ import {
 	TextareaControl,
 	Button,
 	ButtonGroup,
+	SelectControl,
 } from '@wordpress/components';
 import ServerSideRender from '@wordpress/server-side-render';
 
@@ -21,7 +22,7 @@ const UGEDAGE = [
 ];
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { titel, eyebrow, dage, visStatus, note } = attributes;
+	const { titel, eyebrow, dage, visStatus, note, baggrund } = attributes;
 	const blockProps = useBlockProps();
 
 	const opdaterRaekke = ( index, felter ) => {
@@ -60,6 +61,15 @@ export default function Edit( { attributes, setAttributes } ) {
 						onChange={ ( v ) => setAttributes( { visStatus: v } ) }
 					/>
 					<TextareaControl label={ __( 'Note', 'lene' ) } value={ note } onChange={ ( v ) => setAttributes( { note: v } ) } />
+					<SelectControl
+						label={ __( 'Baggrund', 'lene' ) }
+						value={ baggrund }
+						options={ [
+							{ label: __( 'Dis (grågrøn)', 'lene' ), value: 'sky' },
+							{ label: __( 'Hvid', 'lene' ), value: 'paper' },
+						] }
+						onChange={ ( v ) => setAttributes( { baggrund: v } ) }
+					/>
 				</PanelBody>
 				<PanelBody title={ __( 'Åbningstider', 'lene' ) } initialOpen={ true }>
 					{ dage.map( ( dag, index ) => (

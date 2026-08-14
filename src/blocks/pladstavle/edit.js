@@ -17,6 +17,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		visPrikker,
 		maksAntal,
 		visOpdateret,
+		baggrund,
 	} = attributes;
 
 	const blockProps = useBlockProps();
@@ -64,6 +65,15 @@ export default function Edit( { attributes, setAttributes } ) {
 						onChange={ ( value ) => setAttributes( { maksAntal: value } ) }
 						min={ 0 }
 						max={ 12 }
+					/>
+					<SelectControl
+						label={ __( 'Baggrund', 'lene' ) }
+						value={ baggrund }
+						options={ [
+							{ label: __( 'Dis (grågrøn)', 'lene' ), value: 'sky' },
+							{ label: __( 'Hvid', 'lene' ), value: 'paper' },
+						] }
+						onChange={ ( value ) => setAttributes( { baggrund: value } ) }
 					/>
 				</PanelBody>
 			</InspectorControls>

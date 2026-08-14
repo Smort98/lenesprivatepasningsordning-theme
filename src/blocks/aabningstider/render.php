@@ -94,9 +94,11 @@ if ( $vis_status ) {
 	}
 }
 
+$baggrund = 'sky' === ( $attributes['baggrund'] ?? 'paper' ) ? 'sky' : 'paper';
+
 $wrapper_attributes = get_block_wrapper_attributes(
 	array(
-		'class' => 'lene-aabningstider section',
+		'class' => "lene-aabningstider section section--{$baggrund}",
 	)
 );
 ?>

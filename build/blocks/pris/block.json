@@ -40,6 +40,14 @@
       "items": {
         "type": "string"
       }
+    },
+    "baggrund": {
+      "type": "string",
+      "enum": [
+        "sky",
+        "paper"
+      ],
+      "default": "sky"
     }
   },
   "supports": {

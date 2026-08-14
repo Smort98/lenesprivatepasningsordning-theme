@@ -1,8 +1,8 @@
 import { useBlockProps, useInnerBlocksProps, RichText } from '@wordpress/block-editor';
 
 export default function save( { attributes } ) {
-	const { eyebrow, titel, lede } = attributes;
-	const blockProps = useBlockProps.save( { className: 'section' } );
+	const { eyebrow, titel, lede, baggrund } = attributes;
+	const blockProps = useBlockProps.save( { className: `section section--${ baggrund === 'sky' ? 'sky' : 'paper' }` } );
 	const innerBlocksProps = useInnerBlocksProps.save( { className: 'rhythm' } );
 
 	return (

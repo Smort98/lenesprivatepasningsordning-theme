@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, useInnerBlocksProps, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, TextControl, TextareaControl } from '@wordpress/components';
+import { PanelBody, TextControl, TextareaControl, SelectControl } from '@wordpress/components';
 
 const TEMPLATE = [
 	[ 'lene/pris-linje', { tekst: 'Fuldtidsplads pr. måned', beloeb: '9.100 kr.', erMinus: false } ],
@@ -8,8 +8,8 @@ const TEMPLATE = [
 ];
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { eyebrow, titel, totalTekst, totalBeloeb, medSmaat } = attributes;
-	const blockProps = useBlockProps( { className: 'section section--sky' } );
+	const { eyebrow, titel, totalTekst, totalBeloeb, medSmaat, baggrund } = attributes;
+	const blockProps = useBlockProps( { className: `section section--${ baggrund === 'paper' ? 'paper' : 'sky' }` } );
 	const { children, ...innerBlocksProps } = useInnerBlocksProps(
 		{ className: 'receipt' },
 		{ allowedBlocks: [ 'lene/pris-linje' ], template: TEMPLATE, templateInsertUpdatesSelection: false }
@@ -21,6 +21,15 @@ export default function Edit( { attributes, setAttributes } ) {
 				<PanelBody title={ __( 'Tekst', 'lene' ) }>
 					<TextControl label={ __( 'Overrubrik', 'lene' ) } value={ eyebrow } onChange={ ( v ) => setAttributes( { eyebrow: v } ) } />
 					<TextControl label={ __( 'Titel', 'lene' ) } value={ titel } onChange={ ( v ) => setAttributes( { titel: v } ) } />
+					<SelectControl
+						label={ __( 'Baggrund', 'lene' ) }
+						value={ baggrund }
+						options={ [
+							{ label: __( 'Dis (grågrøn)', 'lene' ), value: 'sky' },
+							{ label: __( 'Hvid', 'lene' ), value: 'paper' },
+						] }
+						onChange={ ( v ) => setAttributes( { baggrund: v } ) }
+					/>
 				</PanelBody>
 				<PanelBody title={ __( 'Total', 'lene' ) }>
 					<TextControl label={ __( 'Tekst', 'lene' ) } value={ totalTekst } onChange={ ( v ) => setAttributes( { totalTekst: v } ) } />

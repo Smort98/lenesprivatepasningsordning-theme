@@ -11,10 +11,11 @@ $eyebrow   = $attributes['eyebrow'] ?? '';
 $titel     = $attributes['titel'] ?? '';
 $foot      = $attributes['footTekst'] ?? '';
 $perioder  = lene_hent_lukkedage();
+$baggrund  = 'sky' === ( $attributes['baggrund'] ?? 'paper' ) ? 'sky' : 'paper';
 
 $wrapper_attributes = get_block_wrapper_attributes(
 	array(
-		'class' => 'lene-lukkedage section',
+		'class' => "lene-lukkedage section section--{$baggrund}",
 	)
 );
 ?>

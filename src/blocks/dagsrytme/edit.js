@@ -1,5 +1,6 @@
 import { __ } from '@wordpress/i18n';
-import { useBlockProps, useInnerBlocksProps, RichText } from '@wordpress/block-editor';
+import { useBlockProps, useInnerBlocksProps, RichText, InspectorControls } from '@wordpress/block-editor';
+import { PanelBody, SelectControl } from '@wordpress/components';
 
 const TEMPLATE = [
 	[ 'lene/dagsrytme-punkt', { tidspunkt: '6.45', titel: 'Godmorgen', tekst: 'Vi spiser morgenmad frem til 7.30 og starter dagen stille og roligt.' } ],
@@ -11,14 +12,28 @@ const TEMPLATE = [
 ];
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { eyebrow, titel, lede } = attributes;
-	const blockProps = useBlockProps( { className: 'section' } );
+	const { eyebrow, titel, lede, baggrund } = attributes;
+	const blockProps = useBlockProps( { className: `section section--${ baggrund === 'sky' ? 'sky' : 'paper' }` } );
 	const innerBlocksProps = useInnerBlocksProps(
 		{ className: 'rhythm' },
 		{ allowedBlocks: [ 'lene/dagsrytme-punkt' ], template: TEMPLATE, templateInsertUpdatesSelection: false }
 	);
 
 	return (
+		<>
+		<InspectorControls>
+			<PanelBody title={ __( 'Dagsrytme', 'lene' ) }>
+				<SelectControl
+					label={ __( 'Baggrund', 'lene' ) }
+					value={ baggrund }
+					options={ [
+						{ label: __( 'Dis (grågrøn)', 'lene' ), value: 'sky' },
+						{ label: __( 'Hvid', 'lene' ), value: 'paper' },
+					] }
+					onChange={ ( value ) => setAttributes( { baggrund: value } ) }
+				/>
+			</PanelBody>
+		</InspectorControls>
 		<section { ...blockProps }>
 			<div className="wrap">
 				<div className="section__head">
@@ -49,5 +64,6 @@ export default function Edit( { attributes, setAttributes } ) {
 				<ul { ...innerBlocksProps } />
 			</div>
 		</section>
+		</>
 	);
 }

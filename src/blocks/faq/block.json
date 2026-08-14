@@ -10,7 +10,8 @@
 	"textdomain": "lene",
 	"attributes": {
 		"eyebrow": { "type": "string", "default": "" },
-		"titel": { "type": "string", "default": "Ofte stillede spørgsmål" }
+		"titel": { "type": "string", "default": "Ofte stillede spørgsmål" },
+		"baggrund": { "type": "string", "enum": [ "sky", "paper" ], "default": "sky" }
 	},
 	"supports": {
 		"html": false,

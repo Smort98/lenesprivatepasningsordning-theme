@@ -20,6 +20,14 @@
     "titel": {
       "type": "string",
       "default": "Ofte stillede spørgsmål"
+    },
+    "baggrund": {
+      "type": "string",
+      "enum": [
+        "sky",
+        "paper"
+      ],
+      "default": "sky"
     }
   },
   "supports": {

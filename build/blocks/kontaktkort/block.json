@@ -27,6 +27,14 @@
     "visFormular": {
       "type": "boolean",
       "default": true
+    },
+    "baggrund": {
+      "type": "string",
+      "enum": [
+        "sky",
+        "paper"
+      ],
+      "default": "sky"
     }
   },
   "supports": {

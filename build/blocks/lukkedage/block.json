@@ -23,6 +23,14 @@
     "footTekst": {
       "type": "string",
       "default": "Ved sygdom kontakter jeg altid forældrene tidligt om morgenen. Er jeres barn sygt, vil jeg gerne have besked senest kl. 8.30, da der kan være arrangeret udflugter."
+    },
+    "baggrund": {
+      "type": "string",
+      "enum": [
+        "sky",
+        "paper"
+      ],
+      "default": "paper"
     }
   },
   "supports": {

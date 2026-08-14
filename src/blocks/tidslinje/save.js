@@ -1,8 +1,8 @@
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
 export default function save( { attributes } ) {
-	const { eyebrow, titel } = attributes;
-	const blockProps = useBlockProps.save( { className: 'section' } );
+	const { eyebrow, titel, baggrund } = attributes;
+	const blockProps = useBlockProps.save( { className: `section section--${ baggrund === 'sky' ? 'sky' : 'paper' }` } );
 	const innerBlocksProps = useInnerBlocksProps.save( { className: 'timeline' } );
 
 	return (

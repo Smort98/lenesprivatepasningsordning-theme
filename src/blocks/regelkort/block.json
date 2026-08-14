@@ -11,7 +11,8 @@
 	"attributes": {
 		"eyebrow": { "type": "string", "default": "Sygdom" },
 		"titel": { "type": "string", "default": "Hvornår skal barnet blive hjemme" },
-		"kolonner": { "type": "number", "default": 3 }
+		"kolonner": { "type": "number", "default": 3 },
+		"baggrund": { "type": "string", "enum": [ "sky", "paper" ], "default": "paper" }
 	},
 	"supports": {
 		"html": false,

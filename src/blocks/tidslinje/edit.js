@@ -1,5 +1,5 @@
 import { useBlockProps, useInnerBlocksProps, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, TextControl } from '@wordpress/components';
+import { PanelBody, TextControl, SelectControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 const TEMPLATE = [
@@ -13,8 +13,8 @@ const TEMPLATE = [
 ];
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { eyebrow, titel } = attributes;
-	const blockProps = useBlockProps( { className: 'section' } );
+	const { eyebrow, titel, baggrund } = attributes;
+	const blockProps = useBlockProps( { className: `section section--${ baggrund === 'sky' ? 'sky' : 'paper' }` } );
 	const innerBlocksProps = useInnerBlocksProps(
 		{ className: 'timeline' },
 		{ allowedBlocks: [ 'lene/tidslinje-punkt' ], template: TEMPLATE, templateInsertUpdatesSelection: false }
@@ -26,6 +26,15 @@ export default function Edit( { attributes, setAttributes } ) {
 				<PanelBody title={ __( 'Tidslinje', 'lene' ) }>
 					<TextControl label={ __( 'Overrubrik', 'lene' ) } value={ eyebrow } onChange={ ( v ) => setAttributes( { eyebrow: v } ) } />
 					<TextControl label={ __( 'Titel', 'lene' ) } value={ titel } onChange={ ( v ) => setAttributes( { titel: v } ) } />
+					<SelectControl
+						label={ __( 'Baggrund', 'lene' ) }
+						value={ baggrund }
+						options={ [
+							{ label: __( 'Dis (grågrøn)', 'lene' ), value: 'sky' },
+							{ label: __( 'Hvid', 'lene' ), value: 'paper' },
+						] }
+						onChange={ ( v ) => setAttributes( { baggrund: v } ) }
+					/>
 				</PanelBody>
 			</InspectorControls>
 			<section { ...blockProps }>

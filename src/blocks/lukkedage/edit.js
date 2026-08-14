@@ -1,10 +1,10 @@
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, TextControl, TextareaControl } from '@wordpress/components';
+import { PanelBody, TextControl, TextareaControl, SelectControl } from '@wordpress/components';
 import ServerSideRender from '@wordpress/server-side-render';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { eyebrow, titel, footTekst } = attributes;
+	const { eyebrow, titel, footTekst, baggrund } = attributes;
 	const blockProps = useBlockProps();
 
 	return (
@@ -17,6 +17,15 @@ export default function Edit( { attributes, setAttributes } ) {
 						label={ __( 'Tekst under listen', 'lene' ) }
 						value={ footTekst }
 						onChange={ ( v ) => setAttributes( { footTekst: v } ) }
+					/>
+					<SelectControl
+						label={ __( 'Baggrund', 'lene' ) }
+						value={ baggrund }
+						options={ [
+							{ label: __( 'Dis (grågrøn)', 'lene' ), value: 'sky' },
+							{ label: __( 'Hvid', 'lene' ), value: 'paper' },
+						] }
+						onChange={ ( v ) => setAttributes( { baggrund: v } ) }
 					/>
 				</PanelBody>
 			</InspectorControls>

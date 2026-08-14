@@ -22,7 +22,8 @@
 				"Jeg hjælper gerne med at udfylde ansøgningen om tilskud."
 			],
 			"items": { "type": "string" }
-		}
+		},
+		"baggrund": { "type": "string", "enum": [ "sky", "paper" ], "default": "sky" }
 	},
 	"supports": {
 		"html": false,

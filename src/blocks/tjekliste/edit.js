@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, useInnerBlocksProps, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, TextControl, ToggleControl } from '@wordpress/components';
+import { PanelBody, TextControl, ToggleControl, SelectControl } from '@wordpress/components';
 
 const TEMPLATE = [
 	[ 'lene/tjekliste-punkt', { tekst: 'Barnevogn med godkendt sele', note: '' } ],
@@ -12,8 +12,8 @@ const TEMPLATE = [
 ];
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { eyebrow, titel, visPrintknap } = attributes;
-	const blockProps = useBlockProps( { className: 'section' } );
+	const { eyebrow, titel, visPrintknap, baggrund } = attributes;
+	const blockProps = useBlockProps( { className: `section section--${ baggrund === 'sky' ? 'sky' : 'paper' }` } );
 	const innerBlocksProps = useInnerBlocksProps(
 		{ className: 'tjekliste' },
 		{ allowedBlocks: [ 'lene/tjekliste-punkt' ], template: TEMPLATE, templateInsertUpdatesSelection: false }
@@ -29,6 +29,15 @@ export default function Edit( { attributes, setAttributes } ) {
 						label={ __( 'Vis printknap', 'lene' ) }
 						checked={ visPrintknap }
 						onChange={ ( v ) => setAttributes( { visPrintknap: v } ) }
+					/>
+					<SelectControl
+						label={ __( 'Baggrund', 'lene' ) }
+						value={ baggrund }
+						options={ [
+							{ label: __( 'Dis (grågrøn)', 'lene' ), value: 'sky' },
+							{ label: __( 'Hvid', 'lene' ), value: 'paper' },
+						] }
+						onChange={ ( v ) => setAttributes( { baggrund: v } ) }
 					/>
 				</PanelBody>
 			</InspectorControls>

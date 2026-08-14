@@ -15,7 +15,8 @@
 			"type": "string",
 			"default": "Du er altid velkommen til at ringe eller skrive. Det bedste er at komme på besøg en formiddag, hvor du kan se hverdagen, som den er."
 		},
-		"visFormular": { "type": "boolean", "default": true }
+		"visFormular": { "type": "boolean", "default": true },
+		"baggrund": { "type": "string", "enum": [ "sky", "paper" ], "default": "sky" }
 	},
 	"supports": {
 		"html": false,

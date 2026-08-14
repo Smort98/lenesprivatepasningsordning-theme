@@ -24,6 +24,14 @@
     "visPrintknap": {
       "type": "boolean",
       "default": true
+    },
+    "baggrund": {
+      "type": "string",
+      "enum": [
+        "sky",
+        "paper"
+      ],
+      "default": "paper"
     }
   },
   "supports": {

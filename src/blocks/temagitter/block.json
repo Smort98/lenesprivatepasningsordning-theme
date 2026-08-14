@@ -11,7 +11,8 @@
 	"attributes": {
 		"eyebrow": { "type": "string", "default": "Pædagogik" },
 		"titel": { "type": "string", "default": "De seks læreplanstemaer" },
-		"kolonner": { "type": "number", "default": 3 }
+		"kolonner": { "type": "number", "default": 3 },
+		"baggrund": { "type": "string", "enum": [ "sky", "paper" ], "default": "sky" }
 	},
 	"supports": {
 		"html": false,

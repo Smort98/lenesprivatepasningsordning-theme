@@ -10,7 +10,8 @@
 	"textdomain": "lene",
 	"attributes": {
 		"eyebrow": { "type": "string", "default": "Efteruddannelse" },
-		"titel": { "type": "string", "default": "Løbende opdateret" }
+		"titel": { "type": "string", "default": "Løbende opdateret" },
+		"baggrund": { "type": "string", "enum": [ "sky", "paper" ], "default": "paper" }
 	},
 	"supports": {
 		"html": false,

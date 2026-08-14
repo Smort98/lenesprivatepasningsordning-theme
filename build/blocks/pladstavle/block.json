@@ -45,6 +45,14 @@
     "tilmeldingLink": {
       "type": "string",
       "default": "/tilmelding/"
+    },
+    "baggrund": {
+      "type": "string",
+      "enum": [
+        "sky",
+        "paper"
+      ],
+      "default": "sky"
     }
   },
   "supports": {

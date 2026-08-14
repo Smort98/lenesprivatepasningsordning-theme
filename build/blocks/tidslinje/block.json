@@ -20,6 +20,14 @@
     "titel": {
       "type": "string",
       "default": "Løbende opdateret"
+    },
+    "baggrund": {
+      "type": "string",
+      "enum": [
+        "sky",
+        "paper"
+      ],
+      "default": "paper"
     }
   },
   "supports": {

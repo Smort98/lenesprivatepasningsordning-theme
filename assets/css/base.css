@@ -97,14 +97,22 @@ h4 {
 }
 
 /*
- * Hero har altid farvet (--sky) baggrund. Følges den direkte af en
- * sektion med samme farvede baggrund (fx kortgitter sat til "sky"),
- * fjernes mellemrummet mellem dem, så de glider sammen til én
- * sammenhængende farvet flade i stedet for at vise en tynd, akavet
- * stribe af sidens hvide bund imellem to ens farver.
+ * Hero/sidehoved har altid farvet (--sky) baggrund. Følges de — eller en
+ * hvilken som helst sektion — direkte af en anden sektion med samme
+ * baggrund (to "sky" eller to "paper" i træk), fjernes mellemrummet
+ * mellem dem, så de glider sammen til én sammenhængende flade i stedet
+ * for at vise en tynd, akavet stribe af sidens bundfarve imellem to ens
+ * farver. Generel regel, så det virker uanset hvilke to sektioner der
+ * ender med samme baggrund på en given side.
  */
-.wp-site-blocks .lene-hero.hero + .section--sky,
-.editor-styles-wrapper .lene-hero.hero + .section--sky {
+.wp-site-blocks .hero + .section--sky,
+.wp-site-blocks .pagehead + .section--sky,
+.wp-site-blocks .section--sky + .section--sky,
+.wp-site-blocks .section--paper + .section--paper,
+.editor-styles-wrapper .hero + .section--sky,
+.editor-styles-wrapper .pagehead + .section--sky,
+.editor-styles-wrapper .section--sky + .section--sky,
+.editor-styles-wrapper .section--paper + .section--paper {
 	margin-top: 0 !important;
 }
 

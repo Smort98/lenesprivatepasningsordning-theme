@@ -1,5 +1,5 @@
 import { useBlockProps, useInnerBlocksProps, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, RangeControl, TextControl } from '@wordpress/components';
+import { PanelBody, RangeControl, TextControl, SelectControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 const TEMPLATE = [
@@ -11,8 +11,8 @@ const TEMPLATE = [
 ];
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { eyebrow, titel, kolonner } = attributes;
-	const blockProps = useBlockProps( { className: 'section' } );
+	const { eyebrow, titel, kolonner, baggrund } = attributes;
+	const blockProps = useBlockProps( { className: `section section--${ baggrund === 'sky' ? 'sky' : 'paper' }` } );
 	const innerBlocksProps = useInnerBlocksProps(
 		{ className: 'cards', style: { '--kolonner': kolonner } },
 		{ allowedBlocks: [ 'lene/regelkort-regel' ], template: TEMPLATE, templateInsertUpdatesSelection: false }
@@ -25,6 +25,15 @@ export default function Edit( { attributes, setAttributes } ) {
 					<TextControl label={ __( 'Overrubrik', 'lene' ) } value={ eyebrow } onChange={ ( v ) => setAttributes( { eyebrow: v } ) } />
 					<TextControl label={ __( 'Titel', 'lene' ) } value={ titel } onChange={ ( v ) => setAttributes( { titel: v } ) } />
 					<RangeControl label={ __( 'Kolonner', 'lene' ) } value={ kolonner } onChange={ ( v ) => setAttributes( { kolonner: v } ) } min={ 2 } max={ 4 } />
+					<SelectControl
+						label={ __( 'Baggrund', 'lene' ) }
+						value={ baggrund }
+						options={ [
+							{ label: __( 'Dis (grågrøn)', 'lene' ), value: 'sky' },
+							{ label: __( 'Hvid', 'lene' ), value: 'paper' },
+						] }
+						onChange={ ( v ) => setAttributes( { baggrund: v } ) }
+					/>
 				</PanelBody>
 			</InspectorControls>
 			<section { ...blockProps }>

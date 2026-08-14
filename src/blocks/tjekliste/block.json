@@ -11,7 +11,8 @@
 	"attributes": {
 		"eyebrow": { "type": "string", "default": "Praktisk" },
 		"titel": { "type": "string", "default": "Hvad skal vi medbringe" },
-		"visPrintknap": { "type": "boolean", "default": true }
+		"visPrintknap": { "type": "boolean", "default": true },
+		"baggrund": { "type": "string", "enum": [ "sky", "paper" ], "default": "paper" }
 	},
 	"supports": {
 		"html": false,

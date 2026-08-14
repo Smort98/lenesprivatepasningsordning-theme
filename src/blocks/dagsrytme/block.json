@@ -11,7 +11,8 @@
 	"attributes": {
 		"eyebrow": { "type": "rich-text", "source": "rich-text", "selector": ".eyebrow", "default": "Vores dag" },
 		"titel": { "type": "rich-text", "source": "rich-text", "selector": "h2", "default": "Den samme rytme hver dag" },
-		"lede": { "type": "rich-text", "source": "rich-text", "selector": ".lede", "default": "Faste rutiner gør dagen forudsigelig og tryg. Herunder er en helt almindelig hverdag hos os." }
+		"lede": { "type": "rich-text", "source": "rich-text", "selector": ".lede", "default": "Faste rutiner gør dagen forudsigelig og tryg. Herunder er en helt almindelig hverdag hos os." },
+		"baggrund": { "type": "string", "enum": [ "sky", "paper" ], "default": "paper" }
 	},
 	"supports": {
 		"html": false,

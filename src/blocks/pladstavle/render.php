@@ -17,6 +17,7 @@ $maks_antal     = (int) ( $attributes['maksAntal'] ?? 0 );
 $vis_opdateret  = $attributes['visOpdateret'] ?? true;
 $tilmelding_link = $attributes['tilmeldingLink'] ?? '/tilmelding/';
 $kort_maaned    = 'vandret' === $retning;
+$baggrund       = 'paper' === ( $attributes['baggrund'] ?? 'sky' ) ? 'paper' : 'sky';
 
 $pladser = lene_hent_pladser( true );
 
@@ -42,7 +43,7 @@ if ( 'lodret' === $retning ) {
 
 $wrapper_attributes = get_block_wrapper_attributes(
 	array(
-		'class' => 'lene-pladstavle section section--sky',
+		'class' => "lene-pladstavle section section--{$baggrund}",
 	)
 );
 ?>

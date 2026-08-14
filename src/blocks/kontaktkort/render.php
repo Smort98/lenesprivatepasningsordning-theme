@@ -12,12 +12,13 @@ $titel        = $attributes['titel'] ?? '';
 $tekst        = $attributes['tekst'] ?? '';
 $vis_formular = $attributes['visFormular'] ?? true;
 $kontakt      = lene_hent_kontaktoplysninger();
+$baggrund     = 'paper' === ( $attributes['baggrund'] ?? 'sky' ) ? 'paper' : 'sky';
 
 $status = isset( $_GET['henvendelse'] ) ? sanitize_key( wp_unslash( $_GET['henvendelse'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 $wrapper_attributes = get_block_wrapper_attributes(
 	array(
-		'class' => 'lene-kontaktkort section section--sky',
+		'class' => "lene-kontaktkort section section--{$baggrund}",
 	)
 );
 ?>

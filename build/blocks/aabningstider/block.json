@@ -51,6 +51,14 @@
     "note": {
       "type": "string",
       "default": "Tiderne kan tilpasses, hvis I har brug for det — jeg er meget fleksibel. Der må dog højst benyttes 46 timer om ugen."
+    },
+    "baggrund": {
+      "type": "string",
+      "enum": [
+        "sky",
+        "paper"
+      ],
+      "default": "paper"
     }
   },
   "supports": {
