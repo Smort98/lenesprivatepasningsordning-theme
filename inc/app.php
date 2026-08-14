@@ -56,11 +56,137 @@ function lene_app_haandter_route() {
 	} elseif ( 'sw' === $route ) {
 		lene_app_output_service_worker();
 	} elseif ( 'shell' === $route ) {
+		if ( isset( $_POST['lene_app_login'] ) ) {
+			lene_app_haandter_login_forsoeg();
+		}
 		lene_app_output_shell();
 	}
 	exit;
 }
 add_action( 'template_redirect', 'lene_app_haandter_route' );
+
+/**
+ * Temaets aktive farver, brugt til både login-siden og selve app-skallen.
+ */
+function lene_app_hent_farver(): array {
+	$farver = array(
+		'pine'     => '#1B3326',
+		'sun'      => '#F7C24B',
+		'sun-deep' => '#D99A0B',
+		'sky'      => '#E9EFE8',
+		'paper'    => '#FFFFFF',
+		'stone'    => '#6B7C6F',
+		'berry'    => '#B4576B',
+	);
+	foreach ( (array) wp_get_global_settings( array( 'color', 'palette', 'theme' ) ) as $f ) {
+		if ( isset( $f['slug'], $f['color'] ) && array_key_exists( $f['slug'], $farver ) ) {
+			$farver[ $f['slug'] ] = $f['color'];
+		}
+	}
+	return $farver;
+}
+
+/**
+ * Behandler indsendelse af login-formularen på /app/. Selve
+ * godkendelsen sker via WordPress' egen wp_signon() — vi bygger ikke
+ * vores egen autentificering, kun en tilpasset visning omkring den.
+ */
+function lene_app_haandter_login_forsoeg(): void {
+	if ( ! empty( $_POST['lene_app_website'] ) ) {
+		return; // Honeypot udfyldt — vis blot loginformularen igen uden fejl.
+	}
+
+	$creds = array(
+		'user_login'    => sanitize_text_field( wp_unslash( $_POST['log'] ?? '' ) ),
+		'user_password' => $_POST['pwd'] ?? '', // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- adgangskoder unslashes bevidst ikke, jf. wp-login.php.
+		'remember'      => ! empty( $_POST['husk'] ),
+	);
+
+	$bruger = wp_signon( $creds, is_ssl() );
+	if ( is_wp_error( $bruger ) ) {
+		lene_app_output_login( 'Forkert brugernavn eller adgangskode.' );
+		exit;
+	}
+	if ( ! user_can( $bruger, 'edit_posts' ) ) {
+		wp_logout();
+		lene_app_output_login( 'Denne bruger har ikke adgang til appen.' );
+		exit;
+	}
+
+	wp_safe_redirect( home_url( '/app/' ) );
+	exit;
+}
+
+function lene_app_output_login( string $fejl = '' ): void {
+	nocache_headers();
+	header( 'Content-Type: text/html; charset=UTF-8' );
+
+	$farver  = lene_app_hent_farver();
+	$version = wp_get_theme()->get( 'Version' ) ?: '1.0';
+	?>
+<!doctype html>
+<html lang="da">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+	<title>Log ind — Lene-appen</title>
+	<link rel="manifest" href="<?php echo esc_url( home_url( '/app/manifest.json' ) ); ?>">
+	<meta name="theme-color" content="<?php echo esc_attr( $farver['pine'] ); ?>">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-title" content="Lene-appen">
+	<link rel="apple-touch-icon" href="<?php echo esc_url( get_theme_file_uri( 'assets/app/icon-192.png' ) ); ?>">
+	<link rel="icon" href="<?php echo esc_url( get_theme_file_uri( 'assets/app/icon-192.png' ) ); ?>">
+	<link rel="stylesheet" href="<?php echo esc_url( get_theme_file_uri( 'assets/app/app.css' ) ); ?>?v=<?php echo esc_attr( $version ); ?>">
+	<style>
+		:root{
+			--pine: <?php echo esc_html( $farver['pine'] ); ?>;
+			--sun: <?php echo esc_html( $farver['sun'] ); ?>;
+			--sun-deep: <?php echo esc_html( $farver['sun-deep'] ); ?>;
+			--sky: <?php echo esc_html( $farver['sky'] ); ?>;
+			--paper: <?php echo esc_html( $farver['paper'] ); ?>;
+			--stone: <?php echo esc_html( $farver['stone'] ); ?>;
+			--berry: <?php echo esc_html( $farver['berry'] ); ?>;
+		}
+	</style>
+</head>
+<body class="login-krop">
+	<div class="login-side">
+		<div class="login-kort">
+			<div class="login-ikon">
+				<svg viewBox="0 0 64 64" aria-hidden="true">
+					<path d="M10 30 L32 12 L54 30" fill="none" stroke="var(--sun)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+					<rect x="16" y="30" width="32" height="22" rx="3" fill="none" stroke="var(--sun)" stroke-width="2.6"/>
+					<path d="M32 45 C26 39 21 39 21 34 C21 30.5 24.5 28.5 27.5 30.5 C29 31.5 31 33.5 32 35.5 C33 33.5 35 31.5 36.5 30.5 C39.5 28.5 43 30.5 43 34 C43 39 38 39 32 45 Z" fill="var(--sun)" stroke="var(--sun-deep)" stroke-width="1.4"/>
+				</svg>
+			</div>
+			<h1>Lene-appen</h1>
+			<p class="login-undertekst">Log ind for at redigere pladser, åbningstider, priser og lukkedage.</p>
+			<?php if ( $fejl ) : ?>
+				<p class="login-fejl"><?php echo esc_html( $fejl ); ?></p>
+			<?php endif; ?>
+			<form method="post" action="<?php echo esc_url( home_url( '/app/' ) ); ?>">
+				<input type="hidden" name="lene_app_login" value="1">
+				<p style="position:absolute;left:-9999px;" aria-hidden="true">
+					<label>Lad dette felt stå tomt<input type="text" name="lene_app_website" tabindex="-1" autocomplete="off"></label>
+				</p>
+				<div class="login-felt">
+					<label for="log">Brugernavn eller e-mail</label>
+					<input type="text" id="log" name="log" autocomplete="username" required autofocus>
+				</div>
+				<div class="login-felt">
+					<label for="pwd">Adgangskode</label>
+					<input type="password" id="pwd" name="pwd" autocomplete="current-password" required>
+				</div>
+				<label class="login-husk"><input type="checkbox" name="husk" checked> Forbliv logget ind</label>
+				<button type="submit" class="knap knap--primaer knap--fuld-bredde">Log ind</button>
+			</form>
+			<a class="login-glemt" href="<?php echo esc_url( wp_lostpassword_url( home_url( '/app/' ) ) ); ?>">Glemt adgangskode?</a>
+		</div>
+	</div>
+</body>
+</html>
+	<?php
+}
 
 function lene_app_output_manifest(): void {
 	nocache_headers();
@@ -135,8 +261,8 @@ self.addEventListener( 'fetch', ( event ) => {
 
 function lene_app_output_shell(): void {
 	if ( ! is_user_logged_in() ) {
-		wp_safe_redirect( wp_login_url( home_url( '/app/' ) ) );
-		exit;
+		lene_app_output_login();
+		return;
 	}
 	if ( ! current_user_can( 'edit_posts' ) ) {
 		wp_die( 'Din bruger har ikke adgang til denne app.', 'Ingen adgang', array( 'response' => 403 ) );
@@ -146,22 +272,7 @@ function lene_app_output_shell(): void {
 	header( 'Content-Type: text/html; charset=UTF-8' );
 
 	$version = wp_get_theme()->get( 'Version' ) ?: '1.0';
-
-	$standard_farver = array(
-		'pine'     => '#1B3326',
-		'sun'      => '#F7C24B',
-		'sun-deep' => '#D99A0B',
-		'sky'      => '#E9EFE8',
-		'paper'    => '#FFFFFF',
-		'stone'    => '#6B7C6F',
-		'berry'    => '#B4576B',
-	);
-	$farver = $standard_farver;
-	foreach ( (array) wp_get_global_settings( array( 'color', 'palette', 'theme' ) ) as $f ) {
-		if ( isset( $f['slug'], $f['color'] ) && array_key_exists( $f['slug'], $farver ) ) {
-			$farver[ $f['slug'] ] = $f['color'];
-		}
-	}
+	$farver  = lene_app_hent_farver();
 	?>
 <!doctype html>
 <html lang="da">
