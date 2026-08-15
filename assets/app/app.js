@@ -121,7 +121,10 @@
 		APP.innerHTML =
 			'<header class="app__header">' +
 				'<div><h1>LenesPrivatePasningsordning</h1><span class="bruger">' + esc( CFG.brugerNavn || '' ) + '</span></div>' +
-				'<a class="app__logud" href="' + esc( CFG.logoutUrl || '#' ) + '">Log ud</a>' +
+				'<a class="app__logud" href="' + esc( CFG.logoutUrl || '#' ) + '">' +
+				'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>' +
+				'Log ud' +
+			'</a>' +
 			'</header>' +
 			'<div id="nonce-banner" class="app__banner" hidden>Din session er udløbet. <button type="button" id="nonce-reload">Genindlæs</button></div>' +
 			'<main class="app__main" id="skaerm"></main>' +

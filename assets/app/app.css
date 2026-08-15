@@ -27,13 +27,25 @@ body {
 .app__header h1 { font-size: 17px; margin: 0; font-weight: 700; }
 .app__header .bruger { font-size: 12px; opacity: 0.75; display: block; margin-top: 2px; }
 .app__logud {
-	background: none;
+	background: rgba(255,255,255,0.06);
 	border: 1px solid rgba(255,255,255,0.35);
 	color: var(--paper);
 	border-radius: 999px;
-	padding: 7px 14px;
+	padding: 7px 16px 7px 12px;
 	font-size: 13px;
+	font-weight: 600;
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	line-height: 1;
 	cursor: pointer;
+	flex-shrink: 0;
+}
+.app__logud svg {
+	width: 15px;
+	height: 15px;
+	flex-shrink: 0;
 }
 
 .app__main {
@@ -335,7 +347,7 @@ h2.skaerm-titel { font-size: 20px; margin: 4px 0 16px; }
 	.knap:active { transform: scale(0.98); box-shadow: none; }
 
 	.app__tab:hover { background: rgba(0,0,0,0.04); color: var(--pine); }
-	.app__logud:hover { background: rgba(255,255,255,0.12); }
+	.app__logud:hover { background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.55); }
 
 	.stepper button:hover { background: var(--pine); color: var(--paper); }
 
