@@ -120,7 +120,7 @@
 
 		APP.innerHTML =
 			'<header class="app__header">' +
-				'<div><h1>Lene-appen</h1><span class="bruger">' + esc( CFG.brugerNavn || '' ) + '</span></div>' +
+				'<div><h1>LenesPrivatePasningsordning</h1><span class="bruger">' + esc( CFG.brugerNavn || '' ) + '</span></div>' +
 				'<a class="app__logud" href="' + esc( CFG.logoutUrl || '#' ) + '">Log ud</a>' +
 			'</header>' +
 			'<div id="nonce-banner" class="app__banner" hidden>Din session er udløbet. <button type="button" id="nonce-reload">Genindlæs</button></div>' +

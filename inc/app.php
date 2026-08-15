@@ -1,6 +1,6 @@
 <?php
 /**
- * "Lene-appen" — en lille installerbar PWA på /app/, adskilt fra det
+ * "LenesPrivatePasningsordning" — en lille installerbar PWA på /app/, adskilt fra det
  * almindelige tema (intet header/footer/nav), hvor man kan redigere
  * pladser, åbningstider, priser og lukkedage fra telefonen uden at
  * skulle igennem hele wp-admin. Gates bag almindeligt WP-login —
@@ -146,11 +146,11 @@ function lene_app_output_login( string $fejl = '' ): void {
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
-	<title>Log ind — Lene-appen</title>
+	<title>Log ind — LenesPrivatePasningsordning</title>
 	<link rel="manifest" href="<?php echo esc_url( home_url( '/app/manifest.json' ) ); ?>">
 	<meta name="theme-color" content="<?php echo esc_attr( $farver['pine'] ); ?>">
 	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-title" content="Lene-appen">
+	<meta name="apple-mobile-web-app-title" content="LenesPrivatePasningsordning">
 	<link rel="apple-touch-icon" href="<?php echo esc_url( lene_app_ikon_url( '192' ) ); ?>">
 	<link rel="icon" href="<?php echo esc_url( lene_app_ikon_url( '192' ) ); ?>">
 	<link rel="stylesheet" href="<?php echo esc_url( get_theme_file_uri( 'assets/app/app.css' ) ); ?>?v=<?php echo esc_attr( $version ); ?>">
@@ -176,7 +176,7 @@ function lene_app_output_login( string $fejl = '' ): void {
 					<path d="M32 45 C26 39 21 39 21 34 C21 30.5 24.5 28.5 27.5 30.5 C29 31.5 31 33.5 32 35.5 C33 33.5 35 31.5 36.5 30.5 C39.5 28.5 43 30.5 43 34 C43 39 38 39 32 45 Z" fill="var(--sun)" stroke="var(--sun-deep)" stroke-width="1.4"/>
 				</svg>
 			</div>
-			<h1>Lene-appen</h1>
+			<h1>LenesPrivatePasningsordning</h1>
 			<p class="login-undertekst">Log ind for at redigere pladser, åbningstider, priser og lukkedage.</p>
 			<?php if ( $fejl ) : ?>
 				<p class="login-fejl"><?php echo esc_html( $fejl ); ?></p>
@@ -218,8 +218,8 @@ function lene_app_output_manifest(): void {
 	$farver = lene_app_hent_farver();
 	echo wp_json_encode(
 		array(
-			'name'             => 'Lene-appen',
-			'short_name'       => 'Lene-appen',
+			'name'             => 'LenesPrivatePasningsordning',
+			'short_name'       => 'LenesPrivatePasningsordning',
 			'description'      => 'Redigér pladser, åbningstider, priser og lukkedage.',
 			'start_url'        => home_url( '/app/' ),
 			'scope'            => home_url( '/app/' ),
@@ -315,12 +315,12 @@ function lene_app_output_shell(): void {
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
-	<title>Lene-appen</title>
+	<title>LenesPrivatePasningsordning</title>
 	<link rel="manifest" href="<?php echo esc_url( home_url( '/app/manifest.json' ) ); ?>">
 	<meta name="theme-color" content="<?php echo esc_attr( $farver['pine'] ); ?>">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-	<meta name="apple-mobile-web-app-title" content="Lene-appen">
+	<meta name="apple-mobile-web-app-title" content="LenesPrivatePasningsordning">
 	<link rel="apple-touch-icon" href="<?php echo esc_url( lene_app_ikon_url( '192' ) ); ?>">
 	<link rel="icon" href="<?php echo esc_url( lene_app_ikon_url( '192' ) ); ?>">
 	<link rel="stylesheet" href="<?php echo esc_url( get_theme_file_uri( 'assets/app/app.css' ) ); ?>?v=<?php echo esc_attr( $version ); ?>">

@@ -1,6 +1,6 @@
 <?php
 /**
- * Lille REST-API til Lene-appen (PWA'en under /app/). Bevidst adskilt fra
+ * Lille REST-API til LenesPrivatePasningsordning (PWA'en under /app/). Bevidst adskilt fra
  * kernens egne wp/v2/plads og wp/v2/lukkedag-endpoints: de ville tillade
  * at gemme meta uden om lene_gem_plads_meta()/lene_gem_lukkedag_meta(),
  * hvilket ville springe over sideeffekter som pladsalarm-udsendelse og
