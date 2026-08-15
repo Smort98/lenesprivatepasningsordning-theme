@@ -212,7 +212,20 @@ h2.skaerm-titel { font-size: 20px; margin: 4px 0 16px; }
 .linje-editor__raekke input[type="text"] { flex: 1; min-width: 0; }
 .linje-editor__raekke input.beloeb { width: 110px; flex: none; }
 .linje-editor__raekke .fjern { background: none; border: none; color: var(--berry); font-size: 20px; cursor: pointer; padding: 4px 8px; }
-.linje-editor__minus-toggle { font-size: 12px; display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+.linje-editor__raekke input.beloeb[readonly] { background: var(--sky); color: var(--stone); }
+.linje-editor__minus-toggle { font-size: 12px; display: flex; align-items: center; gap: 4px; white-space: nowrap; margin-bottom: 6px; }
+.linje-editor__modus { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+.linje-editor__modus select { font: inherit; font-size: 13px; padding: 7px 9px; border: 1px solid rgba(0,0,0,0.15); border-radius: 7px; background: var(--paper); color: var(--pine); }
+.linje-editor__procent { width: 70px; font: inherit; font-size: 13px; padding: 7px 9px; border: 1px solid rgba(0,0,0,0.15); border-radius: 7px; }
+
+.pris-total-visning {
+	font-size: 17px;
+	font-weight: 700;
+	padding: 11px 13px;
+	background: var(--sky);
+	border-radius: 9px;
+	color: var(--pine);
+}
 
 .loading { text-align: center; padding: 40px 16px; color: var(--stone); }
 

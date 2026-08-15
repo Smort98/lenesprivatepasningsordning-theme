@@ -20,6 +20,43 @@
 		return d.innerHTML;
 	}
 
+	/**
+	 * Almindelig tekst-input i stedet for <input type="time"> — den
+	 * indbyggede tidsvælger følger enhedens sprog/region og kan vise
+	 * AM/PM i stedet for 24-timers ur, alt efter telefonens indstillinger.
+	 * Med et rent tekstfelt vises altid nøjagtigt det, der er tastet.
+	 * Denne hjælper indsætter bare kolon automatisk efter to cifre.
+	 */
+	function formatterTidInput( input ) {
+		input.addEventListener( 'input', function () {
+			var tal = input.value.replace( /[^\d]/g, '' ).slice( 0, 4 );
+			input.value = tal.length >= 3 ? tal.slice( 0, 2 ) + ':' + tal.slice( 2 ) : tal;
+		} );
+	}
+
+	/**
+	 * Dansk beløbstekst ("9.100 kr.", "6.478,50 kr.") -> tal. Punktum er
+	 * tusind-adskiller, komma er decimal — modsat engelsk notation.
+	 */
+	function parseBeloeb( str ) {
+		if ( ! str ) return 0;
+		var negativ = /-/.test( str );
+		var kun = String( str ).replace( /[^\d.,]/g, '' );
+		var dele = kun.split( ',' );
+		var heltal = dele[ 0 ].replace( /\./g, '' );
+		var decimal = dele[ 1 ] ? dele[ 1 ].slice( 0, 2 ) : '';
+		var tal = parseFloat( heltal + ( decimal ? '.' + decimal : '' ) );
+		if ( isNaN( tal ) ) return 0;
+		return negativ ? -tal : tal;
+	}
+
+	function formatBeloeb( tal ) {
+		var negativ = tal < 0;
+		var heltal = Math.round( Math.abs( tal ) );
+		var streng = heltal.toString().replace( /\B(?=(\d{3})+(?!\d))/g, '.' );
+		return ( negativ ? '-' : '' ) + streng + ' kr.';
+	}
+
 	/* ------------------------------------------------------------------
 	 * API
 	 * ---------------------------------------------------------------- */
@@ -270,8 +307,8 @@
 							return '<button type="button" class="' + ( valgt ? 'er-valgt' : '' ) + '" data-ugedag="' + u + '">' + navn + '</button>';
 						} ).join( '' ) +
 					'</div></div>' +
-					'<div class="felt"><label>Åbner</label><input type="time" data-dagfelt="aabner" value="' + esc( dag.aabner ) + '"></div>' +
-					'<div class="felt"><label>Lukker</label><input type="time" data-dagfelt="lukker" value="' + esc( dag.lukker ) + '"></div>' +
+					'<div class="felt"><label>Åbner (24-timers, TT:MM)</label><input type="text" inputmode="numeric" maxlength="5" placeholder="06:45" pattern="^([01][0-9]|2[0-3]):[0-5][0-9]$" data-dagfelt="aabner" data-tidsfelt value="' + esc( dag.aabner ) + '"></div>' +
+					'<div class="felt"><label>Lukker (24-timers, TT:MM)</label><input type="text" inputmode="numeric" maxlength="5" placeholder="16:00" pattern="^([01][0-9]|2[0-3]):[0-5][0-9]$" data-dagfelt="lukker" data-tidsfelt value="' + esc( dag.lukker ) + '"></div>' +
 					'<div class="raekke-aktioner"><button type="button" class="knap knap--fare knap--lille" data-fjern-dag="' + i + '">Fjern tidsrum</button></div>' +
 				'</div>';
 			} );
@@ -303,6 +340,7 @@
 			el.querySelectorAll( '[data-ugedag]' ).forEach( function ( b ) {
 				b.addEventListener( 'click', function () { b.classList.toggle( 'er-valgt' ); } );
 			} );
+			el.querySelectorAll( '[data-tidsfelt]' ).forEach( formatterTidInput );
 			el.querySelectorAll( '[data-fjern-dag]' ).forEach( function ( b ) {
 				b.addEventListener( 'click', function () {
 					self.data = self.laesFraDom( el );
@@ -352,44 +390,130 @@
 			html += '<div class="kort">';
 			html += '<div class="linje-editor">';
 			this.data.linjer.forEach( function ( linje, i ) {
-				html += '<div class="linje-editor__raekke" data-linje="' + i + '">' +
-					'<input type="text" data-linjefelt="tekst" value="' + esc( linje.tekst ) + '" placeholder="Fx: Fuldtidsplads pr. måned">' +
-					'<input type="text" class="beloeb" data-linjefelt="beloeb" value="' + esc( linje.beloeb ) + '" placeholder="9.100 kr.">' +
-					'<button type="button" class="fjern" data-fjern-linje="' + i + '" aria-label="Fjern linje">×</button>' +
-				'</div>' +
-				'<label class="linje-editor__minus-toggle"><input type="checkbox" data-linjefelt="erMinus"' + ( linje.erMinus ? ' checked' : '' ) + ' data-linje-checkbox="' + i + '"> Er et fradrag (fx tilskud)</label>';
+				html += Priser.linjeHtml( linje, i );
 			} );
 			html += '</div>';
 			html += '<button type="button" class="tilfoej-knap" id="tilfoej-linje">+ Tilføj linje</button>';
-			html += '<div class="felt"><label>Total (din egenbetaling)</label><input type="text" id="pris-total" value="' + esc( this.data.totalBeloeb ) + '" placeholder="2.622 kr."></div>';
+			html += '<div class="felt"><label>Total (din egenbetaling — beregnes automatisk)</label><div class="pris-total-visning" id="pris-total-visning">' + esc( this.data.totalBeloeb ) + '</div></div>';
 			html += '<div class="felt"><label>Bemærkninger (én pr. linje)</label><textarea id="pris-smaat" rows="4">' + esc( this.data.medSmaat.join( '\n' ) ) + '</textarea></div>';
 			html += '</div>';
 			html += '<button type="button" class="knap knap--primaer knap--fuld-bredde" id="gem-priser">Gem priser</button>';
 
 			el.innerHTML = html;
 			this.bind( el );
+			this.omberegn( el );
+		},
+
+		linjeHtml: function ( linje, i ) {
+			var modus     = linje._modus || 'kroner';
+			var erProcent = linje.erMinus && 'procent' === modus;
+			var html = '<div class="linje-editor__raekke" data-linje="' + i + '">' +
+				'<input type="text" data-linjefelt="tekst" value="' + esc( linje.tekst ) + '" placeholder="Fx: Fuldtidsplads pr. måned">' +
+				'<input type="text" class="beloeb" data-linjefelt="beloeb" value="' + esc( linje.beloeb ) + '"' + ( erProcent ? ' readonly' : '' ) + ' placeholder="9.100 kr.">' +
+				'<button type="button" class="fjern" data-fjern-linje="' + i + '" aria-label="Fjern linje">×</button>' +
+			'</div>';
+			html += '<div data-linje-ekstra="' + i + '">' + Priser.linjeEkstraHtml( linje, i ) + '</div>';
+			return html;
+		},
+
+		linjeEkstraHtml: function ( linje, i ) {
+			var modus     = linje._modus || 'kroner';
+			var erProcent = linje.erMinus && 'procent' === modus;
+			var html = '<label class="linje-editor__minus-toggle"><input type="checkbox" data-linjefelt="erMinus" data-linje-checkbox="' + i + '"' + ( linje.erMinus ? ' checked' : '' ) + '> Er et fradrag (fx tilskud)</label>';
+			if ( linje.erMinus ) {
+				html += '<div class="linje-editor__modus">' +
+					'<select data-linje-modus="' + i + '">' +
+						'<option value="kroner"' + ( 'kroner' === modus ? ' selected' : '' ) + '>Indtast i kroner</option>' +
+						'<option value="procent"' + ( 'procent' === modus ? ' selected' : '' ) + '>Indtast i procent af 1. linje</option>' +
+					'</select>' +
+					( erProcent ? '<input type="number" class="linje-editor__procent" data-linje-procent="' + i + '" min="0" max="100" step="0.1" value="' + esc( linje._procent || '' ) + '" placeholder="75">' : '' ) +
+				'</div>';
+			}
+			return html;
+		},
+
+		/**
+		 * Genberegner alle procent-baserede fradrag ud fra første linjes
+		 * beløb, samt totalen ud fra alle linjers beløb/fradrag-status.
+		 * Køres live ved enhver relevant ændring, ikke kun ved gem.
+		 */
+		omberegn: function ( el ) {
+			var raekker      = el.querySelectorAll( '[data-linje]' );
+			var foersteBeloeb = raekker.length ? parseBeloeb( raekker[ 0 ].querySelector( '[data-linjefelt="beloeb"]' ).value ) : 0;
+			var total = 0;
+
+			raekker.forEach( function ( raekke ) {
+				var i           = raekke.dataset.linje;
+				var checkbox    = el.querySelector( '[data-linje-checkbox="' + i + '"]' );
+				var erMinus     = !! ( checkbox && checkbox.checked );
+				var beloebInput = raekke.querySelector( '[data-linjefelt="beloeb"]' );
+				var modusSelect = el.querySelector( '[data-linje-modus="' + i + '"]' );
+				var modus       = modusSelect ? modusSelect.value : 'kroner';
+
+				if ( erMinus && 'procent' === modus ) {
+					var procentInput = el.querySelector( '[data-linje-procent="' + i + '"]' );
+					var procent      = procentInput ? parseFloat( ( procentInput.value || '0' ).replace( ',', '.' ) ) || 0 : 0;
+					beloebInput.value = formatBeloeb( foersteBeloeb * ( procent / 100 ) );
+					beloebInput.readOnly = true;
+				} else {
+					beloebInput.readOnly = false;
+				}
+
+				var beloeb = Math.abs( parseBeloeb( beloebInput.value ) );
+				total += erMinus ? -beloeb : beloeb;
+			} );
+
+			var visning = document.getElementById( 'pris-total-visning' );
+			if ( visning ) visning.textContent = formatBeloeb( total );
 		},
 
 		laesFraDom: function ( el ) {
 			var linjer = [];
 			el.querySelectorAll( '[data-linje]' ).forEach( function ( raekke ) {
-				var i = raekke.dataset.linje;
-				var checkbox = el.querySelector( '[data-linje-checkbox="' + i + '"]' );
+				var i          = raekke.dataset.linje;
+				var checkbox   = el.querySelector( '[data-linje-checkbox="' + i + '"]' );
+				var modusSelect = el.querySelector( '[data-linje-modus="' + i + '"]' );
+				var procentInput = el.querySelector( '[data-linje-procent="' + i + '"]' );
 				linjer.push( {
 					tekst: raekke.querySelector( '[data-linjefelt="tekst"]' ).value,
 					beloeb: raekke.querySelector( '[data-linjefelt="beloeb"]' ).value,
 					erMinus: !! ( checkbox && checkbox.checked ),
+					_modus: modusSelect ? modusSelect.value : 'kroner',
+					_procent: procentInput ? procentInput.value : '',
 				} );
 			} );
 			return {
 				linjer: linjer,
-				totalBeloeb: document.getElementById( 'pris-total' ).value,
+				totalBeloeb: document.getElementById( 'pris-total-visning' ).textContent,
 				medSmaat: document.getElementById( 'pris-smaat' ).value.split( '\n' ).map( function ( s ) { return s.trim(); } ).filter( Boolean ),
 			};
 		},
 
 		bind: function ( el ) {
 			var self = this;
+
+			el.addEventListener( 'input', function ( ev ) {
+				if ( ev.target.matches( '[data-linjefelt="beloeb"]:not([readonly])' ) || ev.target.matches( '[data-linje-procent]' ) ) {
+					self.omberegn( el );
+				}
+			} );
+
+			el.addEventListener( 'change', function ( ev ) {
+				if ( ev.target.matches( '[data-linje-checkbox]' ) ) {
+					var i = ev.target.dataset.linjeCheckbox;
+					var linje = { erMinus: ev.target.checked, _modus: 'kroner', _procent: '' };
+					var wrap = el.querySelector( '[data-linje-ekstra="' + i + '"]' );
+					if ( wrap ) wrap.innerHTML = self.linjeEkstraHtml( linje, i );
+					self.omberegn( el );
+				} else if ( ev.target.matches( '[data-linje-modus]' ) ) {
+					var mi = ev.target.dataset.linjeModus;
+					var linje2 = { erMinus: true, _modus: ev.target.value, _procent: '' };
+					var wrap2 = el.querySelector( '[data-linje-ekstra="' + mi + '"]' );
+					if ( wrap2 ) wrap2.innerHTML = self.linjeEkstraHtml( linje2, mi );
+					self.omberegn( el );
+				}
+			} );
+
 			el.querySelectorAll( '[data-fjern-linje]' ).forEach( function ( b ) {
 				b.addEventListener( 'click', function () {
 					self.data = self.laesFraDom( el );
