@@ -82,6 +82,7 @@ body {
 	flex: 1;
 	background: none;
 	border: none;
+	border-right: 1px solid rgba(0,0,0,0.08);
 	padding: 10px 4px 8px;
 	display: flex;
 	flex-direction: column;
@@ -92,6 +93,7 @@ body {
 	cursor: pointer;
 	font-family: inherit;
 }
+.app__tab:last-child { border-right: none; }
 .app__tab svg { width: 22px; height: 22px; }
 .app__tab.er-aktiv { color: var(--pine); font-weight: 700; }
 
@@ -293,4 +295,44 @@ h2.skaerm-titel { font-size: 20px; margin: 4px 0 16px; }
 	font-size: 13px;
 	color: var(--stone);
 	text-decoration: underline;
+}
+
+/* ---------------------------------------------------------------
+ * Hover-effekter (kun rigtige mus-pegere — undgår "klæbrig" hover
+ * på berøringsskærme, hvor et tryk ellers ville udløse og fastholde
+ * den samme tilstand som museover).
+ * ------------------------------------------------------------- */
+@media (hover: hover) and (pointer: fine) {
+	.knap,
+	.app__tab,
+	.app__logud,
+	.stepper button,
+	.tilfoej-knap,
+	.ugedag-vaelger button,
+	.linje-editor__raekke .fjern,
+	.app__banner button,
+	.login-glemt {
+		transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+	}
+
+	.knap--primaer:hover { background: var(--sun-deep); }
+	.knap--sekundaer:hover { background: rgba(0,0,0,0.08); }
+	.knap--fare:hover { background: #9c465c; }
+	.knap:hover { box-shadow: 0 3px 10px -4px rgba(0,0,0,0.3); }
+	.knap:active { transform: scale(0.98); box-shadow: none; }
+
+	.app__tab:hover { background: rgba(0,0,0,0.04); color: var(--pine); }
+	.app__logud:hover { background: rgba(255,255,255,0.12); }
+
+	.stepper button:hover { background: var(--pine); color: var(--paper); }
+
+	.tilfoej-knap:hover { background: rgba(0,0,0,0.05); border-color: var(--pine); }
+
+	.ugedag-vaelger button:hover:not(.er-valgt) { background: rgba(0,0,0,0.05); border-color: var(--pine); }
+
+	.linje-editor__raekke .fjern:hover { background: rgba(180,87,107,0.12); border-radius: 6px; }
+
+	.app__banner button:hover { background: var(--sky); }
+
+	.login-glemt:hover { color: var(--pine); }
 }

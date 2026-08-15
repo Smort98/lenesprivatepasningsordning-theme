@@ -87,6 +87,23 @@ function lene_app_hent_farver(): array {
 }
 
 /**
+ * App-ikonet (til hjemmeskærm/manifest) følger automatisk den valgte
+ * logo-variant og det aktive farvetema — samme princip som favicon-
+ * systemet i inc/logo.php, blot med et forudberegnet sæt filer i stedet
+ * for medie-bibliotek-attachments (manifestets icons[].src skal bare
+ * være en URL, ingen grund til at gå vejen om et vedhæftet medie).
+ */
+function lene_app_ikon_url( string $storrelse ): string {
+	$variant = function_exists( 'lene_hent_logo_variant' ) ? lene_hent_logo_variant() : 'mobil';
+	$tema    = function_exists( 'lene_hent_aktivt_farvetema' ) ? lene_hent_aktivt_farvetema() : 'standard';
+	$sti     = "assets/app/ikoner/{$variant}-{$tema}-{$storrelse}.png";
+	if ( ! file_exists( get_theme_file_path( $sti ) ) ) {
+		$sti = "assets/app/ikoner/mobil-standard-{$storrelse}.png";
+	}
+	return get_theme_file_uri( $sti );
+}
+
+/**
  * Behandler indsendelse af login-formularen på /app/. Selve
  * godkendelsen sker via WordPress' egen wp_signon() — vi bygger ikke
  * vores egen autentificering, kun en tilpasset visning omkring den.
@@ -134,8 +151,8 @@ function lene_app_output_login( string $fejl = '' ): void {
 	<meta name="theme-color" content="<?php echo esc_attr( $farver['pine'] ); ?>">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-title" content="Lene-appen">
-	<link rel="apple-touch-icon" href="<?php echo esc_url( get_theme_file_uri( 'assets/app/icon-192.png' ) ); ?>">
-	<link rel="icon" href="<?php echo esc_url( get_theme_file_uri( 'assets/app/icon-192.png' ) ); ?>">
+	<link rel="apple-touch-icon" href="<?php echo esc_url( lene_app_ikon_url( '192' ) ); ?>">
+	<link rel="icon" href="<?php echo esc_url( lene_app_ikon_url( '192' ) ); ?>">
 	<link rel="stylesheet" href="<?php echo esc_url( get_theme_file_uri( 'assets/app/app.css' ) ); ?>?v=<?php echo esc_attr( $version ); ?>">
 	<style>
 		:root{
@@ -198,6 +215,7 @@ function lene_app_output_login( string $fejl = '' ): void {
 function lene_app_output_manifest(): void {
 	nocache_headers();
 	header( 'Content-Type: application/manifest+json' );
+	$farver = lene_app_hent_farver();
 	echo wp_json_encode(
 		array(
 			'name'             => 'Lene-appen',
@@ -206,18 +224,18 @@ function lene_app_output_manifest(): void {
 			'start_url'        => home_url( '/app/' ),
 			'scope'            => home_url( '/app/' ),
 			'display'          => 'standalone',
-			'background_color' => '#1B3326',
-			'theme_color'      => '#1B3326',
+			'background_color' => $farver['pine'],
+			'theme_color'      => $farver['pine'],
 			'lang'             => 'da',
 			'icons'            => array(
 				array(
-					'src'     => get_theme_file_uri( 'assets/app/icon-192.png' ),
+					'src'     => lene_app_ikon_url( '192' ),
 					'sizes'   => '192x192',
 					'type'    => 'image/png',
 					'purpose' => 'any maskable',
 				),
 				array(
-					'src'     => get_theme_file_uri( 'assets/app/icon-512.png' ),
+					'src'     => lene_app_ikon_url( '512' ),
 					'sizes'   => '512x512',
 					'type'    => 'image/png',
 					'purpose' => 'any maskable',
@@ -235,8 +253,8 @@ function lene_app_output_service_worker(): void {
 			home_url( '/app/' ),
 			get_theme_file_uri( 'assets/app/app.css' ),
 			get_theme_file_uri( 'assets/app/app.js' ),
-			get_theme_file_uri( 'assets/app/icon-192.png' ),
-			get_theme_file_uri( 'assets/app/icon-512.png' ),
+			lene_app_ikon_url( '192' ),
+			lene_app_ikon_url( '512' ),
 		)
 	);
 	?>
@@ -299,12 +317,12 @@ function lene_app_output_shell(): void {
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
 	<title>Lene-appen</title>
 	<link rel="manifest" href="<?php echo esc_url( home_url( '/app/manifest.json' ) ); ?>">
-	<meta name="theme-color" content="#1B3326">
+	<meta name="theme-color" content="<?php echo esc_attr( $farver['pine'] ); ?>">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<meta name="apple-mobile-web-app-title" content="Lene-appen">
-	<link rel="apple-touch-icon" href="<?php echo esc_url( get_theme_file_uri( 'assets/app/icon-192.png' ) ); ?>">
-	<link rel="icon" href="<?php echo esc_url( get_theme_file_uri( 'assets/app/icon-192.png' ) ); ?>">
+	<link rel="apple-touch-icon" href="<?php echo esc_url( lene_app_ikon_url( '192' ) ); ?>">
+	<link rel="icon" href="<?php echo esc_url( lene_app_ikon_url( '192' ) ); ?>">
 	<link rel="stylesheet" href="<?php echo esc_url( get_theme_file_uri( 'assets/app/app.css' ) ); ?>?v=<?php echo esc_attr( $version ); ?>">
 	<style>
 		:root{
