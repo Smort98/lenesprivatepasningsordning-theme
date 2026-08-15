@@ -324,7 +324,7 @@ function lene_app_output_shell(): void {
 		window.LENE_APP = {
 			restBase: <?php echo wp_json_encode( esc_url_raw( rest_url( 'lene-app/v1' ) ) ); ?>,
 			nonce: <?php echo wp_json_encode( wp_create_nonce( 'wp_rest' ) ); ?>,
-			logoutUrl: <?php echo wp_json_encode( wp_logout_url( home_url( '/app/' ) ) ); ?>,
+			logoutUrl: <?php echo wp_json_encode( esc_url_raw( html_entity_decode( wp_logout_url( home_url( '/app/' ) ) ) ) ); ?>,
 			brugerNavn: <?php echo wp_json_encode( wp_get_current_user()->display_name ); ?>
 		};
 	</script>
