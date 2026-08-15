@@ -22,6 +22,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		billede,
 		visNaestePlads,
 		visAabningstider,
+		visLukkedage,
 	} = attributes;
 
 	const blockProps = useBlockProps();
@@ -81,6 +82,12 @@ export default function Edit( { attributes, setAttributes } ) {
 						checked={ visAabningstider }
 						onChange={ ( value ) => setAttributes( { visAabningstider: value } ) }
 						help={ __( 'Læser åbningstiderne direkte fra Praktisk info-siden.', 'lene' ) }
+					/>
+					<ToggleControl
+						label={ __( 'Vis næste lukkedag automatisk', 'lene' ) }
+						checked={ visLukkedage }
+						onChange={ ( value ) => setAttributes( { visLukkedage: value } ) }
+						help={ __( 'Læser lukkedage direkte fra Praktisk info-siden, med link dertil.', 'lene' ) }
 					/>
 				</PanelBody>
 				<PanelBody title={ __( 'Billede', 'lene' ) } initialOpen={ false }>

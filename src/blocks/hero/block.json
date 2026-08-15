@@ -41,6 +41,10 @@
 		"visAabningstider": {
 			"type": "boolean",
 			"default": true
+		},
+		"visLukkedage": {
+			"type": "boolean",
+			"default": true
 		}
 	},
 	"supports": {

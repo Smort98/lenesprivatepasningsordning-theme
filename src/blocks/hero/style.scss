@@ -58,6 +58,14 @@
 	border-radius: 50%;
 	background: var(--sun-deep);
 }
+.lene-hero .hero__facts li a {
+	color: inherit;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+.lene-hero .hero__facts li a:hover {
+	color: var(--pine);
+}
 
 .lene-hero .hero__media {
 	position: relative;

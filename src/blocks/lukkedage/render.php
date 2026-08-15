@@ -15,6 +15,7 @@ $baggrund  = 'sky' === ( $attributes['baggrund'] ?? 'paper' ) ? 'sky' : 'paper';
 
 $wrapper_attributes = get_block_wrapper_attributes(
 	array(
+		'id'    => 'lukkedage',
 		'class' => "lene-lukkedage section section--{$baggrund}",
 	)
 );

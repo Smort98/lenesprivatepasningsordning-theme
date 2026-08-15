@@ -18,6 +18,7 @@ $fakta        = is_array( $attributes['fakta'] ?? null ) ? $attributes['fakta'] 
 $billede      = $attributes['billede'] ?? array();
 $vis_naeste   = $attributes['visNaestePlads'] ?? true;
 $vis_aabningstider = $attributes['visAabningstider'] ?? true;
+$vis_lukkedage = $attributes['visLukkedage'] ?? true;
 
 $naeste = $vis_naeste ? lene_naeste_ledige_plads() : null;
 
@@ -25,6 +26,12 @@ $aabningstider_status = '';
 if ( $vis_aabningstider ) {
 	$aabningstider_data   = lene_hent_aabningstider_data();
 	$aabningstider_status = lene_aabningstider_beregn_status( $aabningstider_data['dage'] );
+}
+
+$naeste_lukkedag = null;
+if ( $vis_lukkedage && function_exists( 'lene_hent_lukkedage' ) ) {
+	$lukkedage = lene_hent_lukkedage();
+	$naeste_lukkedag = $lukkedage[0] ?? null;
 }
 
 $wrapper_attributes = get_block_wrapper_attributes(
@@ -55,7 +62,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 					<?php endif; ?>
 				</div>
 			<?php endif; ?>
-			<?php if ( ! empty( $fakta ) || $aabningstider_status ) : ?>
+			<?php if ( ! empty( $fakta ) || $aabningstider_status || $naeste_lukkedag ) : ?>
 				<ul class="hero__facts">
 					<?php foreach ( $fakta as $punkt ) : ?>
 						<?php if ( '' === trim( (string) $punkt ) ) continue; ?>
@@ -63,6 +70,13 @@ $wrapper_attributes = get_block_wrapper_attributes(
 					<?php endforeach; ?>
 					<?php if ( $aabningstider_status ) : ?>
 						<li><?php echo esc_html( $aabningstider_status ); ?></li>
+					<?php endif; ?>
+					<?php if ( $naeste_lukkedag ) : ?>
+						<li>
+							<a href="<?php echo esc_url( home_url( '/praktisk-info/#lukkedage' ) ); ?>">
+								<?php echo esc_html( ( $naeste_lukkedag['aarsag'] ?: $naeste_lukkedag['periode'] ) . ': ' . $naeste_lukkedag['datoer'] ); ?>
+							</a>
+						</li>
 					<?php endif; ?>
 				</ul>
 			<?php endif; ?>
