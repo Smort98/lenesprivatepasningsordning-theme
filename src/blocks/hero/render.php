@@ -62,22 +62,28 @@ $wrapper_attributes = get_block_wrapper_attributes(
 					<?php endif; ?>
 				</div>
 			<?php endif; ?>
-			<?php if ( ! empty( $fakta ) || $aabningstider_status || $naeste_lukkedag ) : ?>
-				<ul class="hero__facts">
-					<?php foreach ( $fakta as $punkt ) : ?>
-						<?php if ( '' === trim( (string) $punkt ) ) continue; ?>
-						<li><?php echo esc_html( $punkt ); ?></li>
-					<?php endforeach; ?>
+			<?php if ( $aabningstider_status || $naeste_lukkedag ) : ?>
+				<ul class="hero__status">
 					<?php if ( $aabningstider_status ) : ?>
-						<li><?php echo esc_html( $aabningstider_status ); ?></li>
+						<li class="hero__status-item <?php echo str_starts_with( $aabningstider_status, 'Åbent' ) ? 'is-open' : 'is-closed'; ?>">
+							<?php echo esc_html( $aabningstider_status ); ?>
+						</li>
 					<?php endif; ?>
 					<?php if ( $naeste_lukkedag ) : ?>
-						<li>
+						<li class="hero__status-item is-lukkedag">
 							<a href="<?php echo esc_url( home_url( '/praktisk-info/#lukkedage' ) ); ?>">
 								<?php echo esc_html( ( $naeste_lukkedag['aarsag'] ?: $naeste_lukkedag['periode'] ) . ': ' . $naeste_lukkedag['datoer'] ); ?>
 							</a>
 						</li>
 					<?php endif; ?>
+				</ul>
+			<?php endif; ?>
+			<?php if ( ! empty( $fakta ) ) : ?>
+				<ul class="hero__facts">
+					<?php foreach ( $fakta as $punkt ) : ?>
+						<?php if ( '' === trim( (string) $punkt ) ) continue; ?>
+						<li><?php echo esc_html( $punkt ); ?></li>
+					<?php endforeach; ?>
 				</ul>
 			<?php endif; ?>
 		</div>
