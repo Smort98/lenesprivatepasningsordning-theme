@@ -183,6 +183,13 @@ function lene_app_output_login( string $fejl = '' ): void {
 			<a class="login-glemt" href="<?php echo esc_url( wp_lostpassword_url( home_url( '/app/' ) ) ); ?>">Glemt adgangskode?</a>
 		</div>
 	</div>
+	<script>
+		if ( 'serviceWorker' in navigator ) {
+			window.addEventListener( 'load', function () {
+				navigator.serviceWorker.register( '<?php echo esc_url( home_url( '/app/sw.js' ) ); ?>', { scope: '<?php echo esc_url( home_url( '/app/' ) ); ?>' } );
+			} );
+		}
+	</script>
 </body>
 </html>
 	<?php
@@ -233,8 +240,9 @@ function lene_app_output_service_worker(): void {
 		)
 	);
 	?>
-const CACHE = 'lene-app-v1';
+const CACHE = 'lene-app-v2';
 const ASSETS = <?php echo wp_json_encode( $assets ); ?>;
+const SHELL_URL = <?php echo wp_json_encode( home_url( '/app/' ) ); ?>;
 
 self.addEventListener( 'install', ( event ) => {
 	event.waitUntil( caches.open( CACHE ).then( ( cache ) => cache.addAll( ASSETS ) ) );
@@ -249,11 +257,21 @@ self.addEventListener( 'activate', ( event ) => {
 } );
 
 self.addEventListener( 'fetch', ( event ) => {
-	// Aldrig cache API-kald eller ikke-GET — appen er online-først, kun
-	// selve app-skallen (HTML/CSS/JS/ikoner) caches til hurtig opstart.
+	// Aldrig cache API-kald eller ikke-GET.
 	if ( event.request.method !== 'GET' || event.request.url.includes( '/wp-json/' ) ) {
 		return;
 	}
+	// Selve app-skallen afhænger af login-status og indeholder en nonce,
+	// der udløber — den skal ALTID hentes friskt fra serveren (ellers
+	// virker "genindlæs" ikke, når sessionen er udløbet, fordi man bare
+	// får den samme forældede side fra cachen igen). Cache bruges kun
+	// som nødløsning, hvis man reelt er offline.
+	if ( event.request.mode === 'navigate' || event.request.url === SHELL_URL ) {
+		event.respondWith( fetch( event.request ).catch( () => caches.match( event.request ) ) );
+		return;
+	}
+	// Statiske filer (css/js/ikoner) ændrer sig ikke med login-status —
+	// fint at servere fra cache først for hurtig opstart.
 	event.respondWith( caches.match( event.request ).then( ( cached ) => cached || fetch( event.request ) ) );
 } );
 	<?php
@@ -313,6 +331,14 @@ function lene_app_output_shell(): void {
 	<script src="<?php echo esc_url( get_theme_file_uri( 'assets/app/app.js' ) ); ?>?v=<?php echo esc_attr( $version ); ?>"></script>
 	<script>
 		if ( 'serviceWorker' in navigator ) {
+			// Hvis en tidligere installeret (forældet) service worker
+			// opdateres i baggrunden og overtager siden, genindlæser vi
+			// automatisk én gang — ellers ville en bruger med en gammel
+			// SW skulle klikke "genindlæs" to gange for at få den friske
+			// version, i stedet for at det bare virker første gang.
+			navigator.serviceWorker.addEventListener( 'controllerchange', function () {
+				window.location.reload();
+			} );
 			window.addEventListener( 'load', function () {
 				navigator.serviceWorker.register( '<?php echo esc_url( home_url( '/app/sw.js' ) ); ?>', { scope: '<?php echo esc_url( home_url( '/app/' ) ); ?>' } );
 			} );
