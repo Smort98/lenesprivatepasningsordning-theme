@@ -107,6 +107,8 @@ function lene_app_ikon_url( string $storrelse ): string {
  * Behandler indsendelse af login-formularen på /app/. Selve
  * godkendelsen sker via WordPress' egen wp_signon() — vi bygger ikke
  * vores egen autentificering, kun en tilpasset visning omkring den.
+ * Login-loftet (inc/login-sikkerhed.php) er koblet på selve
+ * autentificeringen og dækker derfor automatisk også dette login.
  */
 function lene_app_haandter_login_forsoeg(): void {
 	if ( ! empty( $_POST['lene_app_website'] ) ) {
@@ -121,10 +123,13 @@ function lene_app_haandter_login_forsoeg(): void {
 
 	$bruger = wp_signon( $creds, is_ssl() );
 	if ( is_wp_error( $bruger ) ) {
-		lene_app_output_login( 'Forkert brugernavn eller adgangskode.' );
+		$fejl = 'lene_for_mange_forsoeg' === $bruger->get_error_code()
+			? 'For mange forkerte forsøg. Prøv igen om lidt.'
+			: 'Forkert brugernavn eller adgangskode.';
+		lene_app_output_login( $fejl );
 		exit;
 	}
-	if ( ! user_can( $bruger, 'edit_posts' ) ) {
+	if ( ! user_can( $bruger, LENE_APP_CAP ) ) {
 		wp_logout();
 		lene_app_output_login( 'Denne bruger har ikke adgang til appen.' );
 		exit;
@@ -300,7 +305,7 @@ function lene_app_output_shell(): void {
 		lene_app_output_login();
 		return;
 	}
-	if ( ! current_user_can( 'edit_posts' ) ) {
+	if ( ! current_user_can( LENE_APP_CAP ) ) {
 		wp_die( 'Din bruger har ikke adgang til denne app.', 'Ingen adgang', array( 'response' => 403 ) );
 	}
 

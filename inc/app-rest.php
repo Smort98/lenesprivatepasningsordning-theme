@@ -15,7 +15,24 @@
 defined( 'ABSPATH' ) || exit;
 
 function lene_app_rest_tjek_adgang(): bool {
-	return current_user_can( 'edit_posts' );
+	return current_user_can( LENE_APP_CAP );
+}
+
+/**
+ * En PWA-bruger har (med vilje) ikke 'unfiltered_html', så et almindeligt
+ * wp_update_post() ville køre hele sidens post_content igennem
+ * wp_filter_post_kses() — det rammer ikke kun den blok, vi selv har
+ * bygget (og allerede har esc_html()'et), men fjerner fx <input>-elementer
+ * i helt urelaterede blokke andetsteds på siden (fx tjeklistens checkbokse).
+ * Markup'et her er allerede sanitizeret på vej ind, så vi slår kses fra
+ * omkring selve kaldet i stedet for at give hele rollen den langt bredere
+ * (og langt farligere) 'unfiltered_html'-capability.
+ */
+function lene_app_opdater_side_uden_kses( array $postarr ) {
+	kses_remove_filters();
+	$resultat = wp_update_post( $postarr );
+	kses_init_filters();
+	return $resultat;
 }
 
 /* ---------------------------------------------------------------------
@@ -226,7 +243,7 @@ function lene_app_gem_aabningstider( array $data ): ?array {
 		return null;
 	}
 
-	wp_update_post(
+	lene_app_opdater_side_uden_kses(
 		array(
 			'ID'           => $side->ID,
 			'post_content' => serialize_blocks( $blokke ),
@@ -387,7 +404,7 @@ function lene_app_gem_priser( array $data ): ?array {
 		return null;
 	}
 
-	wp_update_post(
+	lene_app_opdater_side_uden_kses(
 		array(
 			'ID'           => $side->ID,
 			'post_content' => serialize_blocks( $blokke ),
