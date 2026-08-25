@@ -15,7 +15,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	const { eyebrow, titel, kolonner, baggrund } = attributes;
 	const blockProps = useBlockProps( { className: `section section--${ baggrund === 'paper' ? 'paper' : 'sky' }` } );
 	const innerBlocksProps = useInnerBlocksProps(
-		{ className: 'cards', style: { '--kolonner': kolonner } },
+		{ className: 'cards', style: { '--kolonner': String( kolonner ) } },
 		{ allowedBlocks: [ 'lene/temagitter-tema' ], template: TEMPLATE, templateInsertUpdatesSelection: false }
 	);
 

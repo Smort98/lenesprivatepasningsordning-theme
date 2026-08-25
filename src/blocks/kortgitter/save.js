@@ -3,7 +3,7 @@ import { useBlockProps, useInnerBlocksProps, RichText } from '@wordpress/block-e
 export default function save( { attributes } ) {
 	const { titel, kolonner, baggrund } = attributes;
 	const blockProps = useBlockProps.save( { className: `section section--${ baggrund === 'sky' ? 'sky' : 'paper' }` } );
-	const innerBlocksProps = useInnerBlocksProps.save( { className: 'cards', style: { '--kolonner': kolonner } } );
+	const innerBlocksProps = useInnerBlocksProps.save( { className: 'cards', style: { '--kolonner': String( kolonner ) } } );
 
 	return (
 		<section { ...blockProps }>

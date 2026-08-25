@@ -12,7 +12,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	const { titel, kolonner, baggrund } = attributes;
 	const blockProps = useBlockProps( { className: `section section--${ baggrund === 'sky' ? 'sky' : 'paper' }` } );
 	const innerBlocksProps = useInnerBlocksProps(
-		{ className: 'cards', style: { '--kolonner': kolonner } },
+		{ className: 'cards', style: { '--kolonner': String( kolonner ) } },
 		{ allowedBlocks: [ 'lene/kortgitter-kort' ], template: TEMPLATE, templateInsertUpdatesSelection: false }
 	);
 

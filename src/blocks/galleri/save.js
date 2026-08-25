@@ -5,7 +5,7 @@ export default function save( { attributes } ) {
 	const blockProps = useBlockProps.save( { className: 'section' } );
 	const innerBlocksProps = useInnerBlocksProps.save( {
 		className: 'galleri',
-		style: { '--kolonner': kolonner },
+		style: { '--kolonner': String( kolonner ) },
 		'data-lightbox': lightbox ? 'true' : 'false',
 	} );
 

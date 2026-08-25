@@ -3,7 +3,7 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 export default function save( { attributes } ) {
 	const { eyebrow, titel, kolonner, baggrund } = attributes;
 	const blockProps = useBlockProps.save( { className: `section section--${ baggrund === 'paper' ? 'paper' : 'sky' }` } );
-	const innerBlocksProps = useInnerBlocksProps.save( { className: 'cards', style: { '--kolonner': kolonner } } );
+	const innerBlocksProps = useInnerBlocksProps.save( { className: 'cards', style: { '--kolonner': String( kolonner ) } } );
 
 	return (
 		<section { ...blockProps }>

@@ -8,7 +8,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 	const { eyebrow, titel, kolonner, lightbox } = attributes;
 	const blockProps = useBlockProps( { className: 'section' } );
 	const innerBlocksProps = useInnerBlocksProps(
-		{ className: 'galleri', style: { '--kolonner': kolonner } },
+		{ className: 'galleri', style: { '--kolonner': String( kolonner ) } },
 		{
 			allowedBlocks: [ 'core/image' ],
 			template: [],
