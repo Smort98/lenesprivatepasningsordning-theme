@@ -111,6 +111,32 @@ function lene_app_opret_plads( array $data ): array {
 	return lene_app_gem_plads( $post_id, $data );
 }
 
+/**
+ * Bruges til at overføre pladser fra fx et udviklingssite til et
+ * live site — hver linje oprettes som en ny plads. Springer stille
+ * over datoer, der allerede findes, så et dobbeltklik/gentaget import
+ * ikke skaber dubletter.
+ */
+function lene_app_importer_pladser( array $liste ): array {
+	$eksisterende_datoer = wp_list_pluck( lene_app_hent_alle_pladser(), 'dato' );
+	$resultat             = array(
+		'oprettet'      => array(),
+		'sprunget_over' => array(),
+	);
+	foreach ( $liste as $data ) {
+		$dato = sanitize_text_field( (string) ( $data['dato'] ?? '' ) );
+		if ( '' !== $dato && in_array( $dato, $eksisterende_datoer, true ) ) {
+			$resultat['sprunget_over'][] = $dato;
+			continue;
+		}
+		$resultat['oprettet'][] = lene_app_opret_plads( (array) $data );
+		if ( '' !== $dato ) {
+			$eksisterende_datoer[] = $dato;
+		}
+	}
+	return $resultat;
+}
+
 /* ---------------------------------------------------------------------
  * Lukkedage
  * ------------------------------------------------------------------- */
@@ -165,6 +191,37 @@ function lene_app_opret_lukkedag( array $data ): array {
 		)
 	);
 	return lene_app_gem_lukkedag( $post_id, $data );
+}
+
+/**
+ * Samme princip som lene_app_importer_pladser() — bruges til at
+ * overføre lukkeperioder mellem sites. Lukkedage har ikke ét naturligt
+ * unikt felt, så periode+datoer bruges tilsammen til at genkende
+ * dubletter.
+ */
+function lene_app_importer_lukkedage( array $liste ): array {
+	$eksisterende = array_map(
+		static function ( array $l ): string {
+			return ( $l['periode'] ?? '' ) . '|' . ( $l['datoer'] ?? '' );
+		},
+		lene_app_hent_alle_lukkedage()
+	);
+	$resultat = array(
+		'oprettet'      => array(),
+		'sprunget_over' => array(),
+	);
+	foreach ( $liste as $data ) {
+		$noegle = sanitize_text_field( (string) ( $data['periode'] ?? '' ) ) . '|' . sanitize_text_field( (string) ( $data['datoer'] ?? '' ) );
+		if ( '|' !== $noegle && in_array( $noegle, $eksisterende, true ) ) {
+			$resultat['sprunget_over'][] = $noegle;
+			continue;
+		}
+		$resultat['oprettet'][] = lene_app_opret_lukkedag( (array) $data );
+		if ( '|' !== $noegle ) {
+			$eksisterende[] = $noegle;
+		}
+	}
+	return $resultat;
 }
 
 /* ---------------------------------------------------------------------
@@ -469,6 +526,19 @@ add_action(
 
 		register_rest_route(
 			'lene-app/v1',
+			'/pladser/importer',
+			array(
+				'methods'             => 'POST',
+				'callback'            => function ( WP_REST_Request $req ) {
+					$body = (array) $req->get_json_params();
+					return lene_app_importer_pladser( is_array( $body['pladser'] ?? null ) ? $body['pladser'] : array() );
+				},
+				'permission_callback' => 'lene_app_rest_tjek_adgang',
+			)
+		);
+
+		register_rest_route(
+			'lene-app/v1',
 			'/lukkedage',
 			array(
 				array(
@@ -510,6 +580,19 @@ add_action(
 					},
 					'permission_callback' => 'lene_app_rest_tjek_adgang',
 				),
+			)
+		);
+
+		register_rest_route(
+			'lene-app/v1',
+			'/lukkedage/importer',
+			array(
+				'methods'             => 'POST',
+				'callback'            => function ( WP_REST_Request $req ) {
+					$body = (array) $req->get_json_params();
+					return lene_app_importer_lukkedage( is_array( $body['lukkedage'] ?? null ) ? $body['lukkedage'] : array() );
+				},
+				'permission_callback' => 'lene_app_rest_tjek_adgang',
 			)
 		);
 

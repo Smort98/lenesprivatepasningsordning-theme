@@ -83,6 +83,43 @@
 		} );
 	}
 
+	/**
+	 * Eksport/import — bruges til at overføre pladser/lukkedage fra fx
+	 * et udviklingssite til det live site, uden at skulle genindtaste
+	 * dem manuelt et af stederne.
+	 */
+	function eksporterJson( data, filnavn ) {
+		var blob = new Blob( [ JSON.stringify( data, null, 2 ) ], { type: 'application/json' } );
+		var url = URL.createObjectURL( blob );
+		var a = document.createElement( 'a' );
+		a.href = url;
+		a.download = filnavn;
+		document.body.appendChild( a );
+		a.click();
+		document.body.removeChild( a );
+		URL.revokeObjectURL( url );
+	}
+
+	function importerJsonFil( callback ) {
+		var input = document.createElement( 'input' );
+		input.type = 'file';
+		input.accept = 'application/json';
+		input.addEventListener( 'change', function () {
+			var fil = input.files[ 0 ];
+			if ( ! fil ) return;
+			var laeser = new FileReader();
+			laeser.onload = function () {
+				try {
+					callback( JSON.parse( laeser.result ) );
+				} catch ( e ) {
+					window.alert( 'Kunne ikke læse filen — er det gyldig JSON?' );
+				}
+			};
+			laeser.readAsText( fil );
+		} );
+		input.click();
+	}
+
 	/* ------------------------------------------------------------------
 	 * App-skal: header, faner, banner
 	 * ---------------------------------------------------------------- */
@@ -167,6 +204,10 @@
 			var self = this;
 			var html = '<h2 class="skaerm-titel">Pladser</h2>';
 			html += '<button type="button" class="tilfoej-knap" id="ny-plads">+ Tilføj ny plads</button>';
+			html += '<div class="raekke-aktioner">' +
+				'<button type="button" class="knap knap--sekundaer knap--lille" id="eksporter-pladser">Eksportér</button>' +
+				'<button type="button" class="knap knap--sekundaer knap--lille" id="importer-pladser">Importér</button>' +
+			'</div>';
 
 			if ( 'ny' === this.aabenId ) {
 				html += this.formular( { dato: '', antal: 1, antal_ledige: 0, status_naar_fuld: 'reserveret', note: '' }, 'ny' );
@@ -233,6 +274,22 @@
 			var self = this;
 			var nyBtn = document.getElementById( 'ny-plads' );
 			if ( nyBtn ) nyBtn.addEventListener( 'click', function () { self.aabenId = 'ny'; self.render( el ); } );
+
+			var eksportBtn = document.getElementById( 'eksporter-pladser' );
+			if ( eksportBtn ) eksportBtn.addEventListener( 'click', function () {
+				eksporterJson( self.liste, 'pladser.json' );
+			} );
+			var importBtn = document.getElementById( 'importer-pladser' );
+			if ( importBtn ) importBtn.addEventListener( 'click', function () {
+				importerJsonFil( function ( data ) {
+					var liste = Array.isArray( data ) ? data : ( data.pladser || [] );
+					api( '/pladser/importer', { method: 'POST', body: JSON.stringify( { pladser: liste } ) } ).then( function ( resultat ) {
+						window.alert( resultat.oprettet.length + ' plads(er) importeret. ' + resultat.sprunget_over.length + ' sprunget over (fandtes allerede).' );
+						self.liste = null;
+						self.render( el );
+					} ).catch( function ( e ) { window.alert( e.message ); } );
+				} );
+			} );
 
 			el.querySelectorAll( '[data-rediger]' ).forEach( function ( b ) {
 				b.addEventListener( 'click', function () { self.aabenId = parseInt( b.dataset.rediger, 10 ); self.render( el ); } );
@@ -566,6 +623,10 @@
 			var self = this;
 			var html = '<h2 class="skaerm-titel">Lukkedage</h2>';
 			html += '<button type="button" class="tilfoej-knap" id="ny-lukkedag">+ Tilføj lukkeperiode</button>';
+			html += '<div class="raekke-aktioner">' +
+				'<button type="button" class="knap knap--sekundaer knap--lille" id="eksporter-lukkedage">Eksportér</button>' +
+				'<button type="button" class="knap knap--sekundaer knap--lille" id="importer-lukkedage">Importér</button>' +
+			'</div>';
 
 			if ( 'ny' === this.aabenId ) {
 				html += this.formular( { periode: '', datoer: '', aarsag: '', skjul_efter: '' }, 'ny' );
@@ -611,6 +672,22 @@
 			var self = this;
 			var nyBtn = document.getElementById( 'ny-lukkedag' );
 			if ( nyBtn ) nyBtn.addEventListener( 'click', function () { self.aabenId = 'ny'; self.render( el ); } );
+
+			var eksportBtn = document.getElementById( 'eksporter-lukkedage' );
+			if ( eksportBtn ) eksportBtn.addEventListener( 'click', function () {
+				eksporterJson( self.liste, 'lukkedage.json' );
+			} );
+			var importBtn = document.getElementById( 'importer-lukkedage' );
+			if ( importBtn ) importBtn.addEventListener( 'click', function () {
+				importerJsonFil( function ( data ) {
+					var liste = Array.isArray( data ) ? data : ( data.lukkedage || [] );
+					api( '/lukkedage/importer', { method: 'POST', body: JSON.stringify( { lukkedage: liste } ) } ).then( function ( resultat ) {
+						window.alert( resultat.oprettet.length + ' lukkeperiode(r) importeret. ' + resultat.sprunget_over.length + ' sprunget over (fandtes allerede).' );
+						self.liste = null;
+						self.render( el );
+					} ).catch( function ( e ) { window.alert( e.message ); } );
+				} );
+			} );
 
 			el.querySelectorAll( '[data-rediger]' ).forEach( function ( b ) {
 				b.addEventListener( 'click', function () { self.aabenId = parseInt( b.dataset.rediger, 10 ); self.render( el ); } );
