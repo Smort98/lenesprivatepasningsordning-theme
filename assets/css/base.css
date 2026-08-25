@@ -86,14 +86,27 @@ h4 {
  */
 .wp-site-blocks .section,
 .wp-site-blocks .pagehead,
-.wp-site-blocks .hero,
-.editor-styles-wrapper .section,
-.editor-styles-wrapper .pagehead,
-.editor-styles-wrapper .hero {
+.wp-site-blocks .hero {
 	width: 100vw !important;
 	max-width: none !important;
 	margin-left: calc(50% - 50vw) !important;
 	margin-right: calc(50% - 50vw) !important;
+}
+/*
+ * Samme udbrud i selve editoren kan ikke bruge 100vw/50vw — det trick
+ * antager at elementets egen vandrette midte falder sammen med hele
+ * browservinduets midte, hvilket ikke nødvendigvis er sandt i
+ * wp-admin (fx når blok-panelet i siden lægger beslag på plads). Her
+ * er den relevante "fulde bredde" i stedet ganske enkelt beholderens
+ * egen bredde, så vi undgår vw-regnestykket helt.
+ */
+.editor-styles-wrapper .section,
+.editor-styles-wrapper .pagehead,
+.editor-styles-wrapper .hero {
+	width: 100% !important;
+	max-width: none !important;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
 }
 
 /*
