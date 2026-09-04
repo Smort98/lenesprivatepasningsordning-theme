@@ -10,6 +10,7 @@ require_once get_theme_file_path( 'inc/cpt-pladsalarm.php' );
 require_once get_theme_file_path( 'inc/cpt-lukkedag.php' );
 require_once get_theme_file_path( 'inc/billedsamtykke.php' );
 require_once get_theme_file_path( 'inc/indstillinger.php' );
+require_once get_theme_file_path( 'inc/admin-drift.php' );
 require_once get_theme_file_path( 'inc/cpt-henvendelse.php' );
 require_once get_theme_file_path( 'inc/formular-handler.php' );
 require_once get_theme_file_path( 'inc/pladsalarm-handler.php' );

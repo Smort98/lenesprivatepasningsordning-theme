@@ -21,7 +21,7 @@ function lene_register_cpt_lukkedag() {
 			'public'              => false,
 			'publicly_queryable'  => false,
 			'show_ui'             => true,
-			'show_in_menu'        => true,
+			'show_in_menu'        => false, // Samlet i "Drift" (inc/admin-drift.php) i stedet for eget topmenupunkt.
 			'menu_icon'           => 'dashicons-palmtree',
 			'show_in_rest'        => true,
 			'supports'            => array( 'title' ),
