@@ -1,0 +1,1 @@
+(()=>{"use strict";const n=window.wp.blocks,e=JSON.parse('{"UU":"lene/home-link"}'),o=window.wp.blockEditor,s=window.ReactJSXRuntime;(0,n.registerBlockType)(e.UU,{edit:function(){const n=(0,o.useBlockProps)({className:"brand"});return(0,s.jsx)("div",{...n,children:(0,s.jsx)(o.InnerBlocks,{})})},save:function(){return(0,s.jsx)(o.InnerBlocks.Content,{})}})})();

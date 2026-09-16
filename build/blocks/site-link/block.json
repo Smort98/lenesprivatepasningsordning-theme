@@ -1,0 +1,37 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "lene/site-link",
+  "title": "Sidelink",
+  "category": "lene-sektioner",
+  "icon": "admin-links",
+  "description": "Et link til en intern side, bygget om home_url() i stedet for en hardcodet URL — virker korrekt uanset om sitet kører i sin egen undermappe (som lokalt) eller på domænets rod (som live).",
+  "keywords": [
+    "link",
+    "menu",
+    "navigation"
+  ],
+  "textdomain": "lene",
+  "attributes": {
+    "sti": {
+      "type": "string",
+      "default": "/"
+    },
+    "tekst": {
+      "type": "string",
+      "default": "Link"
+    },
+    "klasse": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "editorScript": "file:./index.js",
+  "render": "file:./render.php"
+}

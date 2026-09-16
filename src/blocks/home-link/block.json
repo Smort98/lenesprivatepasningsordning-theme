@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "lene/home-link",
+	"title": "Link til forsiden (wrapper)",
+	"category": "lene-sektioner",
+	"icon": "admin-home",
+	"description": "Wrapper vilkårligt indhold (fx logo + navn) i et link til forsiden via home_url() — virker korrekt uanset om sitet kører i en undermappe eller på domænets rod. Ingen egen markup udover selve <a>-taggen, så indre blokke (fx lene/logo) sidder direkte som børn af den, ligesom flex-layoutet i CSS'en forventer.",
+	"keywords": [ "link", "logo", "forside" ],
+	"textdomain": "lene",
+	"attributes": {
+		"klasse": { "type": "string", "default": "brand" }
+	},
+	"supports": {
+		"html": false
+	},
+	"editorScript": "file:./index.js",
+	"render": "file:./render.php"
+}
