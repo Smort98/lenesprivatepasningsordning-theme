@@ -5,6 +5,25 @@
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Selvhostet opdateringstjek via GitHub, da temaet ikke ligger på
+ * WordPress.org — samme metode som cookie-samtykke-pluginet bruger.
+ * Gør nye versioner synlige som en normal temaopdatering i wp-admin.
+ * Opdateringer opdages ved at "Version"-linjen i style.css på GitHubs
+ * main-branch er højere end den installerede — husk at sætte den op,
+ * når en ny udgave skal være synlig som opdatering andre steder.
+ */
+require_once get_theme_file_path( 'vendor/plugin-update-checker/plugin-update-checker.php' );
+
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+
+$GLOBALS['lene_update_checker'] = PucFactory::buildUpdateChecker(
+	'https://github.com/Smort98/lenesprivatepasningsordning-theme/',
+	get_theme_file_path( 'style.css' ),
+	'lene'
+);
+$GLOBALS['lene_update_checker']->setBranch( 'main' );
+
 require_once get_theme_file_path( 'inc/cpt-plads.php' );
 require_once get_theme_file_path( 'inc/cpt-pladsalarm.php' );
 require_once get_theme_file_path( 'inc/cpt-lukkedag.php' );
