@@ -89,13 +89,16 @@ body {
 	background: var(--paper);
 	border-top: 1px solid rgba(0,0,0,0.08);
 	padding-bottom: env(safe-area-inset-bottom);
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
 }
 .app__tab {
-	flex: 1;
+	flex: 0 0 auto;
+	min-width: 74px;
 	background: none;
 	border: none;
 	border-right: 1px solid rgba(0,0,0,0.08);
-	padding: 10px 4px 8px;
+	padding: 10px 8px 8px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -104,6 +107,7 @@ body {
 	color: var(--stone);
 	cursor: pointer;
 	font-family: inherit;
+	white-space: nowrap;
 }
 .app__tab:last-child { border-right: none; }
 .app__tab svg { width: 22px; height: 22px; }
@@ -218,6 +222,50 @@ h2.skaerm-titel { font-size: 20px; margin: 4px 0 16px; }
 .raekke-aktioner { display: flex; gap: 8px; margin-top: 12px; justify-content: flex-end; }
 
 .tom-tilstand { text-align: center; padding: 40px 16px; color: var(--stone); font-size: 14px; }
+
+.kort-sektion__titel { font-size: 15px; margin: 0 0 14px; }
+.kort .kort-sektion__titel:not(:first-child) { margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.08); }
+
+.punkt-editor__raekke {
+	border: 1px solid rgba(0,0,0,0.1);
+	border-radius: 12px;
+	padding: 14px;
+	margin-bottom: 12px;
+}
+.punkt-editor__raekke .felt:last-of-type { margin-bottom: 12px; }
+
+.foto-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+	gap: 10px;
+}
+.foto-kort {
+	position: relative;
+	border-radius: 12px;
+	overflow: hidden;
+	background: var(--sky);
+	box-shadow: 0 2px 8px -4px rgba(0,0,0,0.15);
+}
+.foto-kort img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+.foto-kort__aktioner {
+	display: flex;
+	gap: 4px;
+	padding: 6px;
+	background: rgba(255,255,255,0.92);
+}
+.foto-kort__aktioner button {
+	flex: 1;
+	border: 1px solid rgba(0,0,0,0.12);
+	background: var(--paper);
+	color: var(--pine);
+	border-radius: 6px;
+	padding: 5px 0;
+	font-size: 13px;
+	font-weight: 700;
+	cursor: pointer;
+}
+.foto-kort__aktioner button[disabled] { opacity: 0.3; cursor: default; }
+.foto-kort__slet { color: var(--berry) !important; flex: 1.4 !important; font-size: 11px !important; }
 
 .linje-editor { border-top: 1px solid rgba(0,0,0,0.08); padding-top: 12px; margin-top: 4px; }
 .linje-editor__raekke { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }

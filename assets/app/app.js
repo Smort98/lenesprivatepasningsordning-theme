@@ -129,6 +129,9 @@
 		{ id: 'aabningstider', navn: 'Åbningstider', ikon: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>' },
 		{ id: 'priser', navn: 'Priser', ikon: '<path d="M12 2v20M17 6H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>' },
 		{ id: 'lukkedage', navn: 'Lukkedage', ikon: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>' },
+		{ id: 'forside', navn: 'Forside', ikon: '<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>' },
+		{ id: 'hvem-er-jeg', navn: 'Hvem er jeg', ikon: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>' },
+		{ id: 'fotoalbum', navn: 'Fotoalbum', ikon: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-4 4-3-3-6 6"/>' },
 	];
 
 	var state = { fane: hentFaneFraHash(), data: {}, indlaeser: {} };
@@ -181,6 +184,9 @@
 		if ( 'aabningstider' === state.fane ) return Aabningstider.render( el );
 		if ( 'priser' === state.fane ) return Priser.render( el );
 		if ( 'lukkedage' === state.fane ) return Lukkedage.render( el );
+		if ( 'forside' === state.fane ) return Forside.render( el );
+		if ( 'hvem-er-jeg' === state.fane ) return HvemErJeg.render( el );
+		if ( 'fotoalbum' === state.fane ) return Fotoalbum.render( el );
 	}
 
 	/* ------------------------------------------------------------------
@@ -720,6 +726,326 @@
 						self.aabenId = null;
 						self.render( el );
 					} ).catch( function ( e ) { window.alert( e.message ); } );
+				} );
+			} );
+		},
+	};
+
+	/* ------------------------------------------------------------------
+	 * Forside (hero-tekst + døgnrytme)
+	 * ---------------------------------------------------------------- */
+
+	function punktRaekkeHtml( felter, i ) {
+		var html = '<div class="punkt-editor__raekke" data-punkt="' + i + '">';
+		felter.forEach( function ( f ) {
+			html += '<div class="felt"><label>' + esc( f.label ) + '</label>' +
+				( f.flerlinje
+					? '<textarea data-punktfelt="' + f.navn + '" rows="2">' + esc( f.vaerdi ) + '</textarea>'
+					: '<input type="text" data-punktfelt="' + f.navn + '" value="' + esc( f.vaerdi ) + '" placeholder="' + esc( f.placeholder || '' ) + '">'
+				) +
+			'</div>';
+		} );
+		html += '<button type="button" class="knap knap--fare knap--lille" data-fjern-punkt="' + i + '">Fjern</button>';
+		html += '</div>';
+		return html;
+	}
+
+	function laesPunkterFraDom( el, felt_navne ) {
+		var punkter = [];
+		el.querySelectorAll( '[data-punkt]' ).forEach( function ( raekke ) {
+			var p = {};
+			felt_navne.forEach( function ( navn ) {
+				p[ navn ] = raekke.querySelector( '[data-punktfelt="' + navn + '"]' ).value;
+			} );
+			punkter.push( p );
+		} );
+		return punkter;
+	}
+
+	/**
+	 * saetPunkter: function(nyPunktliste) — skriver den opdaterede liste
+	 * tilbage til modulets egen state. genrender: function() — kalder
+	 * modulets render(el) igen. Holdt generisk, så både Forside (som
+	 * gemmer punkter under .rytme.punkter) og HvemErJeg (under
+	 * .data.punkter) kan bruge den samme binder.
+	 */
+	function bindPunktFjernOgTilfoej( el, saetPunkter, genrender, tilfoejBtnId, tomtPunkt, felt_navne ) {
+		el.querySelectorAll( '[data-fjern-punkt]' ).forEach( function ( b ) {
+			b.addEventListener( 'click', function () {
+				var punkter = laesPunkterFraDom( el, felt_navne );
+				punkter.splice( parseInt( b.dataset.fjernPunkt, 10 ), 1 );
+				saetPunkter( punkter );
+				genrender();
+			} );
+		} );
+		var tilfoejBtn = document.getElementById( tilfoejBtnId );
+		if ( tilfoejBtn ) tilfoejBtn.addEventListener( 'click', function () {
+			var punkter = laesPunkterFraDom( el, felt_navne );
+			punkter.push( tomtPunkt );
+			saetPunkter( punkter );
+			genrender();
+		} );
+	}
+
+	var Forside = {
+		hero: null,
+		rytme: null,
+
+		render: function ( el ) {
+			if ( null === this.hero || null === this.rytme ) {
+				el.innerHTML = '<div class="loading">Indlæser forside…</div>';
+				var self = this;
+				Promise.all( [ api( '/hero' ), api( '/dagsrytme' ) ] ).then( function ( resultater ) {
+					self.hero  = resultater[ 0 ];
+					self.rytme = resultater[ 1 ];
+					self.render( el );
+				} ).catch( function ( e ) { el.innerHTML = '<div class="loading">' + esc( e.message ) + '</div>'; } );
+				return;
+			}
+			var self = this;
+			var html = '<h2 class="skaerm-titel">Forside</h2>';
+
+			html += '<div class="kort">';
+			html += '<h3 class="kort-sektion__titel">Hero</h3>';
+			html += '<div class="felt"><label>Overrubrik</label><input type="text" id="hero-overrubrik" value="' + esc( this.hero.overrubrik ) + '"></div>';
+			html += '<div class="felt"><label>Overskrift</label><input type="text" id="hero-titel" value="' + esc( this.hero.titel ) + '"></div>';
+			html += '<div class="felt"><label>Tekst</label><textarea id="hero-tekst" rows="3">' + esc( this.hero.tekst ) + '</textarea></div>';
+			html += '<button type="button" class="knap knap--primaer" id="gem-hero">Gem hero</button>';
+			html += '</div>';
+
+			html += '<div class="kort">';
+			html += '<h3 class="kort-sektion__titel">Døgnrytme</h3>';
+			this.rytme.punkter.forEach( function ( p, i ) {
+				html += punktRaekkeHtml( [
+					{ navn: 'tidspunkt', label: 'Tidspunkt', vaerdi: p.tidspunkt, placeholder: 'Fx: 6.45' },
+					{ navn: 'titel', label: 'Titel', vaerdi: p.titel },
+					{ navn: 'tekst', label: 'Tekst', vaerdi: p.tekst, flerlinje: true },
+				], i );
+			} );
+			html += '<button type="button" class="tilfoej-knap" id="tilfoej-rytme-punkt">+ Tilføj tidspunkt</button>';
+			html += '<button type="button" class="knap knap--primaer knap--fuld-bredde" id="gem-rytme">Gem døgnrytme</button>';
+			html += '</div>';
+
+			el.innerHTML = html;
+			this.bind( el );
+		},
+
+		bind: function ( el ) {
+			var self = this;
+
+			document.getElementById( 'gem-hero' ).addEventListener( 'click', function ( ev ) {
+				var knap = ev.currentTarget;
+				knap.disabled = true;
+				var data = {
+					overrubrik: document.getElementById( 'hero-overrubrik' ).value,
+					titel: document.getElementById( 'hero-titel' ).value,
+					tekst: document.getElementById( 'hero-tekst' ).value,
+				};
+				api( '/hero', { method: 'PUT', body: JSON.stringify( data ) } ).then( function ( opdateret ) {
+					self.hero = opdateret;
+					knap.disabled = false;
+					knap.textContent = 'Gemt ✓';
+					setTimeout( function () { knap.textContent = 'Gem hero'; }, 1500 );
+				} ).catch( function ( e ) { window.alert( e.message ); knap.disabled = false; } );
+			} );
+
+			bindPunktFjernOgTilfoej(
+				el,
+				function ( punkter ) { self.rytme.punkter = punkter; },
+				function () { self.render( el ); },
+				'tilfoej-rytme-punkt',
+				{ tidspunkt: '', titel: '', tekst: '' },
+				[ 'tidspunkt', 'titel', 'tekst' ]
+			);
+
+			document.getElementById( 'gem-rytme' ).addEventListener( 'click', function ( ev ) {
+				var knap = ev.currentTarget;
+				knap.disabled = true;
+				knap.textContent = 'Gemmer…';
+				var data = { punkter: laesPunkterFraDom( el, [ 'tidspunkt', 'titel', 'tekst' ] ) };
+				api( '/dagsrytme', { method: 'PUT', body: JSON.stringify( data ) } ).then( function ( opdateret ) {
+					self.rytme = opdateret;
+					self.render( el );
+				} ).catch( function ( e ) {
+					window.alert( e.message );
+					knap.disabled = false;
+					knap.textContent = 'Gem døgnrytme';
+				} );
+			} );
+		},
+	};
+
+	/* ------------------------------------------------------------------
+	 * Hvem er jeg (efteruddannelse/tidslinje)
+	 * ---------------------------------------------------------------- */
+
+	var HvemErJeg = {
+		data: null,
+
+		render: function ( el ) {
+			if ( null === this.data ) {
+				el.innerHTML = '<div class="loading">Indlæser…</div>';
+				var self = this;
+				api( '/tidslinje' ).then( function ( data ) { self.data = data; self.render( el ); } )
+					.catch( function ( e ) { el.innerHTML = '<div class="loading">' + esc( e.message ) + '</div>'; } );
+				return;
+			}
+			var self = this;
+			var html = '<h2 class="skaerm-titel">Hvem er jeg</h2>';
+			html += '<div class="kort">';
+			html += '<h3 class="kort-sektion__titel">Efteruddannelse</h3>';
+			this.data.punkter.forEach( function ( p, i ) {
+				html += punktRaekkeHtml( [
+					{ navn: 'aar', label: 'Årstal / periode', vaerdi: p.aar, placeholder: 'Fx: 2026' },
+					{ navn: 'titel', label: 'Titel', vaerdi: p.titel },
+					{ navn: 'tekst', label: 'Tekst', vaerdi: p.tekst, flerlinje: true },
+				], i );
+			} );
+			html += '<button type="button" class="tilfoej-knap" id="tilfoej-kursus">+ Tilføj kursus</button>';
+			html += '<button type="button" class="knap knap--primaer knap--fuld-bredde" id="gem-tidslinje">Gem</button>';
+			html += '</div>';
+			el.innerHTML = html;
+			this.bind( el );
+		},
+
+		bind: function ( el ) {
+			var self = this;
+			bindPunktFjernOgTilfoej(
+				el,
+				function ( punkter ) { self.data.punkter = punkter; },
+				function () { self.render( el ); },
+				'tilfoej-kursus',
+				{ aar: '', titel: '', tekst: '' },
+				[ 'aar', 'titel', 'tekst' ]
+			);
+
+			document.getElementById( 'gem-tidslinje' ).addEventListener( 'click', function ( ev ) {
+				var knap = ev.currentTarget;
+				knap.disabled = true;
+				knap.textContent = 'Gemmer…';
+				var data = { punkter: laesPunkterFraDom( el, [ 'aar', 'titel', 'tekst' ] ) };
+				api( '/tidslinje', { method: 'PUT', body: JSON.stringify( data ) } ).then( function ( opdateret ) {
+					self.data = opdateret;
+					self.render( el );
+				} ).catch( function ( e ) {
+					window.alert( e.message );
+					knap.disabled = false;
+					knap.textContent = 'Gem';
+				} );
+			} );
+		},
+	};
+
+	/* ------------------------------------------------------------------
+	 * Fotoalbum
+	 * ---------------------------------------------------------------- */
+
+	var Fotoalbum = {
+		billeder: null,
+		gemmer: false,
+
+		render: function ( el ) {
+			if ( null === this.billeder ) {
+				el.innerHTML = '<div class="loading">Indlæser fotoalbum…</div>';
+				var self = this;
+				api( '/galleri' ).then( function ( data ) { self.billeder = data.billeder; self.render( el ); } )
+					.catch( function ( e ) { el.innerHTML = '<div class="loading">' + esc( e.message ) + '</div>'; } );
+				return;
+			}
+			var self = this;
+			var html = '<h2 class="skaerm-titel">Fotoalbum</h2>';
+			html += '<input type="file" id="foto-input" accept="image/*" capture="environment" hidden>';
+			html += '<button type="button" class="tilfoej-knap" id="tilfoej-billede"' + ( this.gemmer ? ' disabled' : '' ) + '>+ Tilføj billede</button>';
+			if ( this.gemmer ) {
+				html += '<p class="loading">Gemmer…</p>';
+			}
+			html += '<div class="foto-grid">';
+			this.billeder.forEach( function ( b, i ) {
+				html += '<div class="foto-kort">' +
+					'<img src="' + esc( b.url ) + '" alt="' + esc( b.alt ) + '" loading="lazy">' +
+					'<div class="foto-kort__aktioner">' +
+						'<button type="button" data-flyt="op" data-index="' + i + '"' + ( 0 === i ? ' disabled' : '' ) + ' aria-label="Flyt tidligere">↑</button>' +
+						'<button type="button" data-flyt="ned" data-index="' + i + '"' + ( i === self.billeder.length - 1 ? ' disabled' : '' ) + ' aria-label="Flyt senere">↓</button>' +
+						'<button type="button" class="foto-kort__slet" data-slet-index="' + i + '">Slet</button>' +
+					'</div>' +
+				'</div>';
+			} );
+			html += '</div>';
+			if ( ! this.billeder.length ) {
+				html += '<p class="tom-tilstand">Ingen billeder endnu.</p>';
+			}
+
+			el.innerHTML = html;
+			this.bind( el );
+		},
+
+		gemRaekkefoelge: function ( el ) {
+			var self = this;
+			this.gemmer = true;
+			this.render( el );
+			var ider = this.billeder.map( function ( b ) { return b.id; } );
+			api( '/galleri', { method: 'PUT', body: JSON.stringify( { billede_ider: ider } ) } ).then( function ( opdateret ) {
+				self.billeder = opdateret.billeder;
+				self.gemmer   = false;
+				self.render( el );
+			} ).catch( function ( e ) {
+				window.alert( e.message );
+				self.gemmer = false;
+				self.render( el );
+			} );
+		},
+
+		bind: function ( el ) {
+			var self       = this;
+			var input      = document.getElementById( 'foto-input' );
+			var tilfoejBtn = document.getElementById( 'tilfoej-billede' );
+
+			tilfoejBtn.addEventListener( 'click', function () { input.click(); } );
+			input.addEventListener( 'change', function () {
+				var fil = input.files[ 0 ];
+				if ( ! fil ) return;
+				self.gemmer = true;
+				self.render( el );
+
+				var form = new FormData();
+				form.append( 'fil', fil );
+				fetch( CFG.restBase + '/galleri/upload', {
+					method: 'POST',
+					headers: { 'X-WP-Nonce': CFG.nonce },
+					body: form,
+				} ).then( function ( res ) {
+					if ( ! res.ok ) {
+						return res.json().catch( function () { return {}; } ).then( function ( fejl ) {
+							throw new Error( fejl.message || 'Upload fejlede (' + res.status + ')' );
+						} );
+					}
+					return res.json();
+				} ).then( function ( nyt ) {
+					self.billeder.push( { id: nyt.id, url: nyt.url, alt: '' } );
+					self.gemRaekkefoelge( el );
+				} ).catch( function ( e ) {
+					window.alert( e.message );
+					self.gemmer = false;
+					self.render( el );
+				} );
+			} );
+
+			el.querySelectorAll( '[data-flyt]' ).forEach( function ( b ) {
+				b.addEventListener( 'click', function () {
+					var i = parseInt( b.dataset.index, 10 );
+					var j = 'op' === b.dataset.flyt ? i - 1 : i + 1;
+					if ( j < 0 || j >= self.billeder.length ) return;
+					var tmp = self.billeder[ i ];
+					self.billeder[ i ] = self.billeder[ j ];
+					self.billeder[ j ] = tmp;
+					self.gemRaekkefoelge( el );
+				} );
+			} );
+			el.querySelectorAll( '[data-slet-index]' ).forEach( function ( b ) {
+				b.addEventListener( 'click', function () {
+					if ( ! window.confirm( 'Slet dette billede fra fotoalbummet?' ) ) return;
+					self.billeder.splice( parseInt( b.dataset.sletIndex, 10 ), 1 );
+					self.gemRaekkefoelge( el );
 				} );
 			} );
 		},

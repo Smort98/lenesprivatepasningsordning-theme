@@ -21,6 +21,7 @@ require_once get_theme_file_path( 'inc/cookie-samtykke-integration.php' );
 require_once get_theme_file_path( 'inc/login-sikkerhed.php' );
 require_once get_theme_file_path( 'inc/app-rolle.php' );
 require_once get_theme_file_path( 'inc/app-rest.php' );
+require_once get_theme_file_path( 'inc/app-rest-indhold.php' );
 require_once get_theme_file_path( 'inc/app.php' );
 
 /**
