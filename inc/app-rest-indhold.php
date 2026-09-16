@@ -515,6 +515,55 @@ function lene_app_upload_galleri_billede() {
 }
 
 /* ---------------------------------------------------------------------
+ * Dashboard — samlet overblik til appens forside-fane
+ * ------------------------------------------------------------------- */
+
+/**
+ * Samler det, man vil vide med det samme, i ét kald i stedet for at
+ * skulle ind i tre-fire forskellige faner: er der åbent lige nu, hvornår
+ * er næste lukkedag, og hvor mange pladser er der reelt ledige.
+ */
+function lene_app_hent_dashboard(): array {
+	$status = '';
+	$aabningstider = lene_app_hent_aabningstider();
+	if ( $aabningstider && function_exists( 'lene_aabningstider_beregn_status' ) ) {
+		$status = lene_aabningstider_beregn_status( $aabningstider['dage'] );
+	}
+
+	$naeste_lukkedag = null;
+	if ( function_exists( 'lene_hent_lukkedage' ) ) {
+		$lukkedage        = lene_hent_lukkedage();
+		$naeste_lukkedag  = $lukkedage[0] ?? null;
+	}
+
+	$total_ledige    = 0;
+	$kommende_ledige = array();
+	if ( function_exists( 'lene_hent_pladser' ) ) {
+		foreach ( lene_hent_pladser( true ) as $p ) {
+			if ( $p['antal_ledige'] <= 0 ) {
+				continue;
+			}
+			$total_ledige += $p['antal_ledige'];
+			if ( count( $kommende_ledige ) < 3 ) {
+				$kommende_ledige[] = array(
+					'id'    => $p['id'],
+					'dato'  => $p['timestamp'] ? lene_dansk_dato( $p['timestamp'] ) : '',
+					'tekst' => $p['tekst'],
+				);
+			}
+		}
+	}
+
+	return array(
+		'status'          => $status,
+		'er_aabent'       => str_starts_with( $status, 'Åbent' ),
+		'naeste_lukkedag' => $naeste_lukkedag,
+		'total_ledige'    => $total_ledige,
+		'kommende_ledige' => $kommende_ledige,
+	);
+}
+
+/* ---------------------------------------------------------------------
  * Ruter
  * ------------------------------------------------------------------- */
 
@@ -620,6 +669,16 @@ add_action(
 			array(
 				'methods'             => 'POST',
 				'callback'            => 'lene_app_upload_galleri_billede',
+				'permission_callback' => 'lene_app_rest_tjek_adgang',
+			)
+		);
+
+		register_rest_route(
+			'lene-app/v1',
+			'/dashboard',
+			array(
+				'methods'             => 'GET',
+				'callback'            => fn() => lene_app_hent_dashboard(),
 				'permission_callback' => 'lene_app_rest_tjek_adgang',
 			)
 		);

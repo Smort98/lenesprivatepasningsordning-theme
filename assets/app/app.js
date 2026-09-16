@@ -124,39 +124,68 @@
 	 * App-skal: header, faner, banner
 	 * ---------------------------------------------------------------- */
 
-	var TABS = [
+	var FASTE_TABS = [
+		{ id: 'dashboard', navn: 'Dashboard', ikon: '<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/>' },
 		{ id: 'pladser', navn: 'Pladser', ikon: '<circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/>' },
+		{ id: 'lukkedage', navn: 'Lukkedage', ikon: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>' },
+	];
+	var MERE_TABS = [
 		{ id: 'aabningstider', navn: 'Åbningstider', ikon: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>' },
 		{ id: 'priser', navn: 'Priser', ikon: '<path d="M12 2v20M17 6H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>' },
-		{ id: 'lukkedage', navn: 'Lukkedage', ikon: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>' },
 		{ id: 'forside', navn: 'Forside', ikon: '<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>' },
 		{ id: 'hvem-er-jeg', navn: 'Hvem er jeg', ikon: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>' },
 		{ id: 'fotoalbum', navn: 'Fotoalbum', ikon: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-4 4-3-3-6 6"/>' },
 	];
+	var ALLE_TABS = FASTE_TABS.concat( MERE_TABS );
 
-	var state = { fane: hentFaneFraHash(), data: {}, indlaeser: {} };
+	var state = { fane: hentFaneFraHash(), mereAaben: false, data: {}, indlaeser: {} };
 
 	function hentFaneFraHash() {
 		var h = ( window.location.hash || '' ).replace( '#', '' );
-		var ids = TABS.map( function ( t ) { return t.id; } );
-		return ids.indexOf( h ) > -1 ? h : 'pladser';
+		var ids = ALLE_TABS.map( function ( t ) { return t.id; } );
+		return ids.indexOf( h ) > -1 ? h : 'dashboard';
 	}
 
 	window.addEventListener( 'hashchange', function () {
 		state.fane = hentFaneFraHash();
+		state.mereAaben = false;
 		renderSkal();
 	} );
 
 	function skiftFane( id ) {
+		state.mereAaben = false;
+		if ( window.location.hash === '#' + id ) {
+			state.fane = id;
+			renderSkal();
+			return;
+		}
 		window.location.hash = id;
 	}
 
+	function svgIkon( sti ) {
+		return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + sti + '</svg>';
+	}
+
 	function renderSkal() {
-		var faneHtml = TABS.map( function ( t ) {
+		var erIMereListe = MERE_TABS.some( function ( t ) { return t.id === state.fane; } );
+
+		var faneHtml = FASTE_TABS.map( function ( t ) {
 			return '<button type="button" class="app__tab' + ( t.id === state.fane ? ' er-aktiv' : '' ) + '" data-fane="' + t.id + '">' +
-				'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + t.ikon + '</svg>' +
-				'<span>' + t.navn + '</span></button>';
+				svgIkon( t.ikon ) + '<span>' + t.navn + '</span></button>';
 		} ).join( '' );
+		faneHtml += '<button type="button" class="app__tab' + ( erIMereListe || state.mereAaben ? ' er-aktiv' : '' ) + '" id="mere-knap">' +
+			svgIkon( '<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>' ) +
+			'<span>Mere</span></button>';
+
+		var mereHtml = '';
+		if ( state.mereAaben ) {
+			mereHtml = '<div class="mere-baggrund" id="mere-baggrund"></div><div class="mere-menu">' +
+				MERE_TABS.map( function ( t ) {
+					return '<button type="button" class="mere-menu__punkt' + ( t.id === state.fane ? ' er-aktiv' : '' ) + '" data-fane="' + t.id + '">' +
+						svgIkon( t.ikon ) + '<span>' + t.navn + '</span></button>';
+				} ).join( '' ) +
+			'</div>';
+		}
 
 		APP.innerHTML =
 			'<header class="app__header">' +
@@ -168,11 +197,25 @@
 			'</header>' +
 			'<div id="nonce-banner" class="app__banner" hidden>Din session er udløbet. <button type="button" id="nonce-reload">Genindlæs</button></div>' +
 			'<main class="app__main" id="skaerm"></main>' +
+			mereHtml +
 			'<nav class="app__tabs">' + faneHtml + '</nav>';
 
-		APP.querySelectorAll( '.app__tab' ).forEach( function ( btn ) {
+		APP.querySelectorAll( '.app__tab[data-fane]' ).forEach( function ( btn ) {
 			btn.addEventListener( 'click', function () { skiftFane( btn.dataset.fane ); } );
 		} );
+		document.getElementById( 'mere-knap' ).addEventListener( 'click', function () {
+			state.mereAaben = ! state.mereAaben;
+			renderSkal();
+		} );
+		if ( state.mereAaben ) {
+			document.getElementById( 'mere-baggrund' ).addEventListener( 'click', function () {
+				state.mereAaben = false;
+				renderSkal();
+			} );
+			document.querySelectorAll( '.mere-menu__punkt' ).forEach( function ( btn ) {
+				btn.addEventListener( 'click', function () { skiftFane( btn.dataset.fane ); } );
+			} );
+		}
 		document.getElementById( 'nonce-reload' ).addEventListener( 'click', function () { window.location.reload(); } );
 
 		renderSkaerm();
@@ -180,6 +223,7 @@
 
 	function renderSkaerm() {
 		var el = document.getElementById( 'skaerm' );
+		if ( 'dashboard' === state.fane ) return Dashboard.render( el );
 		if ( 'pladser' === state.fane ) return Pladser.render( el );
 		if ( 'aabningstider' === state.fane ) return Aabningstider.render( el );
 		if ( 'priser' === state.fane ) return Priser.render( el );
@@ -786,6 +830,69 @@
 			genrender();
 		} );
 	}
+
+	/* ------------------------------------------------------------------
+	 * Dashboard — hurtigt overblik + genveje, uden om de andre faner
+	 * ---------------------------------------------------------------- */
+
+	var Dashboard = {
+		data: null,
+
+		render: function ( el ) {
+			if ( null === this.data ) {
+				el.innerHTML = '<div class="loading">Indlæser…</div>';
+				var self = this;
+				api( '/dashboard' ).then( function ( data ) { self.data = data; self.render( el ); } )
+					.catch( function ( e ) { el.innerHTML = '<div class="loading">' + esc( e.message ) + '</div>'; } );
+				return;
+			}
+			var d    = this.data;
+			var html = '<h2 class="skaerm-titel">Dashboard</h2>';
+
+			html += '<div class="status-raekke">';
+			html += '<span class="status-pille ' + ( d.er_aabent ? 'er-aaben' : '' ) + '">' + esc( d.status || 'Ukendt status' ) + '</span>';
+			if ( d.naeste_lukkedag ) {
+				html += '<span class="status-pille">' + esc( ( d.naeste_lukkedag.aarsag || d.naeste_lukkedag.periode ) + ': ' + d.naeste_lukkedag.datoer ) + '</span>';
+			}
+			html += '</div>';
+
+			html += '<div class="kort">';
+			html += '<h3 class="kort-sektion__titel">Ledige pladser</h3>';
+			if ( d.total_ledige > 0 ) {
+				html += '<p class="dashboard-tal">' + d.total_ledige + '</p>';
+				html += '<div class="dashboard-liste">';
+				d.kommende_ledige.forEach( function ( p ) {
+					html += '<div class="dashboard-liste__raekke"><span>' + esc( p.dato ) + '</span><span>' + esc( p.tekst ) + '</span></div>';
+				} );
+				html += '</div>';
+			} else {
+				html += '<p class="tom-tilstand">Ingen ledige pladser lige nu.</p>';
+			}
+			html += '</div>';
+
+			html += '<div class="kort">';
+			html += '<h3 class="kort-sektion__titel">Genveje</h3>';
+			html += '<div class="dashboard-genveje">';
+			html += '<button type="button" class="knap knap--sekundaer" id="genvej-ny-plads">+ Ny plads</button>';
+			html += '<button type="button" class="knap knap--sekundaer" id="genvej-ny-lukkedag">+ Ny lukkeperiode</button>';
+			html += '</div>';
+			html += '</div>';
+
+			el.innerHTML = html;
+			this.bind( el );
+		},
+
+		bind: function () {
+			document.getElementById( 'genvej-ny-plads' ).addEventListener( 'click', function () {
+				Pladser.aabenId = 'ny';
+				skiftFane( 'pladser' );
+			} );
+			document.getElementById( 'genvej-ny-lukkedag' ).addEventListener( 'click', function () {
+				Lukkedage.aabenId = 'ny';
+				skiftFane( 'lukkedage' );
+			} );
+		},
+	};
 
 	var Forside = {
 		hero: null,
