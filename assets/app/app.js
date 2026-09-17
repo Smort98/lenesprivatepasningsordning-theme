@@ -135,6 +135,7 @@
 		{ id: 'forside', navn: 'Forside', ikon: '<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>' },
 		{ id: 'hvem-er-jeg', navn: 'Hvem er jeg', ikon: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>' },
 		{ id: 'fotoalbum', navn: 'Fotoalbum', ikon: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-4 4-3-3-6 6"/>' },
+		{ id: 'guide', navn: 'Guide', ikon: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 4.6-1.4c.5.7.5 1.7-.1 2.3l-.9.9c-.6.6-1.1 1.2-1.1 2.2"/><circle cx="12" cy="16.5" r=".25" fill="currentColor"/>' },
 	];
 	var ALLE_TABS = FASTE_TABS.concat( MERE_TABS );
 
@@ -231,6 +232,7 @@
 		if ( 'forside' === state.fane ) return Forside.render( el );
 		if ( 'hvem-er-jeg' === state.fane ) return HvemErJeg.render( el );
 		if ( 'fotoalbum' === state.fane ) return Fotoalbum.render( el );
+		if ( 'guide' === state.fane ) return Guide.render( el );
 	}
 
 	/* ------------------------------------------------------------------
@@ -1155,6 +1157,65 @@
 					self.gemRaekkefoelge( el );
 				} );
 			} );
+		},
+	};
+
+	/* ------------------------------------------------------------------
+	 * Guide — kort forklaring af hver fane, til Lene
+	 * ---------------------------------------------------------------- */
+
+	var GUIDE_EMNER = [
+		{
+			titel: 'Dashboard',
+			tekst: 'Her kan du se med det samme, om der er åbent lige nu, hvor mange ledige pladser der er, og hvornår næste lukkeperiode er. De to knapper nederst ("+ Ny plads" og "+ Ny lukkeperiode") er genveje, der tager dig direkte til den rigtige fane med formularen allerede åben.',
+		},
+		{
+			titel: 'Pladser',
+			tekst: 'Her styrer du, hvor mange pladser der er ledige på hver dato. Tryk "+ Tilføj ny plads" for at oprette en ny dato. Skriv det samlede antal pladser og hvor mange der er ledige — resten (fx "2 af 3 ledige") beregnes automatisk. Brug plus/minus-knapperne på en plads i listen til hurtigt at justere antal ledige, uden at åbne hele formularen. "Når 0 er ledige, vis som" bestemmer, om en fyldt plads skal stå som "Reserveret" eller "Optaget" på hjemmesiden.',
+		},
+		{
+			titel: 'Lukkedage',
+			tekst: 'Her opretter du ferie og lukkeperioder, som vises på hjemmesiden. Skriv en periode (fx "Uge 42"), datoerne som de skal stå på hjemmesiden, og gerne en årsag. Feltet "Skjul efter" gør, at perioden automatisk forsvinder fra hjemmesiden, når den er overstået — du behøver altså ikke selv huske at slette den bagefter.',
+		},
+		{
+			titel: 'Åbningstider',
+			tekst: 'Her retter du de tider, I har åbent. Vælg hvilke ugedage et tidsrum gælder for, og skriv hvornår I åbner og lukker i 24-timers format (fx 06:45). Tryk "+ Tilføj tidsrum", hvis I fx har kortere åbent en bestemt dag.',
+		},
+		{
+			titel: 'Priser',
+			tekst: 'Her styrer du, hvad en plads koster. Den øverste linje er typisk fuldtidsprisen. Tilføj flere linjer til fx tilskud — sæt hak i "Er et fradrag", og vælg om beløbet skal skrives direkte i kroner, eller udregnes automatisk som en procent af den øverste linje. Totalen nederst beregnes altid selv ud fra linjerne, du behøver ikke selv lægge sammen.',
+		},
+		{
+			titel: 'Forside',
+			tekst: 'Her retter du teksten øverst på forsiden (overrubrik, overskrift og beskrivelse), samt punkterne i "Den samme rytme hver dag"-afsnittet — tidspunkt, titel og en kort tekst for hvert punkt i dagen.',
+		},
+		{
+			titel: 'Hvem er jeg',
+			tekst: 'Her styrer du listen med kurser og efteruddannelse på "Hvem er jeg"-siden. Tryk "+ Tilføj kursus" og udfyld årstal, titel og en kort beskrivelse.',
+		},
+		{
+			titel: 'Fotoalbum',
+			tekst: 'Her tilføjer, sletter og omarrangerer du billederne i fotoalbummet. Tryk "+ Tilføj billede" for at tage et nyt billede med kameraet eller vælge et fra din telefon — det gemmes automatisk. Brug pilene (↑ ↓) på et billede til at ændre rækkefølgen, og "Slet" for at fjerne det igen.',
+		},
+		{
+			titel: 'Session udløbet?',
+			tekst: 'Hvis du ser en gul besked øverst om, at din session er udløbet, skal du bare trykke "Genindlæs". Det sker kun, hvis du ikke har brugt appen i et stykke tid, og er ikke noget at bekymre sig om — ingenting du har lavet, går tabt.',
+		},
+	];
+
+	var Guide = {
+		render: function ( el ) {
+			var html = '<h2 class="skaerm-titel">Guide</h2>';
+			html += '<p class="guide-intro">Kort forklaring af hver fane i appen. Tryk på et emne for at folde det ud.</p>';
+			html += '<div class="kort">';
+			GUIDE_EMNER.forEach( function ( emne, i ) {
+				html += '<details class="guide-emne"' + ( 0 === i ? ' open' : '' ) + '>' +
+					'<summary>' + esc( emne.titel ) + '</summary>' +
+					'<p>' + esc( emne.tekst ) + '</p>' +
+				'</details>';
+			} );
+			html += '</div>';
+			el.innerHTML = html;
 		},
 	};
 

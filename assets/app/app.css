@@ -175,6 +175,40 @@ body {
 
 .dashboard-genveje { display: flex; flex-direction: column; gap: 10px; }
 
+.guide-intro { color: var(--stone); font-size: 14px; margin: -6px 0 16px; }
+.guide-emne {
+	border-bottom: 1px solid rgba(0,0,0,0.08);
+	padding: 14px 0;
+}
+.guide-emne:first-child { padding-top: 0; }
+.guide-emne:last-child { border-bottom: none; padding-bottom: 0; }
+.guide-emne summary {
+	font-weight: 700;
+	font-size: 15px;
+	color: var(--pine);
+	cursor: pointer;
+	list-style: none;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.guide-emne summary::-webkit-details-marker { display: none; }
+.guide-emne summary::after {
+	content: "+";
+	font-size: 20px;
+	font-weight: 400;
+	color: var(--stone);
+	flex-shrink: 0;
+	margin-left: 10px;
+}
+.guide-emne[open] summary::after { content: "–"; }
+.guide-emne p {
+	font-size: 14px;
+	color: var(--stone);
+	line-height: 1.6;
+	margin: 10px 0 0;
+}
+
 h2.skaerm-titel { font-size: 20px; margin: 4px 0 16px; }
 
 .kort {
